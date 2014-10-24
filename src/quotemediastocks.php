@@ -19,6 +19,61 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     /**
+     * Perform a getQuotes call to retrieve basic stock quote information. The max size of the $array is QuoteMediaStocks::GET_QUOTES_MAX_SYMBOLS
+     * @param array $array array of ticker strings
+     * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
+     */
+    public function getQuotes(&$array, $use_assoc = false) {
+        if (!$this->verifyInput($array, QuoteMediaStocks::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOL)) {
+            return false;
+        }
+        $xml = $this->callAPI(QuoteMediaStocks::GET_QUOTES, $array);
+        if (!$xml) {
+            return false;
+        }
+        return $this->buildResult($xml, QuoteMediaStocks::GET_QUOTES, $use_assoc);
+    }
+
+    /**
+     * Perform a getQuotes call to retrieve basic company information. The max size of the $array is QuoteMediaStocks::GET_PROFILES_MAX_SYMBOLS
+     * @param type $array array of ticker strings
+     */
+    public function getProfiles(&$array, $use_assoc = false) {
+        if (!$this->verifyInput($array, QuoteMediaStocks::GET_PROFILES_MAX_SYMBOLS, QuoteMediaError::GET_PROFILES_EXCEED_MAX_SYMBOL)) {
+            return false;
+        }
+        $xml = $this->callAPI(QuoteMediaStocks::GET_PROFILES, $array);
+        if (!$xml) {
+            return false;
+        }
+        return $this->buildResult($xml, QuoteMediaStocks::GET_PROFILES, $use_assoc);
+    }
+
+    /**
+     * Perform a getQuotes call to retrieve company fundamental information. The max size of the $array is QuoteMediaStocks::GET_FUNDAMENTALS_MAX_SYMBOLS
+     * @param type $array array of ticker strings
+     */
+    public function getFundamentals(&$array, $use_assoc = false) {
+        if (!$this->verifyInput($array, QuoteMediaStocks::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOL)) {
+            return false;
+        }
+        $xml = $this->callAPI(QuoteMediaStocks::GET_FUNDAMENTALS, $array);
+        if (!$xml) {
+            return false;
+        }
+        return $this->buildResult($xml, QuoteMediaStocks::GET_FUNDAMENTALS, $use_assoc);
+    }
+
+    /**
+     * Convert an array of tickers into a comma delimited string for use in web API
+     * @param array $tickers array of ticker strings
+     * @return type
+     */
+    public function stringifyTickers(&$tickers) {
+        return implode(',', $tickers);
+    }
+
+    /**
      * @param QuoteMediaStocks(constant) $type type of call to make
      * @param array $tickers array of ticker strings
      * @returns array returns raw xml data from API call
@@ -70,15 +125,15 @@ class QuoteMediaStocks extends QuoteMediaBase {
     private function buildResult(&$xml, $buildFunctionId, $use_assoc) {
         switch ($buildFunctionId) {
             case QuoteMediaStocks::GET_QUOTES:
-                $buildFunctionStr = 'getQuotes';
+                $buildFunctionStr = 'buildQuote';
                 $element = 'quote';
                 break;
             case QuoteMediaStocks::GET_PROFILES:
-                $buildFunctionStr = 'getProfiles';
+                $buildFunctionStr = 'buildProfile';
                 $element = 'company';
                 break;
             case QuoteMediaStocks::GET_FUNDAMENTALS:
-                $buildFunctionStr = 'getFundamentals';
+                $buildFunctionStr = 'buildFundamental';
                 $element = 'company';
                 break;
             default:
@@ -98,63 +153,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         return $return;
     }
 
-    /**
-     * Perform a getQuotes call to retrieve basic stock quote information. The max size of the $array is QuoteMediaStocks::GET_QUOTES_MAX_SYMBOLS
-     * @param array $array array of ticker strings
-     * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
-     */
-    public function getQuotes(&$array, $use_assoc=false) {
-        if (!$this->verifyInput($array, QuoteMediaStocks::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOL)) {
-            return false;
-        }
-        $xml = $this->callAPI(QuoteMediaStocks::GET_QUOTES, $array);
-        if (!$xml) {
-            return false;
-        }
-        return $this->buildResult($xml, QuoteMediaStocks::GET_QUOTES, $use_assoc);
-    }
-
-    /**
-     * Perform a getQuotes call to retrieve basic company information. The max size of the $array is QuoteMediaStocks::GET_PROFILES_MAX_SYMBOLS
-     * @param type $array array of ticker strings
-     */
-    public function getProfiles(&$array, $use_assoc=false) {
-        if (!$this->verifyInput($array, QuoteMediaStocks::GET_PROFILES_MAX_SYMBOLS, QuoteMediaError::GET_PROFILES_EXCEED_MAX_SYMBOL)) {
-            return false;
-        }
-        $xml = $this->callAPI(QuoteMediaStocks::GET_PROFILES, $array);
-        if (!$xml) {
-            return false;
-        }
-        return $this->buildResult($xml, QuoteMediaStocks::GET_PROFILES, $use_assoc);
-    }
-
-    /**
-     * Perform a getQuotes call to retrieve company fundamental information. The max size of the $array is QuoteMediaStocks::GET_FUNDAMENTALS_MAX_SYMBOLS
-     * @param type $array array of ticker strings
-     */
-    public function getFundamentals(&$array, $use_assoc=false) {
-        if (!$this->verifyInput($array, QuoteMediaStocks::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOL)) {
-            return false;
-        }
-        $xml = $this->callAPI(QuoteMediaStocks::GET_FUNDAMENTALS, $array);
-        if (!$xml) {
-            return false;
-        }
-        return $this->buildResult($xml, QuoteMediaStocks::GET_FUNDAMENTALS, $use_assoc);
-    }
-
-    /**
-     * Convert an array of tickers into a comma delimited string for use in web API
-     * @param array $tickers array of ticker strings
-     * @return type
-     */
-    public function stringifyTickers(&$tickers) {
-        return implode(',', $tickers);
-    }
-
     private function buildQuote(&$data) {
-//var_dump($data);
         $fields = array();
         $fields['CompanyName'] = str_replace('\'', '\'\'', $data->equityinfo->longname);
         $fields['CompanyNameReq'] = ucwords(strtolower($fields['CompanyName']));
@@ -171,7 +170,6 @@ class QuoteMediaStocks extends QuoteMediaBase {
         $fields['DailyVolume'] = (float) $data->pricedata->sharevolume;
         $fields['NumOfTrades'] = (int) $data->pricedata->tradevolume;
         $fields['ShareOutstanding'] = (int) $data->fundamental->sharesoutstanding;
-//var_dump($fields);
         return $fields;
     }
 

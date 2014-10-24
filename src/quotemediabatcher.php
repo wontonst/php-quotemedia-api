@@ -44,7 +44,9 @@ class QuoteMediaBatcher extends QuoteMediaBase {
                 $this->errorID = $this->api->getErrorID();
                 return false;
             }
-            $ret[$res['CompanyTicker']] = $res;
+            foreach($res as &$v){
+                $ret[$v['CompanyTicker']] = $v;
+            }
         }
         return $ret;
     }
