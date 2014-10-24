@@ -138,8 +138,9 @@ array(3) {
 Note that in the previous section you can only retrieve each section separately and you are limited to 50 tickers at a time in getProfiles. This is due to limitations on the API itself. To bypass these limitations you can use the QuoteMediaBatcher class.
 
 <pre>
-$webmaster_id = 000000;//user inputs webmaster id $api = new QuoteMediaBatcher($webmaster_id);
+$webmaster_id = 000000;//user inputs webmaster id 
 $input = array( 'GOOG');
+$api = new QuoteMediaBatcher($webmaster_id);
 $result = $api->getAll($input);
 var_dump($result);
 </pre>
