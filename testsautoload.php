@@ -1,0 +1,7 @@
+<?php
+
+include(__DIR__.'/autoload.php');
+
+define('TEST_WEBMASTER_ID', 0);//ENTER YOUR WEBMASTER ID HERE. DONT FORGET TO REMOVE IT WHEN YOU'RE COMMITING
+
+?>
