@@ -1,3 +1,5 @@
+**Disclaimer**: this library is still in development. There are weird behaviors like closing price=last price because it's ported from application specific code. 
+
 # QuoteMedia API PHP Library
 
 This library is intended to make QuoteMedia API calls easier to manage.
