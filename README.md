@@ -1,5 +1,3 @@
-# DO NOT USE THIS LIBRARY YET
-
 # QuoteMedia API PHP Library
 
 This library is intended to make QuoteMedia API calls easier to manage.
