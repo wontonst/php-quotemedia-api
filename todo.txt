@@ -1,0 +1,3 @@
+I pissed the gods off by using json encode/decode on the XML file. I need the build* functions to properly build an array instead of XML.
+Note that building the XML file is simply merging the subarrarys. We will not be keying anything ourselves.
+Fuck custom keys
