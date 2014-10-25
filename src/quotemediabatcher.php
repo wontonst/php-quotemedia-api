@@ -2,7 +2,7 @@
 
 /**
   Retrieves all stock data at once for an arbitrarily long input. Built on top of QuoteMediaStocks thru composition.
- * Todo change merge from o(N^2) to o(n)
+ * Todo
  * Enforce getSubrtn $cmd parameter
  */
 class QuoteMediaBatcher extends QuoteMediaBase {
@@ -31,7 +31,7 @@ class QuoteMediaBatcher extends QuoteMediaBase {
      * Calls ((QuoteMediaStocks)this->api)->$cmd() to call and grab data from QuoteMedia.
      * @param type $array arbitrarily long array of stock tickers
      * @param type $max_per_call maximum number of tickers to pass to the api on each call.
-     * @param type $cmd commands to run are "getQuotes", "getProfiles", "getFundamentals"
+     * @param type $cmd id of function to run, ex QuoteMediaConst::GET_QUOTES
      * @return array list of data for reach stock ticker passed
      */
     private function getSubrtn($array, $max_per_call, $cmd) {
@@ -80,15 +80,15 @@ class QuoteMediaBatcher extends QuoteMediaBase {
             return false;
         }
 
-        $quotes = $this->getSubrtn($arr, QuoteMediaStocks::GET_QUOTES_MAX_SYMBOLS, 'getQuotes');
+        $quotes = $this->getSubrtn($arr, QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS, 'getQuotes');
         if ($quotes === false) {
             //todo: error getting quotes
         }
-        $profiles = $this->getSubrtn($arr, QuoteMediaStocks::GET_PROFILES_MAX_SYMBOLS, 'getProfiles');
+        $profiles = $this->getSubrtn($arr, QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS, 'getProfiles');
         if ($profiles === false) {
             //todo: error getting quotes
         }
-        $fundamentals = $this->getSubrtn($arr, QuoteMediaStocks::GET_FUNDAMENTALS_MAX_SYMBOLS, 'getFundamentals');
+        $fundamentals = $this->getSubrtn($arr, QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS, 'getFundamentals');
         if ($fundamentals === false) {
             //todo: error getting quotes
         }

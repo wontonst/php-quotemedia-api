@@ -5,63 +5,60 @@
  */
 class QuoteMediaStocks extends QuoteMediaBase {
 
-    const URL_ROOT = 'http://app.quotemedia.com/data/';
-    const GET_QUOTES = 0; ///< function identifier for getQuotes
-    const GET_PROFILES = 1; ///< function identifier for getProfiles
-    const GET_FUNDAMENTALS = 2; ///< function identifier for getFundamentals
-    const GET_QUOTES_MAX_SYMBOLS = 100; ///< maximum symbols per getQuotes call
-    const GET_PROFILES_MAX_SYMBOLS = 50; ///< maximum symbols per getProfiles call
-    const GET_FUNDAMENTALS_MAX_SYMBOLS = 50; ///< maximum symbols per getFundamentals call
-
     public function __construct($webmaster_id) {
         parent::__construct();
         $this->data['webmaster_id'] = $webmaster_id;
     }
+    private function resetKeys(){
+        $this->keys = array(
+            
+        );
+    }
 
     /**
-     * Perform a getQuotes call to retrieve basic stock quote information. The max size of the $array is QuoteMediaStocks::GET_QUOTES_MAX_SYMBOLS
+     * Perform a getQuotes call to retrieve basic stock quote information. The max size of the $array is QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS
      * @param array $array array of ticker strings
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      */
     public function getQuotes(&$array, $use_assoc = false) {
-        if (!$this->verifyInput($array, QuoteMediaStocks::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOL)) {
+        if (!$this->verifyInput($array, QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOL)) {
             return false;
         }
-        $xml = $this->callAPI(QuoteMediaStocks::GET_QUOTES, $array);
+        $xml = $this->callAPI(QuoteMediaConst::GET_QUOTES, $array);
         if (!$xml) {
             return false;
         }
-        return $this->buildResult($xml, QuoteMediaStocks::GET_QUOTES, $use_assoc);
+        return $this->buildResult($xml, QuoteMediaConst::GET_QUOTES, $use_assoc);
     }
 
     /**
-     * Perform a getQuotes call to retrieve basic company information. The max size of the $array is QuoteMediaStocks::GET_PROFILES_MAX_SYMBOLS
+     * Perform a getQuotes call to retrieve basic company information. The max size of the $array is QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS
      * @param type $array array of ticker strings
      */
     public function getProfiles(&$array, $use_assoc = false) {
-        if (!$this->verifyInput($array, QuoteMediaStocks::GET_PROFILES_MAX_SYMBOLS, QuoteMediaError::GET_PROFILES_EXCEED_MAX_SYMBOL)) {
+        if (!$this->verifyInput($array, QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS, QuoteMediaError::GET_PROFILES_EXCEED_MAX_SYMBOL)) {
             return false;
         }
-        $xml = $this->callAPI(QuoteMediaStocks::GET_PROFILES, $array);
+        $xml = $this->callAPI(QuoteMediaConst::GET_PROFILES, $array);
         if (!$xml) {
             return false;
         }
-        return $this->buildResult($xml, QuoteMediaStocks::GET_PROFILES, $use_assoc);
+        return $this->buildResult($xml, QuoteMediaConst::GET_PROFILES, $use_assoc);
     }
 
     /**
-     * Perform a getQuotes call to retrieve company fundamental information. The max size of the $array is QuoteMediaStocks::GET_FUNDAMENTALS_MAX_SYMBOLS
+     * Perform a getQuotes call to retrieve company fundamental information. The max size of the $array is QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS
      * @param type $array array of ticker strings
      */
     public function getFundamentals(&$array, $use_assoc = false) {
-        if (!$this->verifyInput($array, QuoteMediaStocks::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOL)) {
+        if (!$this->verifyInput($array, QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOL)) {
             return false;
         }
-        $xml = $this->callAPI(QuoteMediaStocks::GET_FUNDAMENTALS, $array);
+        $xml = $this->callAPI(QuoteMediaConst::GET_FUNDAMENTALS, $array);
         if (!$xml) {
             return false;
         }
-        return $this->buildResult($xml, QuoteMediaStocks::GET_FUNDAMENTALS, $use_assoc);
+        return $this->buildResult($xml, QuoteMediaConst::GET_FUNDAMENTALS, $use_assoc);
     }
 
     /**
@@ -90,11 +87,11 @@ class QuoteMediaStocks extends QuoteMediaBase {
         $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
         $count = 0;
         switch ($type) {//at this point $type is guaranteed to be correct due to $url
-            case QuoteMediaStocks::GET_QUOTES:
+            case QuoteMediaConst::GET_QUOTES:
                 $count = $xml->quote->count;
                 break;
-            case QuoteMediaStocks::GET_PROFILES:
-            case QuoteMediaStocks::GET_FUNDAMENTALS:
+            case QuoteMediaConst::GET_PROFILES:
+            case QuoteMediaConst::GET_FUNDAMENTALS:
                 $count = $xml->company->count;
                 break;
         }
@@ -123,21 +120,17 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      */
     private function buildResult(&$xml, $buildFunctionId, $use_assoc) {
-        switch ($buildFunctionId) {
-            case QuoteMediaStocks::GET_QUOTES:
-                $buildFunctionStr = 'buildQuote';
+        $buildFunctionStr = QuoteMediaConst::functIdToStr($buildFunctionId);
+        switch ($buildFunctionId) {//id guaranteed to be correct now
+            case QuoteMediaConst::GET_QUOTES:
                 $element = 'quote';
                 break;
-            case QuoteMediaStocks::GET_PROFILES:
-                $buildFunctionStr = 'buildProfile';
+            case QuoteMediaConst::GET_PROFILES:
                 $element = 'company';
                 break;
-            case QuoteMediaStocks::GET_FUNDAMENTALS:
-                $buildFunctionStr = 'buildFundamental';
+            case QuoteMediaConst::GET_FUNDAMENTALS:
                 $element = 'company';
                 break;
-            default:
-                die('buildResult passed invalid buildFunctionId ' . $buildFunctionId);
         }
         $return = array();
         if ($use_assoc) {
@@ -206,20 +199,20 @@ class QuoteMediaStocks extends QuoteMediaBase {
     private function buildURL($type, &$tickers) {
         $url_middle = ''; //will be used to store profile, fundamentals, or quote
         switch ($type) {
-            case QuoteMediaStocks::GET_QUOTES:
+            case QuoteMediaConst::GET_QUOTES:
                 $url_middle = 'getQuotes.xml';
                 break;
-            case QuoteMediaStocks::GET_PROFILES:
+            case QuoteMediaConst::GET_PROFILES:
                 $url_middle = 'getProfiles.xml';
                 break;
-            case QuoteMediaStocks::GET_FUNDAMENTALS:
+            case QuoteMediaConst::GET_FUNDAMENTALS:
                 $url_middle = 'getFundamentals.xml';
                 break;
             default:
 //TODO: error, invalid type (programmer error)
         }
 
-        return QuoteMediaStocks::URL_ROOT . $url_middle .
+        return QuoteMediaConst::URL_ROOT . $url_middle .
                 '?webmasterId=' . $this->data['webmaster_id'] .
                 '&symbols=' . $this->stringifyTickers($tickers);
     }
