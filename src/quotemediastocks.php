@@ -9,9 +9,9 @@ class QuoteMediaStocks extends QuoteMediaBase {
         parent::__construct();
         $this->data['webmaster_id'] = $webmaster_id;
     }
-    private function resetKeys(){
+
+    private function resetKeys() {
         $this->keys = array(
-            
         );
     }
 
@@ -84,7 +84,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
             $this->errorID = QuoteMediaError::API_HTTP_REQUEST_ERROR;
             return false;
         }
-        $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $xml = simplexml_load_string($response);
         $count = 0;
         switch ($type) {//at this point $type is guaranteed to be correct due to $url
             case QuoteMediaConst::GET_QUOTES:
@@ -95,9 +95,9 @@ class QuoteMediaStocks extends QuoteMediaBase {
                 $count = $xml->company->count;
                 break;
         }
-        //if ($count != $batch_size) {
-        // TODO: determine which ticker didn't get included and report it or retry
-        //}
+        if ($count != $batch_size) {
+            // TODO: determine which ticker didn't get included and report it or retry
+        }
         return $xml;
     }
 
@@ -132,6 +132,10 @@ class QuoteMediaStocks extends QuoteMediaBase {
                 $element = 'company';
                 break;
         }
+        //may the programming Gods have mercy on my soul
+        $mydignity = json_encode($xml);
+        $isgone = json_decode($mydignity, TRUE);
+var_dump($isgone);
         $return = array();
         if ($use_assoc) {
             foreach ($xml->$element as $v) {
