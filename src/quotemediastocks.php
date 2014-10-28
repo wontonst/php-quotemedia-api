@@ -95,7 +95,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
                 $count = $xml->company->count;
                 break;
         }
-        if ($count != $batch_size) {
+        if ($count != count($tickers)) {
             // TODO: determine which ticker didn't get included and report it or retry
         }
         return $xml;
