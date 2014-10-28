@@ -126,7 +126,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         $funct = str_replace('get', 'build', QuoteMediaConst::functIdToStr($buildFunctionId));
         if ($nodignity['@attributes']['size'] == 1) {//XML for some reason doesn't make array size 1 instead dumping it in $json['company']
             $funct = substr($funct, 0, -1); //trim off the "s", ie buildQuotes->buildQuote to build a single entry
-            $res = $this->funct($nodignity);
+            $res = $this->$funct($nodignity);
             if ($use_assoc) {
                 return array($res['symbol'] => $res);
             }
@@ -149,7 +149,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     private function buildQuotes(&$json, $use_assoc) {
-        return $this->buildSubtrn('buildQuote', $use_assoc);
+        return $this->buildSubrtn('buildQuote', $use_assoc);
     }
 
     private function buildQuote(&$company) {
@@ -160,7 +160,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     private function buildProfiles(&$json, $use_assoc) {
-        return $this->buildSubtrn('buildProfile', $use_assoc);
+        return $this->buildSubrtn('buildProfile', $use_assoc);
     }
 
     private function buildProfile(&$company) {
@@ -171,7 +171,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     private function buildFundamentals(&$json, $use_assoc) {
-        return $this->buildSubtrn('buildFundamental', $use_assoc);
+        return $this->buildSubrtn('buildFundamental', $use_assoc);
     }
 
     private function buildFundamental(&$company) {
