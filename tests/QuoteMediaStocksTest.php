@@ -16,6 +16,9 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
             $this->assertEquals(count($arr), count($result), 'Array size returned by ' . $v . ' does not matched input array size.');
 
             foreach ($result as &$row) {
+                if(is_bool($row)){
+                    echo $v.' encountered an eror: '.$this->api->getError()."\n";
+                }
                 $this->assertInternalType('array', $row, 'A row in ' . $v . ' is type ' . gettype($row) . ' instead of array. Dump: ' . print_r($row, true));
             }
         }
