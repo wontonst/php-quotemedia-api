@@ -9,12 +9,6 @@ class QuoteMediaStocks extends QuoteMediaBase {
         parent::__construct();
         $this->data['webmaster_id'] = $webmaster_id;
     }
-
-    private function resetKeys() {
-        $this->keys = array(
-        );
-    }
-
     /**
      * Perform a getQuotes call to retrieve basic stock quote information. The max size of the $array is QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS
      * @param array $array array of ticker strings
@@ -28,7 +22,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        return $this->buildResult($xml, QuoteMediaConst::GET_QUOTES, $use_assoc);
+        return $this->buildResult($xml, $use_assoc);
     }
 
     /**
@@ -43,7 +37,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        return $this->buildResult($xml, QuoteMediaConst::GET_PROFILES, $use_assoc);
+        return $this->buildResult($xml, $use_assoc);
     }
 
     /**
@@ -58,7 +52,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        return $this->buildResult($xml, QuoteMediaConst::GET_FUNDAMENTALS, $use_assoc);
+        return $this->buildResult($xml, $use_assoc);
     }
 
     /**
@@ -119,81 +113,10 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @param integer $buildFunctionId function id, ex. QuoteMediaaStocks::GET_QUOTES
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      */
-    private function buildResult(&$xml, $buildFunctionId, $use_assoc) {
-        $buildFunctionStr = QuoteMediaConst::functIdToStr($buildFunctionId);
-        switch ($buildFunctionId) {//id guaranteed to be correct now
-            case QuoteMediaConst::GET_QUOTES:
-                $element = 'quote';
-                break;
-            case QuoteMediaConst::GET_PROFILES:
-                $element = 'company';
-                break;
-            case QuoteMediaConst::GET_FUNDAMENTALS:
-                $element = 'company';
-                break;
-        }
+    private function buildResult(&$xml, $use_assoc) {
         //may the programming Gods have mercy on my soul
         $mydignity = json_encode($xml);
-        $isgone = json_decode($mydignity, TRUE);
-var_dump($isgone);
-        $return = array();
-        if ($use_assoc) {
-            foreach ($xml->$element as $v) {
-                $arr = $this->$buildFunctionStr($v);
-                $return[$arr['CompanyTicker']] = $arr;
-            }
-        } else {
-            foreach ($xml->$element as $v) {
-                $return[] = $this->$buildFunctionStr($v);
-            }
-        }
-        return $return;
-    }
-
-    private function buildQuote(&$data) {
-        $fields = array();
-        $fields['CompanyName'] = str_replace('\'', '\'\'', $data->equityinfo->longname);
-        $fields['CompanyNameReq'] = ucwords(strtolower($fields['CompanyName']));
-        $fields['date123'] = date('Y-m-d');
-        $fields['MarketCap'] = (int) $data->fundamental->marketcap;
-        $fields['CompanyTicker'] = (string) $data->equityinfo->shortname;
-        $fields['PercDec'] = (float) $data->pricedata->changepercent;
-        $fields['ClosingPrice'] = (float) $data->pricedata->last;
-        $fields['DollarChange'] = (float) $data->pricedata->change;
-        $fields['peratio'] = (float) $data->fundamental->peratio;
-        $fields['OpeningPrice'] = (float) $data->pricedata->open;
-        $fields['IntradayLow'] = (float) $data->pricedata->low;
-        $fields['IntradayHigh'] = (float) $data->pricedata->high;
-        $fields['DailyVolume'] = (float) $data->pricedata->sharevolume;
-        $fields['NumOfTrades'] = (int) $data->pricedata->tradevolume;
-        $fields['ShareOutstanding'] = (int) $data->fundamental->sharesoutstanding;
-        return $fields;
-    }
-
-    private function buildProfile(&$data) {
-        //var_dump($data);  
-        $temp = array(); //assuming mohit is right I need to addslash foreach
-        $temp['CompanyDesc'] = $data->profile->longdescription;
-        $temp['CompanyTicker'] = $data->symbolinfo->key->symbol;
-        $temp['NameofCEO'] = $data->profile->details->ceo;
-        $temp['NumofEmployees'] = $data->profile->details->employees;
-        $temp['City'] = $data->profile->info->address->city;
-        $temp['State'] = $data->profile->info->address->state;
-        foreach ($temp as $k => &$v) {
-            $v = addslashes($v);
-        }
-        return $temp;
-    }
-
-    private function buildFundamental(&$data) {
-        $fields = array();
-        $fields['CompanyTicker'] = (string) $data->symbolinfo->key->symbol;
-        $fields['AvgDailyVol'] = (int) $data->statistical->avg30dayvolume;
-        $fields['Week52high'] = (float) $data->statistical->week52high;
-        $fields['Week52low'] = (float) $data->statistical->week52low;
-        $fields['SMA50day'] = (float) $data->statistical->day50movingavg;
-        $fields['SMA200day'] = (float) $data->statistical->day200movingavg;
-        return $fields;
+        return json_decode($mydignity,TRUE);
     }
 
     /**
