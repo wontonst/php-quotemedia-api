@@ -122,7 +122,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     private function buildResult(&$xml, $buildFunctionId, $use_assoc) {
         //may the programming Gods have mercy on my soul
         $ihave = json_encode($xml);
-        $nodignity($ihave, TRUE);
+        $nodignity = json_decode($ihave, TRUE);
         $funct = str_replace('get', 'build', QuoteMediaConst::functIdToStr($buildFunctionId));
         return $this->$funct($nodignity, $use_assoc);
     }
