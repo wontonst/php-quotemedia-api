@@ -137,7 +137,12 @@ class QuoteMediaStocks extends QuoteMediaBase {
         }
         $result = array();
         foreach ($json['company'] as &$company) {
-            $result[] = $this->buildProfile($company);
+            $line = $this->buildProfile($company);
+            if (!$use_assoc) {//simple array
+                $result[] = $line;
+                continue;
+            }//else
+            $result[$line['symbol']] = $line;
         }
         return $result;
     }
