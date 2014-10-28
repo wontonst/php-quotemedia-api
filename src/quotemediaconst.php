@@ -16,11 +16,11 @@ class QuoteMediaConst {
      */
     public static function functIdToStr($id) {
         switch ($id) {
-            case GET_QUOTES:
+            case QuoteMediaConst::GET_QUOTES:
                 return "getQuotes";
-            case GET_PROFILES:
+            case QuoteMediaConst::GET_PROFILES:
                 return "getProfiles";
-            case GET_FUNDAMENTALS:
+            case QuoteMediaConst::GET_FUNDAMENTALS:
                 return "getFundamentals";
             default:
                 die('functIdToStr passed invalid $id ' . $id);
