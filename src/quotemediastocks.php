@@ -135,9 +135,9 @@ class QuoteMediaStocks extends QuoteMediaBase {
         $json = $json['company'];
         $result = array();
         foreach ($json as $company) {
-            $company['profile']['symbol'] = $company['symbolinfo']['key']['symbol'];
-            $company['profile']['exchange'] = $company['symbolinfo']['key']['exchange'];
-            $result[] = $company['profile'];
+            $add = $company['symbolinfo']['key'];
+            $add = array_merge($add,$company['symbolinfo']['equityinfo']);
+            $result[] = $add;
         }
         return $result;
     }
