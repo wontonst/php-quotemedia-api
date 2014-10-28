@@ -79,7 +79,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
             $this->errorID = QuoteMediaError::API_HTTP_REQUEST_ERROR;
             return false;
         }
-        $xml = simplexml_load_string($response);
+        $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
         if (!$xml) {
             //error parsing the XML
             $this->errorID = QuoteMediaError::API_XML_PARSE_ERROR;
@@ -137,8 +137,9 @@ class QuoteMediaStocks extends QuoteMediaBase {
         foreach ($json as $company) {
             $company['profile']['symbol'] = $company['symbolinfo']['key']['symbol'];
             $company['profile']['exchange'] = $company['symbolinfo']['key']['exchange'];
-            $result[] = $company;
+            $result[] = $company['profile'];
         }
+        return $result;
     }
 
     private function buildFundamentals(&$json, $use_assoc) {
