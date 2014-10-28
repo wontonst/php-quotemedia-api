@@ -84,7 +84,12 @@ class QuoteMediaStocks extends QuoteMediaBase {
             $this->errorID = QuoteMediaError::API_HTTP_REQUEST_ERROR;
             return false;
         }
-        $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $xml = simplexml_load_string($response);
+        if(!$xml){
+            //error parsing the XML
+            $this->errorID = QuoteMediaError::API_XML_PARSE_ERROR;
+            return false;
+        }
         $count = 0;
         switch ($type) {//at this point $type is guaranteed to be correct due to $url
             case QuoteMediaConst::GET_QUOTES:

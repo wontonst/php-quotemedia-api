@@ -12,14 +12,16 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
 
         foreach ($functions as $v) {
             $result = $this->api->$v($arr);
-            $this->assertInternalType('array', $result, 'Error is ' . QuoteMediaError::IDtoError($this->api->getErrorID()));
+            $this->assertInternalType('array', $result, 'Error is ' . $this->api->getError());
             $this->assertEquals(count($arr), count($result), 'Array size returned by ' . $v . ' does not matched input array size.');
 
             foreach ($result as &$row) {
                 if(is_bool($row)){
-                    echo $v.' encountered an eror: '.$this->api->getError()."\n";
+                    echo $v.' encountered an error: '.$this->api->getError()."\n";
                 }
-                $this->assertInternalType('array', $row, 'A row in ' . $v . ' is type ' . gettype($row) . ' instead of array. Dump: ' . print_r($row, true));
+                $error_msg = 'A row in ' . $v . ' is type ' . gettype($row) . ' instead of array. ';
+                $error_msg .= $row === false ? $this->api->getError() : 'Dump: ' . print_r($row, true);
+                $this->assertInternalType('array', $row, $error_msg);
             }
         }
         foreach($result as $v){
