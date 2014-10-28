@@ -132,14 +132,21 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     private function buildProfiles(&$json, $use_assoc) {
-        $json = $json['company'];
+        if ($json['@attributes']['size'] == 1) {//XML for some reason doesn't make array size 1 instead dumping it in $json['company']
+            return array($this->buildProfile($json['company']));
+        }
         $result = array();
-        foreach ($json as $company) {
-            $add = $company['symbolinfo']['key'];
-            $add = array_merge($add,$company['symbolinfo']['equityinfo']);
-            $result[] = $add;
+        foreach ($json['company'] as &$company) {
+            $result[] = $this->buildProfile($company);
         }
         return $result;
+    }
+
+    private function buildProfile(&$company) {
+        $add = array();
+        $add = $company['symbolinfo']['key'];
+        $add = array_merge($add, $company['symbolinfo']['equityinfo']);
+        return $add;
     }
 
     private function buildFundamentals(&$json, $use_assoc) {
