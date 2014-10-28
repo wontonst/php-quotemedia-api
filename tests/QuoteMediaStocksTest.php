@@ -5,6 +5,7 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
     protected function setUp() {
         $this->api = new QuoteMediaStocks(TEST_WEBMASTER_ID);
     }
+
     public function testGetArray() {
         $functions = array('getProfiles', 'getQuotes', 'getFundamentals');
 
@@ -17,14 +18,16 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
 
             foreach ($result as &$row) {
                 $error_msg = 'A row in the result of ' . $v . ' is type ' . gettype($row) . ' instead of array. ';
-                $error_msg .= $row === false ? 'Encountered error: '.$this->api->getError() : 'Dump: ' . print_r($row, true);
+                $error_msg .= $row === false ? 'Encountered error: ' . $this->api->getError() : 'Dump: ' . print_r($row, true);
                 $this->assertInternalType('array', $row, $error_msg);
             }
-        }
-        foreach($result as $v){
-            
+            //assert tickers
+            for ($i = 0; $i != count($tickers); $i++) {
+                $this->assertEquals($tickers[$i], $result[$i], 'Result ticker mismatch.');
+            }
         }
     }
+
 }
 
 ?>
