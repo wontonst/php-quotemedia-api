@@ -1,6 +1,6 @@
 <?php
 
-class QuoteMediaConst {
+final class QuoteMediaConst {
 
     const URL_ROOT = 'http://app.quotemedia.com/data/';
     
@@ -10,17 +10,18 @@ class QuoteMediaConst {
     const GET_FUNDAMENTALS = 2; ///< function identifier for getFundamentals
 
     /**
-     * Convert a function ID to string
+     * Convert a function ID to string.
+     * If this gets too long, convert to a singleton hash map.
      * @param integer $id function integer id
      * @return string function name
      */
     public static function functIdToStr($id) {
         switch ($id) {
-            case GET_QUOTES:
+            case QuoteMediaConst::GET_QUOTES:
                 return "getQuotes";
-            case GET_PROFILES:
+            case QuoteMediaConst::GET_PROFILES:
                 return "getProfiles";
-            case GET_FUNDAMENTALS:
+            case QuoteMediaConst::GET_FUNDAMENTALS:
                 return "getFundamentals";
             default:
                 die('functIdToStr passed invalid $id ' . $id);

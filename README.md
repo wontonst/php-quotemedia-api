@@ -1,4 +1,4 @@
-# DO NOT USE THIS LIBRARY YET
+**Disclaimer**: this library is still in development. There are weird behaviors like closing price=last price because it's ported from application specific code. 
 
 # QuoteMedia API PHP Library
 

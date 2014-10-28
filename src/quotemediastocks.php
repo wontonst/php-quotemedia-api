@@ -9,6 +9,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         parent::__construct();
         $this->data['webmaster_id'] = $webmaster_id;
     }
+
     /**
      * Perform a getQuotes call to retrieve basic stock quote information. The max size of the $array is QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS
      * @param array $array array of ticker strings
@@ -79,6 +80,11 @@ class QuoteMediaStocks extends QuoteMediaBase {
             return false;
         }
         $xml = simplexml_load_string($response);
+        if (!$xml) {
+            //error parsing the XML
+            $this->errorID = QuoteMediaError::API_XML_PARSE_ERROR;
+            return false;
+        }
         $count = 0;
         switch ($type) {//at this point $type is guaranteed to be correct due to $url
             case QuoteMediaConst::GET_QUOTES:
@@ -116,7 +122,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     private function buildResult(&$xml, $use_assoc) {
         //may the programming Gods have mercy on my soul
         $mydignity = json_encode($xml);
-        return json_decode($mydignity,TRUE);
+        return json_decode($mydignity, TRUE);
     }
 
     /**
