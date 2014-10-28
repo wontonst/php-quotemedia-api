@@ -126,7 +126,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
      */
     private function buildResult(&$xml, $buildFunctionId, $use_assoc) {
         $buildFunctionStr = QuoteMediaConst::functIdToStr($buildFunctionId);
-        $buildFunctionStr = str_replace('get','build',$buildFunctionStr);
+        $buildFunctionStr = str_replace('get','build',substr($buildFunctionStr,0,-1));
         switch ($buildFunctionId) {//id guaranteed to be correct now
             case QuoteMediaConst::GET_QUOTES:
                 $element = 'quote';
