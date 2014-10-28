@@ -124,20 +124,21 @@ class QuoteMediaStocks extends QuoteMediaBase {
         $ihave = json_encode($xml);
         $nodignity = json_decode($ihave, TRUE);
         $funct = str_replace('get', 'build', QuoteMediaConst::functIdToStr($buildFunctionId));
+        if ($nodignity['@attributes']['size'] == 1) {//XML for some reason doesn't make array size 1 instead dumping it in $json['company']
+            $funct = substr($funct, 0, -1); //trim off the "s", ie buildQuotes->buildQuote to build a single entry
+            $res = $this->funct($nodignity);
+            if ($use_assoc) {
+                return array($res['symbol'] => $res);
+            }
+            return array($res);
+        }
         return $this->$funct($nodignity, $use_assoc);
     }
 
-    private function buildQuotes(&$json, $use_assoc) {
-        return null;
-    }
-
-    private function buildProfiles(&$json, $use_assoc) {
-        if ($json['@attributes']['size'] == 1) {//XML for some reason doesn't make array size 1 instead dumping it in $json['company']
-            return array($this->buildProfile($json['company']));
-        }
+    private function buildSubrtn($build_function_name, $use_assoc) {
         $result = array();
         foreach ($json['company'] as &$company) {
-            $line = $this->buildProfile($company);
+            $line = $this->$build_function_name($company);
             if (!$use_assoc) {//simple array
                 $result[] = $line;
                 continue;
@@ -145,6 +146,21 @@ class QuoteMediaStocks extends QuoteMediaBase {
             $result[$line['symbol']] = $line;
         }
         return $result;
+    }
+
+    private function buildQuotes(&$json, $use_assoc) {
+        return $this->buildSubtrn('buildQuote', $use_assoc);
+    }
+
+    private function buildQuote(&$company) {
+        $add = array();
+        $add = $company['symbolinfo']['key'];
+        $add = array_merge($add, $company['symbolinfo']['equityinfo']);
+        return $add;
+    }
+
+    private function buildProfiles(&$json, $use_assoc) {
+        return $this->buildSubtrn('buildProfile', $use_assoc);
     }
 
     private function buildProfile(&$company) {
@@ -155,7 +171,14 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     private function buildFundamentals(&$json, $use_assoc) {
-        
+        return $this->buildSubtrn('buildFundamental', $use_assoc);
+    }
+
+    private function buildFundamental(&$company) {
+        $add = array();
+        $add = $company['symbolinfo']['key'];
+        $add = array_merge($add, $company['symbolinfo']['equityinfo']);
+        return $add;
     }
 
     /**
