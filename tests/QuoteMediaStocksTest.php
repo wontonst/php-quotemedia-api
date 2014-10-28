@@ -23,12 +23,12 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
         for ($i = 0; $i != count($input); $i++) {
             $found = false;
             foreach ($output as $out) {
-                if ($input[$i]['symbol'] == $out['symbol']) {
+                if ($input[$i] == $out['symbol']) {
                     $found = true;
                     break;
                 }
             }
-            $this->assertTrue($found, 'Ticker ' . $input[$i]['symbol'] . ' could not be found in the resulting array. Dump: ' . print_r($output, true));
+            $this->assertTrue($found, 'Ticker ' . $input[$i] . ' could not be found in the resulting array. Dump: ' . print_r($output, true));
         }
     }
 
