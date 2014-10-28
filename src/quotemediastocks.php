@@ -23,7 +23,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        return $this->buildResult($xml, $use_assoc);
+        return $this->buildResult($xml, QuoteMediaConst::GET_QUOTES, $use_assoc);
     }
 
     /**
@@ -38,7 +38,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        return $this->buildResult($xml, $use_assoc);
+        return $this->buildResult($xml, QuoteMediaConst::GET_PROFILES, $use_assoc);
     }
 
     /**
@@ -53,7 +53,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        return $this->buildResult($xml, $use_assoc);
+        return $this->buildResult($xml, QuoteMediaConst::GET_FUNDAMENTALS, $use_assoc);
     }
 
     /**
@@ -119,10 +119,30 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @param integer $buildFunctionId function id, ex. QuoteMediaaStocks::GET_QUOTES
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      */
-    private function buildResult(&$xml, $use_assoc) {
+    private function buildResult(&$xml, $buildFunctionId, $use_assoc) {
         //may the programming Gods have mercy on my soul
-        $mydignity = json_encode($xml);
-        return json_decode($mydignity, TRUE);
+        $ihave = json_encode($xml);
+        $nodignity($ihave, TRUE);
+        $funct = str_replace('get', 'build', QuoteMediaConst::functIdToStr($buildFunctionId));
+        return $this->$funct($nodignity, $use_assoc);
+    }
+
+    private function buildQuotes(&$json, $use_assoc) {
+        return null;
+    }
+
+    private function buildProfiles(&$json, $use_assoc) {
+        $json = $json['company'];
+        $result = array();
+        foreach ($json as $company) {
+            $company['profile']['symbol'] = $company['symbolinfo']['key']['symbol'];
+            $company['profile']['exchange'] = $company['symbolinfo']['key']['exchange'];
+            $result[] = $company;
+        }
+    }
+
+    private function buildFundamentals(&$json, $use_assoc) {
+        
     }
 
     /**
