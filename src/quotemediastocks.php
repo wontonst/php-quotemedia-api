@@ -5,9 +5,65 @@
  */
 class QuoteMediaStocks extends QuoteMediaBase {
 
+    /**
+     * Get the number of symbols described in XML.
+     * @param int $function_id function id as specified in QuoteMediaConst
+     * @param SimpleXMLElement $xml file returned from API
+     * @returns int number of symbols in the XML
+     */
+    static public function getXmlSymbolCount($function_id, &$xml) {
+        switch ($function_id) {//at this point $type is guaranteed to be correct due to $url
+            case QuoteMediaConst::GET_QUOTES:
+                $count = $xml['size'];
+                break;
+            case QuoteMediaConst::GET_PROFILES:
+            case QuoteMediaConst::GET_FUNDAMENTALS:
+                $count = $xml->symbolcount;
+                break;
+        }
+    }
+
     public function __construct($webmaster_id) {
         parent::__construct();
-        $this->data['webmaster_id'] = $webmaster_id;
+        $this->api = new QuoteMediaApi($webmaster_id);
+    }
+
+    /**
+     * Validate that input array is correct and set appropriate error if not.
+     * @param array $input list of stock tickers
+     * @param int $max maximum number of tickers in array
+     * @param int $max_exceed_error error code if the tickers in array exceeds $max
+     * @return boolean
+     */
+    private function verifyInput(&$input, $max_symbols, $max_exceed_error) {
+        if (!is_array($input)) {
+            $this->error = QuoteMediaError::INPUT_IS_NOT_ARRAY;
+            return false;
+        }
+        if (count($input) > $max_symbols) {
+            $this->error = $max_exceed_error;
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * getQuote/getProfiles/getFundamentals all use this function to validate input and retrieve XML from API.
+     * @param array $array list of tickers
+     * @param int $function_id function id as specified in QuoteMediaConst
+     * @param int $max_symbols maximum number of tickers in array
+     * @param int $max_symbols_error error code if the tickers in array exceeds $max_symbols
+     * @return SimplXMLElement xml file root
+     */
+    private function getSubrtn(&$array, $function_id, $max_symbols, $max_symbols_error) {
+        if (!$this->verifyInput($array, $max_symbols, $max_symbols_error)) {
+            return false;
+        }
+        $xml = $this->api->call($function_id, $array);
+        if (!$xml) {
+            return false;
+        }
+        return $xml;
     }
 
     /**
@@ -15,15 +71,9 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @param array $array array of ticker strings
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      */
-    public function getQuotes(&$array, $use_assoc = false) {
-        if (!$this->verifyInput($array, QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOL)) {
-            return false;
-        }
-        $xml = $this->callAPI(QuoteMediaConst::GET_QUOTES, $array);
-        if (!$xml) {
-            return false;
-        }
-        return $this->buildResult($xml, QuoteMediaConst::GET_QUOTES, $use_assoc);
+    public function getQuotes($array, $use_assoc = false) {
+        $xml = $this->getSubrtn($array, QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCED_MAX_SYMBOL);
+        return $this->buildResult($xml, $xml['size'], QuoteMediaConst::GET_QUOTES, $use_assoc);
     }
 
     /**
@@ -38,7 +88,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        return $this->buildResult($xml, QuoteMediaConst::GET_PROFILES, $use_assoc);
+        return $this->buildResult($xml, $xml['size'], QuoteMediaConst::GET_PROFILES, $use_assoc);
     }
 
     /**
@@ -53,7 +103,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        return $this->buildResult($xml, QuoteMediaConst::GET_FUNDAMENTALS, $use_assoc);
+        return $this->buildResult($xml, $xml->symbolcount, QuoteMediaConst::GET_FUNDAMENTALS, $use_assoc);
     }
 
     /**
@@ -66,76 +116,29 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     /**
-     * @param QuoteMediaStocks(constant) $type type of call to make
-     * @param array $tickers array of ticker strings
-     * @returns array returns raw xml data from API call
-     */
-    private function callAPI($type, &$tickers) {
-        $url = $this->buildURL($type, $tickers);
-//      echo $url;
-        $response = file_get_contents($url);
-        if (!$response) {
-            //error can't reach the url
-            $this->errorID = QuoteMediaError::API_HTTP_REQUEST_ERROR;
-            return false;
-        }
-        $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
-        if (!$xml) {
-            //error parsing the XML
-            $this->errorID = QuoteMediaError::API_XML_PARSE_ERROR;
-            return false;
-        }
-        $count = 0;
-        switch ($type) {//at this point $type is guaranteed to be correct due to $url
-            case QuoteMediaConst::GET_QUOTES:
-                $count = $xml->quote->count;
-                break;
-            case QuoteMediaConst::GET_PROFILES:
-            case QuoteMediaConst::GET_FUNDAMENTALS:
-                $count = $xml->company->count;
-                break;
-        }
-        if ($count != count($tickers)) {
-            // TODO: determine which ticker didn't get included and report it or retry
-        }
-        return $xml;
-    }
-
-    private function verifyInput(&$input, $max, $max_exceed_error) {
-        if (!is_array($input)) {
-            $this->error = QuoteMediaError::INPUT_IS_NOT_ARRAY;
-            return false;
-        }
-        if (count($input) > $max) {
-            $this->error = $max_exceed_error;
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Converts XML to an array using buildQuote/buildFundamentals/buildProfiles
      * @param SimpleXMLElement $xml xml to convert to array
      * @param integer $buildFunctionId function id, ex. QuoteMediaaStocks::GET_QUOTES
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      */
-    private function buildResult(&$xml, $buildFunctionId, $use_assoc) {
+    private function buildResult(&$xml, $size, $buildFunctionId, $use_assoc) {
         //may the programming Gods have mercy on my soul
         $ihave = json_encode($xml);
         $nodignity = json_decode($ihave, TRUE);
-        $funct = str_replace('get', 'build', QuoteMediaConst::functIdToStr($buildFunctionId));
-        if ($nodignity['@attributes']['size'] == 1) {//XML for some reason doesn't make array size 1 instead dumping it in $json['company']
+        $funct = str_replace('get', 'build', QuoteMediaConst::functIdToStr($buildFunctionId)); //ex. buildQuotes
+//echo 'nodignity:';var_dump(array_keys($nodignity));var_dump($nodignity);
+        if ($size == 1) {//XML for some reason doesn't make array size 1 instead dumping it in $json['company']
             $funct = substr($funct, 0, -1); //trim off the "s", ie buildQuotes->buildQuote to build a single entry
-            $res = $this->$funct($nodignity);
+            $res = $this->$funct($nodignity['company']);
             if ($use_assoc) {
                 return array($res['symbol'] => $res);
             }
             return array($res);
         }
-        return $this->$funct($nodignity, $use_assoc);
+        return $this->$funct($nodignity['company'], $use_assoc);
     }
 
-    private function buildSubrtn($build_function_name, $use_assoc) {
+    private function buildSubrtn(&$json, $build_function_name, $use_assoc) {
         $result = array();
         foreach ($json['company'] as &$company) {
             $line = $this->$build_function_name($company);
@@ -149,7 +152,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     private function buildQuotes(&$json, $use_assoc) {
-        return $this->buildSubrtn('buildQuote', $use_assoc);
+        return $this->buildSubrtn($json, 'buildQuote', $use_assoc);
     }
 
     private function buildQuote(&$company) {
@@ -160,7 +163,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     private function buildProfiles(&$json, $use_assoc) {
-        return $this->buildSubrtn('buildProfile', $use_assoc);
+        return $this->buildSubrtn($json, 'buildProfile', $use_assoc);
     }
 
     private function buildProfile(&$company) {
@@ -171,7 +174,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     private function buildFundamentals(&$json, $use_assoc) {
-        return $this->buildSubrtn('buildFundamental', $use_assoc);
+        return $this->buildSubrtn($json, 'buildFundamental', $use_assoc);
     }
 
     private function buildFundamental(&$company) {
@@ -179,31 +182,6 @@ class QuoteMediaStocks extends QuoteMediaBase {
         $add = $company['symbolinfo']['key'];
         $add = array_merge($add, $company['symbolinfo']['equityinfo']);
         return $add;
-    }
-
-    /**
-     * @param array $s_tickers a one dimensional array of tickers
-     * @returns string url to use
-     */
-    private function buildURL($type, &$tickers) {
-        $url_middle = ''; //will be used to store profile, fundamentals, or quote
-        switch ($type) {
-            case QuoteMediaConst::GET_QUOTES:
-                $url_middle = 'getQuotes.xml';
-                break;
-            case QuoteMediaConst::GET_PROFILES:
-                $url_middle = 'getProfiles.xml';
-                break;
-            case QuoteMediaConst::GET_FUNDAMENTALS:
-                $url_middle = 'getFundamentals.xml';
-                break;
-            default:
-//TODO: error, invalid type (programmer error)
-        }
-
-        return QuoteMediaConst::URL_ROOT . $url_middle .
-                '?webmasterId=' . $this->data['webmaster_id'] .
-                '&symbols=' . $this->stringifyTickers($tickers);
     }
 
 }

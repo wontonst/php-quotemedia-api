@@ -40,18 +40,26 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testGetArray() {
-        $functions = array('getProfiles', 'getQuotes', 'getFundamentals');
-
+    private function testGetArray($function, $tickers) {
+        $result = $this->api->$function($tickers, false);
+        $this->validateArray($tickers, $result, $v);
+    }
+    public function testGetProfilesArray() {
         $tickers = array('AAPL');
-
-        foreach ($functions as $v) {
-            $result = $this->api->$v($tickers, false);
-            $this->validateArray($tickers, $result, $v);
-        }
+        $this->testGetArray('getProfiles', $tickers);
+    }
+    public function testGetFundamentalsArray() {
+        $tickers = array('AAPL');
+        $this->testGetArray('getProfiles', $tickers);
+    }
+    public function testGetQuotesArray() {
+        $tickers = array('AAPL');
+        $this->testGetArray('getProfiles', $tickers);
     }
 
+
     public function testGetAssoc() {
+        echo 'testGetAssoc';
         $functions = array('getProfiles', 'getQuotes', 'getFundamentals');
 
         $tickers = array('AAPL');
