@@ -5,9 +5,9 @@ final class QuoteMediaError {
     const GOOD = 0;
     const API_HTTP_REQUEST_ERROR = -1;
     const INPUT_IS_NOT_ARRAY = -2;
-    const GET_QUOTES_EXCEED_MAX_SYMBOL = -3;
-    const GET_PROFILES_EXCEED_MAX_SYMBOL = -4;
-    const GET_FUNDAMENTALS_EXCEED_MAX_SYMBOL = -5;
+    const GET_QUOTES_EXCEED_MAX_SYMBOLS = -3;
+    const GET_PROFILES_EXCEED_MAX_SYMBOLS = -4;
+    const GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS = -5;
     const API_XML_PARSE_ERROR = -6;
 
     private static $instance = null;
