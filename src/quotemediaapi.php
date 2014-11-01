@@ -2,6 +2,12 @@
 
 class QuoteMediaApi {
 
+    public static function xml2json(&$xml) {
+        //may the programming Gods have mercy on my soul
+        $ihavenodignity = json_encode($xml);
+        return json_decode($ihave, TRUE);
+    }
+
     public function __construct($webmaster_id) {
         $this->data['webmaster_id'] = $webmaster_id;
     }
@@ -26,20 +32,19 @@ class QuoteMediaApi {
             $this->errorID = QuoteMediaError::API_XML_PARSE_ERROR;
             return false;
         }
-        $count = 0;
-        switch ($type) {//at this point $type is guaranteed to be correct due to $url
-            case QuoteMediaConst::GET_QUOTES:
-                $count = $xml['size'];
-                break;
-            case QuoteMediaConst::GET_PROFILES:
-            case QuoteMediaConst::GET_FUNDAMENTALS:
-                $count = $xml->symbolcount;
-                break;
-        }
-        if ($count != count($tickers)) {
+        if (QuoteMediaStocks != count($tickers)) {
             // TODO: determine which ticker didn't get included and report it or retry
         }
         return $xml;
+    }
+
+    /**
+     * Convert an array of tickers into a comma delimited string for use in web API
+     * @param array $tickers array of ticker strings
+     * @return type
+     */
+    public function stringifyTickers(&$tickers) {
+        return implode(',', $tickers);
     }
 
     /**
