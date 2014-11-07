@@ -95,7 +95,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     public function getFundamentals(&$array, $use_assoc = false) {
         $xml = $this->getSubrtn($array, QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS);
         $json = QuoteMediaApi::xml2json($xml);
-        return $this->flattenResults($json['company'],'flattenFundamental',$use_assoc);
+        return $this->flattenResults($json['company'], 'flattenFundamental', $use_assoc);
     }
 
     /**
@@ -106,7 +106,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @return array flattened array
      */
     private function flattenResults(&$json, $build_function_name, $use_assoc) {
-        if (array_key_exists('symbolinfo', $json) || array_key_exists('key',$json)) {//there is only one company
+        if (array_key_exists('symbolinfo', $json) || array_key_exists('key', $json)) {//there is only one company
             $result = $this->$build_function_name($json);
             return array($use_assoc ? $result['symbol'] : 0 => $result);
         }
@@ -122,23 +122,75 @@ class QuoteMediaStocks extends QuoteMediaBase {
         return $result;
     }
 
+    /**
+     * Flatten the resulting array from a getQuotes call for a single company.
+     * @param array $company all relevant data for a single company taken straight from raw response->json->array
+     * @return array flattened array
+     */
     private function flattenQuote(&$company) {
         //var_dump($company);
         $add = $company['key'];
-        $add = array_merge($add, $company['equityinfo']);
+        $add = array_merge($add, $company['equityinfo'], $company['pricedata']);
+        if (isset($company['fundamental']['dividend'])) {
+            $rekey = array(
+                'date' => 'dividenddate',
+                'amount' => 'dividendamount',
+                'yield' => 'dividendyield',
+                'latestamount' => 'dividendlastamount',
+                'frequency' => 'dividendfrequency',
+                'paydate' => 'dividendpaydate');
+            foreach ($rekey as $k => $v) {
+                $dividend[$v] = $company['fundamental']['dividend'][$k];
+            }
+            unset($company['fundamental']['dividend']);
+            $add = array_merge($add, $dividend);
+        }
+        $add = array_merge($add, $company['fundamental']);
+        //var_dump($add);
         return $add;
     }
 
+    /**
+     * Flatten the resulting array from a getProfiles call for a single company.
+     * @param array $company all relevant data for a single company taken straight from raw response->json->array
+     * @return array flattened array
+     */
     private function flattenProfile(&$company) {
         //var_dump($company);
         $add = $company['symbolinfo']['key'];
-        $add = array_merge($add, $company['symbolinfo']['equityinfo']);
+        $add = array_merge($add, $company['symbolinfo']['equityinfo'], $company['profile']['info']['address']);
+        unset($company['profile']['info']['address']);
+        $add = array_merge($add, $company['profile']['info']);
+        unset($company['profile']['info']);
+        $add = array_merge($add, $company['profile']['details'], $company['profile']['classification']);
+        unset($company['profile']['details']);
+        unset($company['profile']['classification']);
+        $add = array_merge($add, $company['profile']);
         return $add;
     }
 
+    /**
+     * Flatten the resulting array from a getFundamentals call for a single company.
+     * @param array $company all relevant data for a single company taken straight from raw response->json->array
+     * @return array flattened array
+     */
     private function flattenFundamental(&$company) {
         $add = $company['symbolinfo']['key'];
-        $add = array_merge($add, $company['symbolinfo']['equityinfo']);
+        $add = array_merge($add, $company['symbolinfo']['equityinfo'], $company['statistical'], $company['fundamental']['shortinterest']);
+        if (isset($company['fundamental']['dividend'])) {
+            $rekey = array(
+                'date' => 'dividenddate',
+                'amount' => 'dividendamount',
+                'yield' => 'dividendyield',
+            );
+            foreach ($rekey as $k => $v) {
+                $dividend[$v] = $company['fundamental']['dividend'][$k];
+            }
+            unset($company['fundamental']['divident']);
+            $add = array_merge($add, $dividend);
+        }
+        unset($company['fundamental']['shortinterest']);
+        $add = array_merge($add, $company['fundamental']);
         return $add;
     }
 

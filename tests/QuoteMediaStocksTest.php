@@ -4,8 +4,20 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
 
     protected function setUp() {
         $this->api = new QuoteMediaStocks(TEST_WEBMASTER_ID);
-        $this->sArray = array('AAPL');
+        $this->sArray = array(
+            array('AAPL'),
+            array('KO'),
+            array('SWHC'),
+            array('MS'),
+            array('GOOG')
+        );
+        $this->mArray = array(
+            array('GOOG', 'AAPL'),
+            array('SWHC', 'MSFT', 'MS', 'C', 'XLNX', 'GOOG', 'AAPL', 'KO', 'PX', 'F')
+        );
     }
+
+    /* generalized routines */
 
     private function validateOutput(&$input, &$output, $function_name) {
         $this->assertInternalType('array', $output, 'Error is ' . $this->api->getError());
@@ -17,6 +29,134 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
             $this->assertInternalType('array', $row, $error_msg);
         }
     }
+
+    private function validateHasFields(&$fields, &$output) {
+        foreach ($output as $out) {
+            foreach ($fields as $f) {
+                $this->assertTrue(isset($out[$f]), 'Resulting array is missing field ' . $f . "\n" . print_r($out, true));
+            }
+        }
+    }
+
+    private function validateGetProfiles(&$output) {
+        $fields = array(
+            'symbol',
+            'exchange',
+            'longname',
+            'shortname',
+            'shortdescription',
+            'longdescription',
+            'address1',
+            'address2',
+            'city',
+            'state',
+            'country',
+            'postcode',
+            'telephone',
+            'facisimile',
+            'website',
+            'email',
+            'ceo',
+            'employees',
+            'issuetype',
+            'isocfi',
+            'auditor',
+            'lastAudit',
+            'marketcap',
+            'sector',
+            'industry',
+            'qmid',
+            'qmdescription',
+            'cik',
+            'naics',
+            'sics',
+        );
+        $this->validateHasFields($fields, $output);
+    }
+
+    private function validateGetFundamentals(&$output) {
+        $fields = array(
+            'symbol',
+            'exchange',
+            'longname',
+            'shortname',
+            'sharesoutstanding',
+            'marketcap',
+            'eps',
+            'peratio',
+            'pbratio',
+            //'dividenddate',//optional
+            //'dividendamount',
+            //'dividendyield',
+            'sdate',
+            'sshares',
+            'sratio',
+            'adrratio',
+            'ptbratio',
+            'pcfratio',
+            'pfcfratio',
+            'week52high',
+            'week52low',
+            //'week52performance',//apparently optional too
+            'day21movingavg',
+            'day50movingavg',
+            'day200movingavg',
+            'avg10dayvolume',
+            'avg30dayvolume',
+            'avg90dayvolume',
+            'alpha',
+            'beta',
+            'r2',
+            'stddev',
+            'periods',
+            'day21ema',
+            'day50ema',
+            'day200ema',
+        );
+        $this->validateHasFields($fields, $output);
+    }
+
+    private function validateGetQuotes($output) {
+        $fields = array(
+            'symbol',
+            'exchange',
+            'longname',
+            'shortname',
+            'last',
+            'change',
+            'changepercent',
+            'open',
+            'high',
+            'low',
+            'prevclose',
+            'bid',
+            'ask',
+            'bidsize',
+            'asksize',
+            'rawbidsize',
+            'rawasksize',
+            'tradevolume',
+            'sharevolume',
+            'vwap',
+            'lasttradedatetime',
+            'sharesoutstanding',
+            'marketcap',
+            'eps',
+            'peratio',
+            'pbratio',
+            'week52high',
+            'week52low',
+                //'dividenddate',//optional
+                //'dividendamount',
+                //'dividendyield',
+                //'dividendlastamount',
+                //'dividendfrequency',
+                //'sharesescrow',//wow optionall to wtf
+        );
+        $this->validateHasFields($fields, $output);
+    }
+
+    /* get array routines & tests */
 
     private function validateArray(&$input, &$output, $function_name) {
         $this->validateOutput($input, $output, $function_name);
@@ -33,6 +173,59 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
         }
     }
 
+    private function getArrayTest($function, $inputArrays) {
+        foreach ($inputArrays as $input) {
+            $result = $this->api->$function($input, false);
+            $this->validateArray($input, $result, $function);
+            $out[] = $result;
+        }
+        return $out;
+    }
+
+    public function testGetProfilesArray() {
+        $result = $this->getArrayTest('getProfiles', $this->sArray);
+        foreach ($result as $res) {
+            $this->validateGetProfiles($res);
+        }
+    }
+
+    public function testGetFundamentalsArray() {
+        $result = $this->getArrayTest('getFundamentals', $this->sArray);
+        foreach ($result as $res) {
+            $this->validateGetFundamentals($res);
+        }
+    }
+
+    public function testGetQuotesArray() {
+        $result = $this->getArrayTest('getQuotes', $this->sArray);
+        foreach ($result as $res) {
+            $this->validateGetQuotes($res);
+        }
+    }
+
+    public function testGetProfilesArrayMultiple() {
+        $result = $this->getArrayTest('getProfiles', $this->mArray);
+        foreach ($result as $res) {
+            $this->validateGetProfiles($res);
+        }
+    }
+
+    public function testGetQuotesArrayMultiple() {
+        $result = $this->getArrayTest('getQuotes', $this->mArray);
+        foreach ($result as $res) {
+            $this->validateGetQuotes($res);
+        }
+    }
+
+    public function testGetFundamentalsArrayMultiple() {
+        $result = $this->getArrayTest('getFundamentals', $this->mArray);
+        foreach ($result as $res) {
+            $this->validateGetFundamentals($res);
+        }
+    }
+
+    /* get associative array routines & tests */
+
     private function validateAssoc(&$input, &$output, $function_name) {
         $this->validateOutput($input, $output, $function_name);
         foreach ($input as $in) {
@@ -41,62 +234,42 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    private function getArrayTest($function, $tickers) {
-        $result = $this->api->$function($tickers, false);
-        $this->validateArray($tickers, $result, $function);
-    }
-
-    public function testGetProfilesArray() {
-        $this->getArrayTest('getProfiles', $this->sArray);
-    }
-
-    public function testGetFundamentalsArray() {
-        $this->getArrayTest('getFundamentals', $this->sArray);
-    }
-
-    public function testGetQuotesArray() {
-        $this->getArrayTest('getQuotes', $this->sArray);
-    }
-
-    private function getAssocTest($function, $tickers) {
-        $result = $this->api->$function($tickers, true);
-        $this->validateAssoc($tickers, $result, $function);
+    private function getAssocTest($function, $inputArrays) {
+        foreach ($inputArrays as $input) {
+            $result = $this->api->$function($input, true);
+            $this->validateAssoc($input, $result, $function);
+            $out[] = $result;
+        }
+        return $out;
     }
 
     public function testGetProfilesAssoc() {
-        $this->getAssocTest('getProfiles', $this->sArray);
+        $result = $this->getAssocTest('getProfiles', $this->sArray);
+        foreach ($result as $res) {
+            $this->validateGetProfiles($res);
+        }
     }
 
     public function testGetFundamentalsAssoc() {
-        $this->getAssocTest('getFundamentals', $this->sArray);
+        $result = $this->getAssocTest('getFundamentals', $this->sArray);
+        foreach ($result as $res) {
+            $this->validateGetFundamentals($res);
+        }
     }
 
     public function testGetQuotesAssoc() {
-        $this->getAssocTest('getQuotes', $this->sArray);
-    }
-/*
-    public function testGetArrayMultiple() {
-        $functions = array('getProfiles', 'getQuotes', 'getFundamentals');
-
-        $tickers = array('AAPL', 'GOOG', 'LUV', 'SWHC', 'AAL', 'F', 'C', 'PX', 'TXN');
-
-        foreach ($functions as $v) {
-            $result = $this->api->$v($tickers, false);
-            $this->validateArray($tickers, $result, $v);
+        $result = $this->getAssocTest('getQuotes', $this->sArray);
+        foreach ($result as $res) {
+            $this->validateGetQuotes($res);
         }
     }
 
-    public function testGetAssocMultiple() {
-        $functions = array('getProfiles', 'getQuotes', 'getFundamentals');
-
-        $tickers = array('AAPL', 'GOOG', 'LUV', 'SWHC', 'AAL', 'F', 'C', 'PX', 'TXN');
-
-        foreach ($functions as $v) {
-            $result = $this->api->$v($tickers, true);
-            $this->validateAssoc($tickers, $result, $v);
+    public function testGetQuotesMultipleAssoc() {
+        $result = $this->getAssocTest('getQuotes', $this->mArray);
+        foreach ($result as $res) {
+            $this->validateGetQuotes($res);
         }
     }
-*/
 }
 
 ?>

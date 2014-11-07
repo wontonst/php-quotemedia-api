@@ -19,7 +19,7 @@ class QuoteMediaApi {
      */
     public function callStock($type, $tickers) {
         $url = $this->buildStockURL($type, $tickers);
-//      echo $url;
+     // echo $url;
         $response = file_get_contents($url);
         if (!$response) {
             //error can't reach the url
