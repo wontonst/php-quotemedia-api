@@ -3,6 +3,4 @@
 spl_autoload_register(function($class){
     @include_once(__DIR__.'/src/'.strtolower($class).'.php');
   });
-
-$d = new QuoteMediaStocks(100);
 ?>
