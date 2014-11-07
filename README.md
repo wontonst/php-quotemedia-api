@@ -21,7 +21,7 @@ Here's a basic runthrough.
 
 <pre>
 $webmaster_id = XXXXX; // REPLACE this with your webmaster ID
-$tickers = array('GOOG','AAPL','AMZN');
+$tickers = array('GOOG','AAPL');
 $api = new QuoteMediaStocks($webmaster_id);
 $quotes = $api->getQuotes($tickers);
 $profiles = $api->getProfiles($tickers);

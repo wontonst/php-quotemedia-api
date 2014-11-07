@@ -28,6 +28,20 @@ class QuoteMediaBatcher extends QuoteMediaBase {
     }
 
     /**
+     * Return the error in the QuoteMediaStocks instance.
+     */
+    public function getStocksError() {
+        return $this->api->getError();
+    }
+
+    /**
+     * Return the error ID in the QuoteMediaStocks instance.
+     */
+    public function getStocksErrorID() {
+        return $this->api->getErrorID();
+    }
+
+    /**
      * Calls ((QuoteMediaStocks)this->api)->$cmd() to call and grab data from QuoteMedia.
      * @param type $array arbitrarily long array of stock tickers
      * @param type $max_per_call maximum number of tickers to pass to the api on each call.
@@ -44,28 +58,33 @@ class QuoteMediaBatcher extends QuoteMediaBase {
                 $this->errorID = $this->api->getErrorID();
                 return false;
             }
-            foreach($res as &$v){
-                $ret[$v['CompanyTicker']] = $v;
+            foreach ($res as &$v) {
+                $ret[$v['symbol']] = $v;
             }
         }
         return $ret;
     }
-/**
- * Merges the results of getProfile getFundamentals getQuotes into a single array.
- * @param array $results array size 3 keyed 'quotes','fundamentals','profiles' to be merged into a single array.
- * @return array merged array
- */
-    private function mergeResults($results) {
+
+    /**
+     * Merges the results of getProfile getFundamentals getQuotes into a single array.
+     * @param array $results array size 3 keyed 'quotes','fundamentals','profiles' to be merged into a single array.
+     * @return array merged array
+     */
+    private function mergeResults($results, $use_assoc) {
         $ret = array();
 
-        foreach ($results['quotes'] as $k=>&$q) {
+        foreach ($results['quotes'] as $k => &$q) {
             $line = $q;
-            if(isset($results['fundamentals'][$k])){
+            if (isset($results['fundamentals'][$k])) {
                 $line = array_merge($line, $results['fundamentals'][$k]);
             }
-            if(isset($results['profiles'][$k])){
+            if (isset($results['profiles'][$k])) {
                 $line = array_merge($line, $results['profiles'][$k]);
             }
+            if ($use_assoc) {
+                $ret[$line['symbol']] = $line;
+                continue;
+            }//else
             $ret[] = $line;
         }
         return $ret;
@@ -74,7 +93,7 @@ class QuoteMediaBatcher extends QuoteMediaBase {
     /**
       Retrieves all stock data for an arbitrarily long input.
      */
-    public function getAll($arr) {
+    public function getAll($arr, $use_assoc = false) {
         if (!is_array($arr)) {//makek sure input is valid
             $this->error = QuoteMediaError::INPUT_IS_NOT_ARRAY;
             return false;
@@ -97,25 +116,26 @@ class QuoteMediaBatcher extends QuoteMediaBase {
         $result['quotes'] = $quotes;
         $result['profiles'] = $profiles;
         $result['fundamentals'] = $fundamentals;
-        return $this->mergeResults($result);
+        return $this->mergeResults($result, $use_assoc);
     }
 
-    public function getAllBatched($arr) {
-        if ($this->batching) {
-//TODO ERROR already batching
-        }
+    /* TO BE DEVELOPED
+      public function getAllBatched($arr) {
+      if ($this->batching) {
+      //TODO ERROR already batching
+      }
 
-        $this->batching = true;
-    }
+      $this->batching = true;
+      }
 
-    public function hasNextBatch() {
-        
-    }
+      public function hasNextBatch() {
 
-    public function getNextBatch() {
-        
-    }
+      }
 
+      public function getNextBatch() {
+
+      }
+     */
 }
 
 ?>
