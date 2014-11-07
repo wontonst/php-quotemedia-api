@@ -9,6 +9,8 @@ Download/clone this repo from Github.
 
 To start using this library, you must first include the autoload.php in the root directory.
 
+If you want thorough documentation, the code is in doxygen/javadoc style so you can generate it yourself if you wish.
+
 ### Stocks
 
 This library includes code for using QuoteMedia's stock APIs.
@@ -21,118 +23,91 @@ Here's a basic runthrough.
 
 <pre>
 $webmaster_id = XXXXX; // REPLACE this with your webmaster ID
-$tickers = array('GOOG','AAPL');
+$tickers = array('GOOG');//any size array up to maximum per API call
 $api = new QuoteMediaStocks($webmaster_id);
 $quotes = $api->getQuotes($tickers);
-$profiles = $api->getProfiles($tickers);
-$fundamentals = $api->getFundamentals($tickers);
 var_dump($quotes);
 </pre>
 
 The var dump will show something like this
 
 <pre>
-array(3) {
+array(1) {
   [0]=>
-  array(15) {
-    ["CompanyName"]=>
-    string(10) "Google Inc"
-    ["CompanyNameReq"]=>
-    string(10) "Google Inc"
-    ["date123"]=>
-    string(10) "2014-10-24"
-    ["MarketCap"]=>
-    int(365102866203)
-    ["CompanyTicker"]=>
+  array(29) {
+    ["symbol"]=>
     string(4) "GOOG"
-    ["PercDec"]=>
-    float(-0.772087)
-    ["ClosingPrice"]=>
-    float(539.78)
-    ["DollarChange"]=>
-    float(-4.2)
+    ["exchange"]=>
+    string(3) "NGS"
+    ["longname"]=>
+    string(10) "Google Inc"
+    ["shortname"]=>
+    string(4) "GOOG"
+    ["last"]=>
+    string(6) "541.01"
+    ["change"]=>
+    string(5) "-1.03"
+    ["changepercent"]=>
+    string(9) "-0.190023"
+    ["tick"]=>
+    string(1) "0"
+    ["open"]=>
+    string(6) "546.21"
+    ["high"]=>
+    string(6) "546.21"
+    ["low"]=>
+    string(6) "538.67"
+    ["prevclose"]=>
+    string(6) "542.04"
+    ["bid"]=>
+    string(6) "540.75"
+    ["ask"]=>
+    string(6) "541.40"
+    ["bidsize"]=>
+    string(4) "1000"
+    ["asksize"]=>
+    string(3) "100"
+    ["rawbidsize"]=>
+    string(2) "10"
+    ["rawasksize"]=>
+    string(1) "1"
+    ["tradevolume"]=>
+    string(5) "20951"
+    ["sharevolume"]=>
+    string(7) "1628014"
+    ["vwap"]=>
+    string(10) "540.759786"
+    ["lasttradedatetime"]=>
+    string(25) "2014-11-07T16:15:00-05:00"
+    ["sharesoutstanding"]=>
+    string(9) "678365654"
+    ["marketcap"]=>
+    string(12) "367002602471"
+    ["eps"]=>
+    string(5) "19.07"
     ["peratio"]=>
-    float(27.9)
-    ["OpeningPrice"]=>
-    float(544.36)
-    ["IntradayLow"]=>
-    float(535.79)
-    ["IntradayHigh"]=>
-    float(544.88)
-    ["DailyVolume"]=>
-    float(1972043)
-    ["NumOfTrades"]=>
-    int(27835)
-    ["ShareOutstanding"]=>
-    int(676391986)
-  }
-  [1]=>
-  array(15) {
-    ["CompanyName"]=>
-    string(9) "Apple Inc"
-    ["CompanyNameReq"]=>
-    string(9) "Apple Inc"
-    ["date123"]=>
-    string(10) "2014-10-24"
-    ["MarketCap"]=>
-    int(630043365740)
-    ["CompanyTicker"]=>
-    string(4) "AAPL"
-    ["PercDec"]=>
-    float(0.372031)
-    ["ClosingPrice"]=>
-    float(105.22)
-    ["DollarChange"]=>
-    float(0.39)
-    ["peratio"]=>
-    float(16)
-    ["OpeningPrice"]=>
-    float(105.18)
-    ["IntradayLow"]=>
-    float(104.53)
-    ["IntradayHigh"]=>
-    float(105.49)
-    ["DailyVolume"]=>
-    float(46993509)
-    ["NumOfTrades"]=>
-    int(198450)
-    ["ShareOutstanding"]=>
-    int(5987867000)
-  }
-  [2]=>
-  array(15) {
-    ["CompanyName"]=>
-    string(15) "Amazon.com Inc."
-    ["CompanyNameReq"]=>
-    string(15) "Amazon.com Inc."
-    ["date123"]=>
-    string(10) "2014-10-24"
-    ["MarketCap"]=>
-    int(132632086598)
-    ["CompanyTicker"]=>
-    string(4) "AMZN"
-    ["PercDec"]=>
-    float(-8.3403)
-    ["ClosingPrice"]=>
-    float(287.06)
-    ["DollarChange"]=>
-    float(-26.12)
-    ["peratio"]=>
-    float(817.5)
-    ["OpeningPrice"]=>
-    float(284.4)
-    ["IntradayLow"]=>
-    float(284)
-    ["IntradayHigh"]=>
-    float(293.81)
-    ["DailyVolume"]=>
-    float(19803563)
-    ["NumOfTrades"]=>
-    int(168329)
-    ["ShareOutstanding"]=>
-    int(462036113)
+    string(5) "28.40"
+    ["pbratio"]=>
+    string(5) "3.714"
+    ["week52high"]=>
+    string(6) "604.83"
+    ["week52low"]=>
+    string(6) "502.80"
   }
 }
+</pre>
+
+Other calls are
+
+<pre>
+$profiles = $api->getProfiles($tickers);
+$fundamentals = $api->getFundamentals($tickers);
+</pre>
+
+If you want it to return a associative map (SYMBOL => RESULT ARRAY) just add second parameter true, ie
+
+<pre>
+$quotes = $api->getQuotes($ticker,true);
 </pre>
 
 #### QuoteMediaBatcher Class
@@ -152,57 +127,207 @@ The var dump would look something like this
 <pre>
 array(1) {
   [0]=>
-  array(25) {
-    ["CompanyName"]=>
-    string(10) "Google Inc"
-    ["CompanyNameReq"]=>
-    string(10) "Google Inc"
-    ["date123"]=>
-    string(10) "2014-10-24"
-    ["MarketCap"]=>
-    int(365102866203)
-    ["CompanyTicker"]=>
+  array(78) {
+    ["symbol"]=>
     string(4) "GOOG"
-    ["PercDec"]=>
-    float(-0.772087)
-    ["ClosingPrice"]=>
-    float(539.78)
-    ["DollarChange"]=>
-    float(-4.2)
+    ["exchange"]=>
+    string(3) "NGS"
+    ["longname"]=>
+    string(10) "Google Inc"
+    ["shortname"]=>
+    string(4) "GOOG"
+    ["last"]=>
+    string(6) "541.01"
+    ["change"]=>
+    string(5) "-1.03"
+    ["changepercent"]=>
+    string(9) "-0.190023"
+    ["tick"]=>
+    string(1) "0"
+    ["open"]=>
+    string(6) "546.21"
+    ["high"]=>
+    string(6) "546.21"
+    ["low"]=>
+    string(6) "538.67"
+    ["prevclose"]=>
+    string(6) "542.04"
+    ["bid"]=>
+    string(6) "540.75"
+    ["ask"]=>
+    string(6) "541.40"
+    ["bidsize"]=>
+    string(4) "1000"
+    ["asksize"]=>
+    string(3) "100"
+    ["rawbidsize"]=>
+    string(2) "10"
+    ["rawasksize"]=>
+    string(1) "1"
+    ["tradevolume"]=>
+    string(5) "20952"
+    ["sharevolume"]=>
+    string(7) "1629159"
+    ["vwap"]=>
+    string(10) "540.759786"
+    ["lasttradedatetime"]=>
+    string(25) "2014-11-07T16:15:00-05:00"
+    ["sharesoutstanding"]=>
+    string(9) "678365654"
+    ["marketcap"]=>
+    string(12) "367701319094"
+    ["eps"]=>
+    string(5) "19.07"
     ["peratio"]=>
-    float(27.9)
-    ["OpeningPrice"]=>
-    float(544.36)
-    ["IntradayLow"]=>
-    float(535.79)
-    ["IntradayHigh"]=>
-    float(544.88)
-    ["DailyVolume"]=>
-    float(1972043)
-    ["NumOfTrades"]=>
-    int(27835)
-    ["ShareOutstanding"]=>
-    int(676391986)
-    ["AvgDailyVol"]=>
-    int(2169156)
-    ["Week52high"]=>
-    float(604.83)
-    ["Week52low"]=>
-    float(502.8)
-    ["SMA50day"]=>
-    float(569.012)
-    ["SMA200day"]=>
-    float(560.308)
-    ["CompanyDesc"]=>
-    string(157) "Google Inc is a web search and online advertising company that offers search, advertising, operating systems and platforms, enterprise and hardware products."
-    ["NameofCEO"]=>
-    string(10) "Larry Page"
-    ["NumofEmployees"]=>
-    string(5) "52069"
-    ["City"]=>
+    string(5) "28.40"
+    ["pbratio"]=>
+    string(5) "3.721"
+    ["week52high"]=>
+    string(6) "604.83"
+    ["week52low"]=>
+    string(6) "502.80"
+    ["day21movingavg"]=>
+    string(6) "540.56"
+    ["day50movingavg"]=>
+    string(7) "562.789"
+    ["day200movingavg"]=>
+    string(7) "559.559"
+    ["avg10dayvolume"]=>
+    string(7) "1565459"
+    ["avg30dayvolume"]=>
+    string(7) "2079834"
+    ["avg90dayvolume"]=>
+    string(7) "1691702"
+    ["alpha"]=>
+    string(9) "-0.005975"
+    ["beta"]=>
+    string(8) "0.307033"
+    ["r2"]=>
+    string(8) "0.023768"
+    ["stddev"]=>
+    string(8) "0.037244"
+    ["periods"]=>
+    string(1) "8"
+    ["day21ema"]=>
+    string(7) "548.389"
+    ["day50ema"]=>
+    string(7) "557.005"
+    ["day200ema"]=>
+    string(7) "561.081"
+    ["sdate"]=>
+    string(10) "2014-10-15"
+    ["sshares"]=>
+    string(7) "2105138"
+    ["sratio"]=>
+    string(5) "1.091"
+    ["spercent"]=>
+    string(4) "0.30"
+    ["adrratio"]=>
+    string(1) "0"
+    ["ptbratio"]=>
+    string(4) "4.68"
+    ["pcfratio"]=>
+    string(5) "20.60"
+    ["pfcfratio"]=>
+    string(5) "53.80"
+    ["address1"]=>
+    string(25) "1600 Amphitheatre Parkway"
+    ["address2"]=>
+    array(0) {
+    }
+    ["city"]=>
     string(13) "Mountain View"
-    ["State"]=>
+    ["state"]=>
     string(2) "CA"
+    ["country"]=>
+    string(3) "USA"
+    ["postcode"]=>
+    string(5) "94043"
+    ["telephone"]=>
+    string(15) "+1 650 253-0000"
+    ["facisimile"]=>
+    string(15) "+1 650 253-0001"
+    ["website"]=>
+    string(21) "http://www.google.com"
+    ["email"]=>
+    string(17) "irgoog@google.com"
+    ["ceo"]=>
+    string(10) "Larry Page"
+    ["employees"]=>
+    string(5) "55030"
+    ["issuetype"]=>
+    string(2) "CS"
+    ["sectype"]=>
+    string(3) "EQS"
+    ["isocfi"]=>
+    array(0) {
+    }
+    ["auditor"]=>
+    string(17) "Ernst & Young LLP"
+    ["lastAudit"]=>
+    string(2) "UQ"
+    ["indices"]=>
+    array(1) {
+      ["index"]=>
+      array(5) {
+        [0]=>
+        array(2) {
+          ["indexsymbol"]=>
+          string(7) "^DJUSNS"
+          ["indexname"]=>
+          string(29) "Dow Jones U.S. Internet Index"
+        }
+        [1]=>
+        array(2) {
+          ["indexsymbol"]=>
+          string(4) "^OEX"
+          ["indexname"]=>
+          string(7) "S&P 100"
+        }
+        [2]=>
+        array(2) {
+          ["indexsymbol"]=>
+          string(4) "^SPX"
+          ["indexname"]=>
+          string(7) "S&P 500"
+        }
+        [3]=>
+        array(2) {
+          ["indexsymbol"]=>
+          string(11) "^QM31168144"
+          ["indexname"]=>
+          string(30) "Internet Content & Information"
+        }
+        [4]=>
+        array(2) {
+          ["indexsymbol"]=>
+          string(5) "^GDOW"
+          ["indexname"]=>
+          string(20) "The Global Dow (USD)"
+        }
+      }
+    }
+    ["sector"]=>
+    string(10) "Technology"
+    ["industry"]=>
+    string(12) "Online Media"
+    ["qmid"]=>
+    string(8) "31168144"
+    ["qmdescription"]=>
+    string(30) "Internet Content & Information"
+    ["cik"]=>
+    string(7) "1288776"
+    ["naics"]=>
+    string(6) "519130"
+    ["sics"]=>
+    array(1) {
+      ["sic"]=>
+      string(4) "7375"
+    }
+    ["shortdescription"]=>
+    string(48) "Offers advertising and internet search solutions"
+    ["longdescription"]=>
+    string(157) "Google Inc is a web search and online advertising company that offers search, advertising, operating systems and platforms, enterprise and hardware products."
   }
 }
 </pre>
