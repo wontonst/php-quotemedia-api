@@ -16,8 +16,15 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
         );
     }
 
-    protected function validateOutput(&$input, &$output, $function_name) {
+    /**
+     * Checks to make sure there are no errors, that the result is an array, that the array size is same as input array size, and makes sure each row in the array is also an array/
+     * @param type $input
+     * @param type $output
+     * @param type $function_name
+     */
+    private function validateOutput(&$input, &$output, $function_name) {
         $this->assertInternalType('array', $output, 'Error is ' . $this->api->getError());
+        $this->assertEquals(QuoteMediaError::GOOD, $this->api->getErrorID(), 'No longer in GOOD state, current state is ' . $this->api->getError());
         $this->assertEquals(count($output), count($input), 'Array size returned by ' . $function_name . ' does not matched input array size.' . "\n" . print_r($output, true));
 
         foreach ($output as &$row) {
