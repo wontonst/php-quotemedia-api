@@ -59,7 +59,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$this->verifyInput($array, $max_symbols, $max_symbols_error)) {
             return false;
         }
-        $xml = $this->api->call($function_id, $array);
+        $xml = $this->api->callStock($function_id, $array);
         if (!$xml) {
             return false;
         }
@@ -73,7 +73,9 @@ class QuoteMediaStocks extends QuoteMediaBase {
      */
     public function getQuotes($array, $use_assoc = false) {
         $xml = $this->getSubrtn($array, QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOLS);
-        return $this->buildResult($xml, $xml['size'], QuoteMediaConst::GET_QUOTES, $use_assoc);
+        $json = QuoteMediaApi::xml2json($xml);
+
+        return $this->flattenResults($json['quote'], 'flattenQuote', $use_assoc);
     }
 
     /**
@@ -83,10 +85,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     public function getProfiles(&$array, $use_assoc = false) {
         $xml = $this->getSubrtn($array, QuoteMediaConst::GET_PROFILES, QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS, QuoteMediaError::GET_PROFILES_EXCEED_MAX_SYMBOLS);
         $json = QuoteMediaApi::xml2json($xml);
-        if ($xml['size'] == 1) {
-            return $this->flattenProfile($json);
-        }
-        return $this->flattenResults($json, 'flattenProfile', $use_assoc);
+        return $this->flattenResults($json['company'], 'flattenProfile', $use_assoc);
     }
 
     /**
@@ -94,20 +93,25 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @param type $array array of ticker strings
      */
     public function getFundamentals(&$array, $use_assoc = false) {
-        $xml = $this->getSubrtn($array, QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaErrors::GET_FUNDAMENTALS_EXEED_MAX_SYMBOLS);
-        return $this->buildResult($xml, $xml->symbolcount, QuoteMediaConst::GET_FUNDAMENTALS, $use_assoc);
+        $xml = $this->getSubrtn($array, QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS);
+        $json = QuoteMediaApi::xml2json($xml);
+        return $this->flattenResults($json['company'],'flattenFundamental',$use_assoc);
     }
 
     /**
      * Take a list of companies and flatten them.
-     * @param type $json
-     * @param type $build_function_name
-     * @param type $use_assoc
-     * @return type
+     * @param array $json deserialized array built from XML->json
+     * @param string $build_function_name
+     * @param bool $use_assoc
+     * @return array flattened array
      */
     private function flattenResults(&$json, $build_function_name, $use_assoc) {
+        if (array_key_exists('symbolinfo', $json) || array_key_exists('key',$json)) {//there is only one company
+            $result = $this->$build_function_name($json);
+            return array($use_assoc ? $result['symbol'] : 0 => $result);
+        }
         $result = array();
-        foreach ($json['company'] as &$company) {
+        foreach ($json as &$company) {
             $line = $this->$build_function_name($company);
             if (!$use_assoc) {//simple array
                 $result[] = $line;
@@ -119,12 +123,14 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     private function flattenQuote(&$company) {
-        $add = $company['symbolinfo']['key'];
-        $add = array_merge($add, $company['symbolinfo']['equityinfo']);
+        //var_dump($company);
+        $add = $company['key'];
+        $add = array_merge($add, $company['equityinfo']);
         return $add;
     }
 
     private function flattenProfile(&$company) {
+        //var_dump($company);
         $add = $company['symbolinfo']['key'];
         $add = array_merge($add, $company['symbolinfo']['equityinfo']);
         return $add;

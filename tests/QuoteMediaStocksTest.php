@@ -4,11 +4,12 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
 
     protected function setUp() {
         $this->api = new QuoteMediaStocks(TEST_WEBMASTER_ID);
+        $this->sArray = array('AAPL');
     }
 
     private function validateOutput(&$input, &$output, $function_name) {
         $this->assertInternalType('array', $output, 'Error is ' . $this->api->getError());
-        $this->assertEquals(count($output), count($input), 'Array size returned by ' . $function_name . ' does not matched input array size.');
+        $this->assertEquals(count($output), count($input), 'Array size returned by ' . $function_name . ' does not matched input array size.' . "\n" . print_r($output, true));
 
         foreach ($output as &$row) {
             $error_msg = 'A row in the result of ' . $function_name . ' is type ' . gettype($row) . ' instead of array. ';
@@ -40,36 +41,40 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    private function testGetArray($function, $tickers) {
+    private function getArrayTest($function, $tickers) {
         $result = $this->api->$function($tickers, false);
-        $this->validateArray($tickers, $result, $v);
+        $this->validateArray($tickers, $result, $function);
     }
+
     public function testGetProfilesArray() {
-        $tickers = array('AAPL');
-        $this->testGetArray('getProfiles', $tickers);
+        $this->getArrayTest('getProfiles', $this->sArray);
     }
+
     public function testGetFundamentalsArray() {
-        $tickers = array('AAPL');
-        $this->testGetArray('getProfiles', $tickers);
+        $this->getArrayTest('getFundamentals', $this->sArray);
     }
+
     public function testGetQuotesArray() {
-        $tickers = array('AAPL');
-        $this->testGetArray('getProfiles', $tickers);
+        $this->getArrayTest('getQuotes', $this->sArray);
     }
 
-
-    public function testGetAssoc() {
-        echo 'testGetAssoc';
-        $functions = array('getProfiles', 'getQuotes', 'getFundamentals');
-
-        $tickers = array('AAPL');
-
-        foreach ($functions as $v) {
-            $result = $this->api->$v($tickers, true);
-            $this->validateAssoc($tickers, $result, $v);
-        }
+    private function getAssocTest($function, $tickers) {
+        $result = $this->api->$function($tickers, true);
+        $this->validateAssoc($tickers, $result, $function);
     }
 
+    public function testGetProfilesAssoc() {
+        $this->getAssocTest('getProfiles', $this->sArray);
+    }
+
+    public function testGetFundamentalsAssoc() {
+        $this->getAssocTest('getFundamentals', $this->sArray);
+    }
+
+    public function testGetQuotesAssoc() {
+        $this->getAssocTest('getQuotes', $this->sArray);
+    }
+/*
     public function testGetArrayMultiple() {
         $functions = array('getProfiles', 'getQuotes', 'getFundamentals');
 
@@ -91,7 +96,7 @@ class QuoteMediaStocksTest extends PHPUnit_Framework_TestCase {
             $this->validateAssoc($tickers, $result, $v);
         }
     }
-
+*/
 }
 
 ?>

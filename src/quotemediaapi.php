@@ -5,7 +5,7 @@ class QuoteMediaApi {
     public static function xml2json(&$xml) {
         //may the programming Gods have mercy on my soul
         $ihavenodignity = json_encode($xml);
-        return json_decode($ihave, TRUE);
+        return json_decode($ihavenodignity, TRUE);
     }
 
     public function __construct($webmaster_id) {
@@ -32,7 +32,7 @@ class QuoteMediaApi {
             $this->errorID = QuoteMediaError::API_XML_PARSE_ERROR;
             return false;
         }
-        if (QuoteMediaStocks != count($tickers)) {
+        if (QuoteMediaStocks::getXmlSymbolCount($type,$xml) != count($tickers)) {
             // TODO: determine which ticker didn't get included and report it or retry
         }
         return $xml;
