@@ -19,7 +19,7 @@ class QuoteMediaApi {
      */
     public function callStock($type, $tickers) {
         $url = $this->buildStockURL($type, $tickers);
-     // echo $url;
+        // echo $url;
         $response = file_get_contents($url);
         if (!$response) {
             //error can't reach the url
@@ -32,7 +32,7 @@ class QuoteMediaApi {
             $this->errorID = QuoteMediaError::API_XML_PARSE_ERROR;
             return false;
         }
-        if (QuoteMediaStocks::getXmlSymbolCount($type,$xml) != count($tickers)) {
+        if (QuoteMediaStocks::getXmlSymbolCount($type, $xml) != count($tickers)) {
             // TODO: determine which ticker didn't get included and report it or retry
         }
         return $xml;
@@ -63,13 +63,17 @@ class QuoteMediaApi {
             case QuoteMediaConst::GET_FUNDAMENTALS:
                 $url_middle = 'getFundamentals.xml';
                 break;
+            case QuoteMediaConst::GET_KEY_RATIOS:
+                $url_middle = 'getKeyRatiosBySymbol.xml';
+                break;
             default:
 //TODO: error, invalid type (programmer error)
         }
 
         return QuoteMediaConst::URL_ROOT . $url_middle .
                 '?webmasterId=' . $this->data['webmaster_id'] .
-                '&symbols=' . $this->stringifyTickers($tickers);
+                ($type == QuoteMediaConst::GET_KEY_RATIOS ? '&symbol=' : '&symbols=') .
+                $this->stringifyTickers($tickers);
     }
 
 }

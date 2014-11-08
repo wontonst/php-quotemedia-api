@@ -98,6 +98,12 @@ class QuoteMediaStocks extends QuoteMediaBase {
         return $this->flattenResults($json['company'], 'flattenFundamental', $use_assoc);
     }
 
+    public function getKeyRatios(&$array, $use_assoc = false) {
+        $xml = $this->getSubrtn($array, QuoteMediaConst::GET_KEY_RATIOS, QuoteMediaConst::GET_KEY_RATIOS_MAX_SYMBOLS, QuoteMediaError::GET_KEY_RATIOS_EXCEED_MAX_SYMBOLS);
+        $json = QuoteMediaApi::xml2json($xml);
+        return $this->flattenResults($json['company'], 'flattenKeyRatios', $use_assoc);
+    }
+
     /**
      * Take a list of companies and flatten them.
      * @param array $json deserialized array built from XML->json
@@ -191,6 +197,12 @@ class QuoteMediaStocks extends QuoteMediaBase {
         }
         unset($company['fundamental']['shortinterest']);
         $add = array_merge($add, $company['fundamental']);
+        return $add;
+    }
+
+    private function flattenKeyRatios(&$company) {
+        $add = $company['symbolinfo']['key'];
+        $add = array_merge($add, $company['symbolinfo']['equityinfo'], $company['keyratios']['incomestatements'], $company['keyratios']['financialstrength'], $company['keyratios']['managementeffectiveness'], $company['keyratios']['valuationmeasures'], $company['keyratios']['dividendssplits'], $company['keyratios']['profitability'], $company['keyratios']['assets']);
         return $add;
     }
 

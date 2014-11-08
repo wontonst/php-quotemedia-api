@@ -127,6 +127,46 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         $this->validateHasFields($fields, $output);
     }
 
+    private function validateGetKeyRatios($output) {
+        $fields = array(
+            'symbol',
+            'exchange',
+            'longname',
+            'shortname',
+            'revenue',
+            'revenuepershare',
+            'revenue3years',
+            'revenue5years',
+            'quickratio',
+            'currentratio',
+            'longtermdebttocapital',
+            'totaldebttoequity',
+            'intcoverage',
+            'leverageratio',
+            'returnonequity',
+            'returnoncapital',
+            'returnonassets',
+            'peratio',
+            'pehighlast5years',
+            'pelowlast5years',
+            'pricetosales',
+            'pricetobook',
+            'pricetotangiblebook',
+            'pricetocashflow',
+            'pricetofreecash',
+            'grossmargin',
+            'ebitmargin',
+            'ebitdamargin',
+            'pretaxprofitmargin',
+            'profitmargincont',
+            'profitmargintot',
+            'assetsturnover',
+            'invoiceturnover',
+            'receivablesturnover',
+        );
+        $this->validateHasFields($fields, $output);
+    }
+
     /* get array routines & tests */
 
     private function getArrayTest($function, $inputArrays) {
@@ -156,6 +196,13 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         $result = $this->getArrayTest('getQuotes', $this->sArray);
         foreach ($result as $res) {
             $this->validateGetQuotes($res);
+        }
+    }
+
+    public function testGetKeyRatiosArray() {
+        $result = $this->getArrayTest('getKeyRatios', $this->sArray);
+        foreach ($result as $res) {
+            $this->validateGetKeyRatios($res);
         }
     }
 
@@ -218,6 +265,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $this->validateGetQuotes($res);
         }
     }
+
 }
 
 ?>

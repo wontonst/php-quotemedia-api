@@ -8,7 +8,8 @@ final class QuoteMediaError {
     const GET_QUOTES_EXCEED_MAX_SYMBOLS = -3;
     const GET_PROFILES_EXCEED_MAX_SYMBOLS = -4;
     const GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS = -5;
-    const API_XML_PARSE_ERROR = -6;
+    const GET_KEY_RATIOS_EXCEED_MAX_SYMBOLS = -6;
+    const API_XML_PARSE_ERROR = -7;
 
     private static $instance = null;
 
@@ -20,7 +21,8 @@ final class QuoteMediaError {
             QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOLS => 'getQuotes cannot request more than ' . QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS . ' symbols at a time.',
             QuoteMediaError::GET_PROFILES_EXCEED_MAX_SYMBOLS => 'getProfiles cannot request more than ' . QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS . ' symbols at a time.',
             QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS => 'getFundamentals cannot request more than ' . QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS . ' symbols at a time.',
-            QuoteMediaError::API_XML_PARSE_ERROR => 'Result from QuoteMedia is not a parsable XML file',
+            QuoteMediaError::GET_KEY_RATIOS_EXCEED_MAX_SYMBOLS => 'getKeyRatios cannot request more than ' . QuoteMediaConst::GET_KEY_RATIOS_MAX_SYMBOLS . ' symbols at a time.',
+            QuoteMediaError::API_XML_PARSE_ERROR => 'Result from QuoteMedia is not a parsable XML file.s',
         );
     }
 
