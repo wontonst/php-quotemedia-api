@@ -1,3 +1,4 @@
+
 **Disclaimer**: this library is still in development. There are weird behaviors like closing price=last price because it's ported from application specific code. 
 
 # QuoteMedia API PHP Library
@@ -11,11 +12,11 @@ To start using this library, you must first include the autoload.php in the root
 
 If you want thorough documentation, the code is in doxygen/javadoc style so you can generate it yourself if you wish.
 
-### Stocks
+## Stocks
 
 This library includes code for using QuoteMedia's stock APIs.
 
-#### QuoteMediaStocks Class
+### QuoteMediaStocks Class
 
 If you want quick requests for basic information about stocks, you can use the QuoteMediaStocks class. Note that you should use this class when you want information on less than 50 tickers at once, since that's the API call limit. To go beyond this limit, skip to the next section.
 
@@ -64,17 +65,17 @@ array(1) {
     ["ask"]=>
     string(6) "541.40"
     ["bidsize"]=>
-    string(4) "1000"
+    string(3) "900"
     ["asksize"]=>
     string(3) "100"
     ["rawbidsize"]=>
-    string(2) "10"
+    string(1) "9"
     ["rawasksize"]=>
     string(1) "1"
     ["tradevolume"]=>
-    string(5) "20951"
+    string(5) "20953"
     ["sharevolume"]=>
-    string(7) "1628014"
+    string(7) "1629259"
     ["vwap"]=>
     string(10) "540.759786"
     ["lasttradedatetime"]=>
@@ -110,6 +111,12 @@ If you want it to return a associative map (SYMBOL => RESULT ARRAY) just add sec
 <pre>
 $quotes = $api->getQuotes($ticker,true);
 </pre>
+
+#### Function Reference
++ getQuotes (array, bool) - function id (0) : calls QuoteMedia's getQuotes. Can accept up to 100 symbols at a time.
++ getProfiles (array, bool) - function id (1) : calls QuoteMedia's getProfiles. Can accept up to 50 symbols at a time.
++ getFundamentals (array, bool) - function id (2) : calls QuoteMedia's getFundamentals. Can accept up to 50 symbols at a time.
++ getKeyRatios (array, bool) - function id (3) : calls QuoteMedia's getKeyRatios. Can accept up to 1 symbols at a time.
 
 #### QuoteMediaBatcher Class
 
@@ -158,17 +165,17 @@ array(1) {
     ["ask"]=>
     string(6) "541.40"
     ["bidsize"]=>
-    string(4) "1000"
+    string(3) "900"
     ["asksize"]=>
     string(3) "100"
     ["rawbidsize"]=>
-    string(2) "10"
+    string(1) "9"
     ["rawasksize"]=>
     string(1) "1"
     ["tradevolume"]=>
-    string(5) "20952"
+    string(5) "20953"
     ["sharevolume"]=>
-    string(7) "1629159"
+    string(7) "1629259"
     ["vwap"]=>
     string(10) "540.759786"
     ["lasttradedatetime"]=>
@@ -274,37 +281,37 @@ array(1) {
         [0]=>
         array(2) {
           ["indexsymbol"]=>
-          string(7) "^DJUSNS"
-          ["indexname"]=>
-          string(29) "Dow Jones U.S. Internet Index"
-        }
-        [1]=>
-        array(2) {
-          ["indexsymbol"]=>
-          string(4) "^OEX"
-          ["indexname"]=>
-          string(7) "S&P 100"
-        }
-        [2]=>
-        array(2) {
-          ["indexsymbol"]=>
           string(4) "^SPX"
           ["indexname"]=>
           string(7) "S&P 500"
         }
-        [3]=>
+        [1]=>
         array(2) {
           ["indexsymbol"]=>
           string(11) "^QM31168144"
           ["indexname"]=>
           string(30) "Internet Content & Information"
         }
-        [4]=>
+        [2]=>
         array(2) {
           ["indexsymbol"]=>
           string(5) "^GDOW"
           ["indexname"]=>
           string(20) "The Global Dow (USD)"
+        }
+        [3]=>
+        array(2) {
+          ["indexsymbol"]=>
+          string(4) "^OEX"
+          ["indexname"]=>
+          string(7) "S&P 100"
+        }
+        [4]=>
+        array(2) {
+          ["indexsymbol"]=>
+          string(7) "^DJUSNS"
+          ["indexname"]=>
+          string(29) "Dow Jones U.S. Internet Index"
         }
       }
     }
@@ -333,5 +340,16 @@ array(1) {
 }
 </pre>
 
-### Articles
+## Articles
 N/A TBA
+
+
+## Error Codes
++ 0 : No error has occurred.
++ -1 : Could not access API due to HTTP error
++ -2 : You did not pass an array on your last function call. Functions like getQuote expect an array as the first parameter.
++ -3 : getQuotes cannot request more than 100 symbols at a time.
++ -4 : getProfiles cannot request more than 50 symbols at a time.
++ -5 : getFundamentals cannot request more than 50 symbols at a time.
++ -6 : getKeyRatios cannot request more than 1 symbols at a time.
++ -7 : Result from QuoteMedia is not a parsable XML file.s
