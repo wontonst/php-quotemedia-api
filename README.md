@@ -102,6 +102,7 @@ Other calls are
 <pre>
 $profiles = $api->getProfiles($tickers);
 $fundamentals = $api->getFundamentals($tickers);
+$keyratios = $api->getKeyRatios($tickers);
 </pre>
 
 If you want it to return a associative map (SYMBOL => RESULT ARRAY) just add second parameter true, ie
