@@ -80,8 +80,8 @@ class QuoteMediaBatcherTest extends QuoteMediaStocksTester {
             'prevclose',
             //'bid',//optional if past aftermarket
             //'ask',
-            //'bidsize',
-            //'asksize',
+            'bidsize',
+            'asksize',
             'rawbidsize',
             'rawasksize',
             'tradevolume',

@@ -102,8 +102,8 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             'prevclose',
             //'bid',//after hours
             //'ask',
-            //'bidsize',
-            //'asksize',
+            'bidsize',
+            'asksize',
             'rawbidsize',
             'rawasksize',
             'tradevolume',

@@ -82,7 +82,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * Perform a getQuotes call to retrieve basic company information. The max size of the $array is QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS
      * @param type $array array of ticker strings
      */
-    public function getProfiles(&$array, $use_assoc = false) {
+    public function getProfiles($array, $use_assoc = false) {
         $xml = $this->getSubrtn($array, QuoteMediaConst::GET_PROFILES, QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS, QuoteMediaError::GET_PROFILES_EXCEED_MAX_SYMBOLS);
         $json = QuoteMediaApi::xml2json($xml);
         return $this->flattenResults($json['company'], 'flattenProfile', $use_assoc);
@@ -92,7 +92,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * Perform a getQuotes call to retrieve company fundamental information. The max size of the $array is QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS
      * @param type $array array of ticker strings
      */
-    public function getFundamentals(&$array, $use_assoc = false) {
+    public function getFundamentals($array, $use_assoc = false) {
         $xml = $this->getSubrtn($array, QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS);
         $json = QuoteMediaApi::xml2json($xml);
         return $this->flattenResults($json['company'], 'flattenFundamental', $use_assoc);
