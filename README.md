@@ -1,4 +1,6 @@
 
+<!-- DO NOT EDIT README.MD DIRECTLY, YOUR CHANGES WILL BE WIPED OUT. PLEASE EDIT generate_readme.php INSTEAD! -->
+
 **Disclaimer**: this library is still in development. There are weird behaviors like closing price=last price because it's ported from application specific code. 
 
 # QuoteMedia API PHP Library
@@ -45,51 +47,51 @@ array(1) {
     ["shortname"]=>
     string(4) "GOOG"
     ["last"]=>
-    string(6) "541.01"
+    string(6) "547.31"
     ["change"]=>
-    string(5) "-1.03"
+    string(5) "-2.98"
     ["changepercent"]=>
-    string(9) "-0.190023"
+    string(9) "-0.541533"
     ["tick"]=>
-    string(1) "0"
+    string(1) "1"
     ["open"]=>
-    string(6) "546.21"
+    string(6) "550.39"
     ["high"]=>
-    string(6) "546.21"
+    string(6) "550.46"
     ["low"]=>
-    string(6) "538.67"
+    string(6) "545.17"
     ["prevclose"]=>
-    string(6) "542.04"
+    string(6) "550.29"
     ["bid"]=>
-    string(6) "540.75"
+    string(6) "546.36"
     ["ask"]=>
-    string(6) "541.40"
+    string(6) "547.55"
     ["bidsize"]=>
-    string(3) "900"
+    string(4) "1400"
     ["asksize"]=>
     string(3) "100"
     ["rawbidsize"]=>
-    string(1) "9"
+    string(2) "14"
     ["rawasksize"]=>
     string(1) "1"
     ["tradevolume"]=>
-    string(5) "20953"
+    string(5) "14826"
     ["sharevolume"]=>
-    string(7) "1629259"
+    string(7) "1122228"
     ["vwap"]=>
-    string(10) "540.759786"
+    string(9) "547.49561"
     ["lasttradedatetime"]=>
-    string(25) "2014-11-07T16:15:00-05:00"
+    string(25) "2014-11-12T16:00:00-05:00"
     ["sharesoutstanding"]=>
     string(9) "678365654"
     ["marketcap"]=>
-    string(12) "367002602471"
+    string(12) "371276306091"
     ["eps"]=>
     string(5) "19.07"
     ["peratio"]=>
-    string(5) "28.40"
+    string(5) "28.90"
     ["pbratio"]=>
-    string(5) "3.714"
+    string(5) "3.757"
     ["week52high"]=>
     string(6) "604.83"
     ["week52low"]=>
@@ -145,83 +147,83 @@ array(1) {
     ["shortname"]=>
     string(4) "GOOG"
     ["last"]=>
-    string(6) "541.01"
+    string(6) "547.31"
     ["change"]=>
-    string(5) "-1.03"
+    string(5) "-2.98"
     ["changepercent"]=>
-    string(9) "-0.190023"
+    string(9) "-0.541533"
     ["tick"]=>
-    string(1) "0"
+    string(1) "1"
     ["open"]=>
-    string(6) "546.21"
+    string(6) "550.39"
     ["high"]=>
-    string(6) "546.21"
+    string(6) "550.46"
     ["low"]=>
-    string(6) "538.67"
+    string(6) "545.17"
     ["prevclose"]=>
-    string(6) "542.04"
+    string(6) "550.29"
     ["bid"]=>
-    string(6) "540.75"
+    string(6) "546.36"
     ["ask"]=>
-    string(6) "541.40"
+    string(6) "547.55"
     ["bidsize"]=>
-    string(3) "900"
+    string(4) "1400"
     ["asksize"]=>
     string(3) "100"
     ["rawbidsize"]=>
-    string(1) "9"
+    string(2) "14"
     ["rawasksize"]=>
     string(1) "1"
     ["tradevolume"]=>
-    string(5) "20953"
+    string(5) "14826"
     ["sharevolume"]=>
-    string(7) "1629259"
+    string(7) "1122228"
     ["vwap"]=>
-    string(10) "540.759786"
+    string(9) "547.49561"
     ["lasttradedatetime"]=>
-    string(25) "2014-11-07T16:15:00-05:00"
+    string(25) "2014-11-12T16:00:00-05:00"
     ["sharesoutstanding"]=>
     string(9) "678365654"
     ["marketcap"]=>
-    string(12) "367701319094"
+    string(12) "373297835739"
     ["eps"]=>
     string(5) "19.07"
     ["peratio"]=>
-    string(5) "28.40"
+    string(5) "28.90"
     ["pbratio"]=>
-    string(5) "3.721"
+    string(5) "3.778"
     ["week52high"]=>
     string(6) "604.83"
     ["week52low"]=>
     string(6) "502.80"
     ["day21movingavg"]=>
-    string(6) "540.56"
+    string(6) "540.57"
     ["day50movingavg"]=>
-    string(7) "562.789"
+    string(7) "561.202"
     ["day200movingavg"]=>
-    string(7) "559.559"
+    string(6) "559.31"
     ["avg10dayvolume"]=>
-    string(7) "1565459"
+    string(7) "1494904"
     ["avg30dayvolume"]=>
-    string(7) "2079834"
+    string(7) "2059347"
     ["avg90dayvolume"]=>
-    string(7) "1691702"
+    string(7) "1701656"
     ["alpha"]=>
-    string(9) "-0.005975"
+    string(9) "-0.003781"
     ["beta"]=>
-    string(8) "0.307033"
+    string(8) "0.260218"
     ["r2"]=>
-    string(8) "0.023768"
+    string(8) "0.018124"
     ["stddev"]=>
-    string(8) "0.037244"
+    string(8) "0.036022"
     ["periods"]=>
     string(1) "8"
     ["day21ema"]=>
-    string(7) "548.389"
+    string(7) "547.933"
     ["day50ema"]=>
-    string(7) "557.005"
+    string(7) "555.804"
     ["day200ema"]=>
-    string(7) "561.081"
+    string(7) "560.644"
     ["sdate"]=>
     string(10) "2014-10-15"
     ["sshares"]=>
@@ -233,11 +235,11 @@ array(1) {
     ["adrratio"]=>
     string(1) "0"
     ["ptbratio"]=>
-    string(4) "4.68"
+    string(4) "4.75"
     ["pcfratio"]=>
-    string(5) "20.60"
+    string(5) "21.00"
     ["pfcfratio"]=>
-    string(5) "53.80"
+    string(5) "54.60"
     ["address1"]=>
     string(25) "1600 Amphitheatre Parkway"
     ["address2"]=>
@@ -281,9 +283,9 @@ array(1) {
         [0]=>
         array(2) {
           ["indexsymbol"]=>
-          string(4) "^SPX"
+          string(4) "^OEX"
           ["indexname"]=>
-          string(7) "S&P 500"
+          string(7) "S&P 100"
         }
         [1]=>
         array(2) {
@@ -295,23 +297,23 @@ array(1) {
         [2]=>
         array(2) {
           ["indexsymbol"]=>
-          string(5) "^GDOW"
+          string(7) "^DJUSNS"
           ["indexname"]=>
-          string(20) "The Global Dow (USD)"
+          string(29) "Dow Jones U.S. Internet Index"
         }
         [3]=>
         array(2) {
           ["indexsymbol"]=>
-          string(4) "^OEX"
+          string(4) "^SPX"
           ["indexname"]=>
-          string(7) "S&P 100"
+          string(7) "S&P 500"
         }
         [4]=>
         array(2) {
           ["indexsymbol"]=>
-          string(7) "^DJUSNS"
+          string(5) "^GDOW"
           ["indexname"]=>
-          string(29) "Dow Jones U.S. Internet Index"
+          string(20) "The Global Dow (USD)"
         }
       }
     }
