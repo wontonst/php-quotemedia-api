@@ -1,0 +1,1 @@
+phpunit -d display_errors --testdox --stop-on-failure --stop-on-error --bootstrap testsautoload.php tests
