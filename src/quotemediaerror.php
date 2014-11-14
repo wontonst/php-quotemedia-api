@@ -12,6 +12,7 @@ final class QuoteMediaError {
     const API_XML_PARSE_ERROR = -7;
     const SYMBOL_IS_NOT_STRING = -8;
     const MALFORMED_SYMBOL = -9;
+    const INVALID_FUNCTION_ID = -10;
 
     private static $instance = null;
 
@@ -27,6 +28,7 @@ final class QuoteMediaError {
             QuoteMediaError::API_XML_PARSE_ERROR => 'Result from QuoteMedia is not a parsable XML file.s',
             QuoteMediaError::MALFORMED_SYMBOL => 'Symbol contains invalid characters',
             QuoteMediaError::SYMBOL_IS_NOT_STRING => 'Expected a symbols string but was not passed a string',
+            QuoteMediaError::INVALID_FUNCTION_ID => 'Invalid function identifier'
         );
     }
 
