@@ -29,7 +29,7 @@ class QuoteMediaBase {
                 $this->error = QuoteMediaError::SYMBOL_IS_NOT_STRING;
                 return false;
             }
-            if (0 == preg_match('/^[a-zA-Z\-]{1,10}$/', trim($v))) {
+            if (0 == preg_match('/^[a-zA-Z\-.]{1,10}$/', trim($v))) {
                 $this->error = QuoteMediaError::MALFORMED_SYMBOL;
                 $this->error_info = trim($v);
                 return false;
