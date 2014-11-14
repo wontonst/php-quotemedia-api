@@ -89,8 +89,15 @@ class QuoteMediaBatcher extends QuoteMediaBase {
         return $ret;
     }
 
-    public function get($arr, $functions, $use_assoc = false) {
-        if (!$this->verifySymbolArray($arr)) {
+    /**
+     * Retrieve specified stock data for arbitrarily long input.
+     * @param array $symbols array of tickers
+     * @param type $functions array of function identifiers (see QuoteMediaConst)
+     * @param bool $use_assoc whether not to return an associative map
+     * @return array array/map of stock data
+     */
+    public function get($symbols, $functions, $use_assoc = false) {
+        if (!$this->verifySymbolArray($symbols)) {
             return false;
         }
         if (!is_array($functions)) {//make sure input is valid
@@ -98,8 +105,9 @@ class QuoteMediaBatcher extends QuoteMediaBase {
             return false;
         }
         $result = array();
+        $cleaned = $this->cleanSymbolArray($symbols);
         foreach ($functions as $function) {
-            $res = $this->getSubrtn($arr, QuoteMediaConst::getMaxSymbols($function), QuoteMediaConst::functIdToStr($function));
+            $res = $this->getSubrtn($cleaned, QuoteMediaConst::getMaxSymbols($function), QuoteMediaConst::functIdToStr($function));
             if ($res == false) {
                 $this->error = $this->api->getErrorID();
                 return false;
@@ -110,10 +118,13 @@ class QuoteMediaBatcher extends QuoteMediaBase {
     }
 
     /**
-      Retrieves all stock data for an arbitrarily long input.
+     *       Retrieves all stock data for an arbitrarily long input.
+     * @param array $symbols array of tickers
+     * @param bool $use_assoc whether not to return an associative map
+     * @return array array/map of stock data
      */
-    public function getAll($arr, $use_assoc = false) {
-        return $this->get($arr, QuoteMediaConst::$STOCKS_FUNCTIONS, $use_assoc);
+    public function getAll($symbols, $use_assoc = false) {
+        return $this->get($symbols, QuoteMediaConst::$STOCKS_FUNCTIONS, $use_assoc);
     }
 
     /* TO BE DEVELOPED

@@ -48,17 +48,18 @@ class QuoteMediaStocks extends QuoteMediaBase {
 
     /**
      * getQuote/getProfiles/getFundamentals all use this function to validate input and retrieve XML from API.
-     * @param array $array list of tickers
+     * @param array $symbols list of tickers
      * @param int $function_id function id as specified in QuoteMediaConst
      * @param int $max_symbols maximum number of tickers in array
      * @param int $max_symbols_error error code if the tickers in array exceeds $max_symbols
      * @return SimplXMLElement xml file root
      */
-    private function getSubrtn(&$array, $function_id, $max_symbols, $max_symbols_error) {
-        if (!$this->verifyInput($array, $max_symbols, $max_symbols_error)) {
+    private function getSubrtn(&$symbols, $function_id, $max_symbols, $max_symbols_error) {
+        if (!$this->verifyInput($symbols, $max_symbols, $max_symbols_error)) {
             return false;
         }
-        $xml = $this->api->callStock($function_id, $array);
+        $cleaned = $this->cleanSymbolArray($symbols);
+        $xml = $this->api->callStock($function_id, $cleaned);
         if (!$xml) {
             return false;
         }
