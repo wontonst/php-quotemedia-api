@@ -36,65 +36,65 @@ The var dump will show something like this
 
 <pre>
 array(1) {
-  [0]=>
+  [0] =>
   array(29) {
-    ["symbol"]=>
+    'symbol' =>
     string(4) "GOOG"
-    ["exchange"]=>
+    'exchange' =>
     string(3) "NGS"
-    ["longname"]=>
+    'longname' =>
     string(10) "Google Inc"
-    ["shortname"]=>
+    'shortname' =>
     string(4) "GOOG"
-    ["last"]=>
-    string(6) "547.31"
-    ["change"]=>
-    string(5) "-2.98"
-    ["changepercent"]=>
-    string(9) "-0.541533"
-    ["tick"]=>
+    'last' =>
+    string(6) "543.93"
+    'change' =>
+    string(5) "-1.45"
+    'changepercent' =>
+    string(8) "-0.26587"
+    'tick' =>
     string(1) "1"
-    ["open"]=>
-    string(6) "550.39"
-    ["high"]=>
-    string(6) "550.46"
-    ["low"]=>
-    string(6) "545.17"
-    ["prevclose"]=>
-    string(6) "550.29"
-    ["bid"]=>
-    string(6) "546.36"
-    ["ask"]=>
-    string(6) "547.55"
-    ["bidsize"]=>
-    string(4) "1400"
-    ["asksize"]=>
+    'open' =>
+    string(6) "546.68"
+    'high' =>
+    string(6) "546.68"
+    'low' =>
+    string(6) "542.15"
+    'prevclose' =>
+    string(6) "545.38"
+    'bid' =>
+    string(6) "543.89"
+    'ask' =>
+    string(6) "543.97"
+    'bidsize' =>
     string(3) "100"
-    ["rawbidsize"]=>
-    string(2) "14"
-    ["rawasksize"]=>
+    'asksize' =>
+    string(3) "100"
+    'rawbidsize' =>
     string(1) "1"
-    ["tradevolume"]=>
-    string(5) "14826"
-    ["sharevolume"]=>
-    string(7) "1122228"
-    ["vwap"]=>
-    string(9) "547.49561"
-    ["lasttradedatetime"]=>
-    string(25) "2014-11-12T16:00:00-05:00"
-    ["sharesoutstanding"]=>
+    'rawasksize' =>
+    string(1) "1"
+    'tradevolume' =>
+    string(5) "12896"
+    'sharevolume' =>
+    string(6) "877890"
+    'vwap' =>
+    string(10) "544.073422"
+    'lasttradedatetime' =>
+    string(25) "2014-11-14T15:27:55-05:00"
+    'sharesoutstanding' =>
     string(9) "678365654"
-    ["marketcap"]=>
-    string(12) "371276306091"
-    ["eps"]=>
+    'marketcap' =>
+    string(12) "368983430180"
+    'eps' =>
     string(5) "19.07"
-    ["peratio"]=>
-    string(5) "28.90"
-    ["pbratio"]=>
-    string(5) "3.757"
-    ["week52high"]=>
+    'peratio' =>
+    string(5) "28.60"
+    'pbratio' =>
+    string(5) "3.734"
+    'week52high' =>
     string(6) "604.83"
-    ["week52low"]=>
+    'week52low' =>
     string(6) "502.80"
   }
 }
@@ -136,208 +136,408 @@ The var dump would look something like this
 
 <pre>
 array(1) {
-  [0]=>
-  array(78) {
-    ["symbol"]=>
+  [0] =>
+  array(113) {
+    'symbol' =>
     string(4) "GOOG"
-    ["exchange"]=>
+    'exchange' =>
     string(3) "NGS"
-    ["longname"]=>
+    'longname' =>
     string(10) "Google Inc"
-    ["shortname"]=>
+    'shortname' =>
     string(4) "GOOG"
-    ["last"]=>
-    string(6) "547.31"
-    ["change"]=>
-    string(5) "-2.98"
-    ["changepercent"]=>
-    string(9) "-0.541533"
-    ["tick"]=>
+    'last' =>
+    string(6) "543.93"
+    'change' =>
+    string(5) "-1.45"
+    'changepercent' =>
+    string(8) "-0.26587"
+    'tick' =>
     string(1) "1"
-    ["open"]=>
-    string(6) "550.39"
-    ["high"]=>
-    string(6) "550.46"
-    ["low"]=>
-    string(6) "545.17"
-    ["prevclose"]=>
-    string(6) "550.29"
-    ["bid"]=>
-    string(6) "546.36"
-    ["ask"]=>
-    string(6) "547.55"
-    ["bidsize"]=>
-    string(4) "1400"
-    ["asksize"]=>
+    'open' =>
+    string(6) "546.68"
+    'high' =>
+    string(6) "546.68"
+    'low' =>
+    string(6) "542.15"
+    'prevclose' =>
+    string(6) "545.38"
+    'bid' =>
+    string(6) "543.89"
+    'ask' =>
+    string(6) "543.97"
+    'bidsize' =>
     string(3) "100"
-    ["rawbidsize"]=>
-    string(2) "14"
-    ["rawasksize"]=>
+    'asksize' =>
+    string(3) "100"
+    'rawbidsize' =>
     string(1) "1"
-    ["tradevolume"]=>
-    string(5) "14826"
-    ["sharevolume"]=>
-    string(7) "1122228"
-    ["vwap"]=>
-    string(9) "547.49561"
-    ["lasttradedatetime"]=>
-    string(25) "2014-11-12T16:00:00-05:00"
-    ["sharesoutstanding"]=>
+    'rawasksize' =>
+    string(1) "1"
+    'tradevolume' =>
+    string(5) "12896"
+    'sharevolume' =>
+    string(6) "877890"
+    'vwap' =>
+    string(10) "544.073422"
+    'lasttradedatetime' =>
+    string(25) "2014-11-14T15:27:55-05:00"
+    'sharesoutstanding' =>
     string(9) "678365654"
-    ["marketcap"]=>
-    string(12) "373297835739"
-    ["eps"]=>
+    'marketcap' =>
+    string(12) "369967060378"
+    'eps' =>
     string(5) "19.07"
-    ["peratio"]=>
-    string(5) "28.90"
-    ["pbratio"]=>
-    string(5) "3.778"
-    ["week52high"]=>
+    'peratio' =>
+    string(4) "28.6"
+    'pbratio' =>
+    string(5) "3.744"
+    'week52high' =>
     string(6) "604.83"
-    ["week52low"]=>
+    'week52low' =>
     string(6) "502.80"
-    ["day21movingavg"]=>
-    string(6) "540.57"
-    ["day50movingavg"]=>
-    string(7) "561.202"
-    ["day200movingavg"]=>
-    string(6) "559.31"
-    ["avg10dayvolume"]=>
-    string(7) "1494904"
-    ["avg30dayvolume"]=>
-    string(7) "2059347"
-    ["avg90dayvolume"]=>
-    string(7) "1701656"
-    ["alpha"]=>
-    string(9) "-0.003781"
-    ["beta"]=>
-    string(8) "0.260218"
-    ["r2"]=>
-    string(8) "0.018124"
-    ["stddev"]=>
-    string(8) "0.036022"
-    ["periods"]=>
-    string(1) "8"
-    ["day21ema"]=>
-    string(7) "547.933"
-    ["day50ema"]=>
-    string(7) "555.804"
-    ["day200ema"]=>
-    string(7) "560.644"
-    ["sdate"]=>
-    string(10) "2014-10-15"
-    ["sshares"]=>
-    string(7) "2105138"
-    ["sratio"]=>
-    string(5) "1.091"
-    ["spercent"]=>
-    string(4) "0.30"
-    ["adrratio"]=>
-    string(1) "0"
-    ["ptbratio"]=>
-    string(4) "4.75"
-    ["pcfratio"]=>
-    string(5) "21.00"
-    ["pfcfratio"]=>
-    string(5) "54.60"
-    ["address1"]=>
+    'address1' =>
     string(25) "1600 Amphitheatre Parkway"
-    ["address2"]=>
+    'address2' =>
     array(0) {
     }
-    ["city"]=>
+    'city' =>
     string(13) "Mountain View"
-    ["state"]=>
+    'state' =>
     string(2) "CA"
-    ["country"]=>
+    'country' =>
     string(3) "USA"
-    ["postcode"]=>
+    'postcode' =>
     string(5) "94043"
-    ["telephone"]=>
+    'telephone' =>
     string(15) "+1 650 253-0000"
-    ["facisimile"]=>
+    'facisimile' =>
     string(15) "+1 650 253-0001"
-    ["website"]=>
+    'website' =>
     string(21) "http://www.google.com"
-    ["email"]=>
+    'email' =>
     string(17) "irgoog@google.com"
-    ["ceo"]=>
+    'ceo' =>
     string(10) "Larry Page"
-    ["employees"]=>
+    'employees' =>
     string(5) "55030"
-    ["issuetype"]=>
+    'issuetype' =>
     string(2) "CS"
-    ["sectype"]=>
+    'sectype' =>
     string(3) "EQS"
-    ["isocfi"]=>
+    'isocfi' =>
     array(0) {
     }
-    ["auditor"]=>
+    'auditor' =>
     string(17) "Ernst & Young LLP"
-    ["lastAudit"]=>
+    'lastAudit' =>
     string(2) "UQ"
-    ["indices"]=>
+    'indices' =>
     array(1) {
-      ["index"]=>
+      'index' =>
       array(5) {
-        [0]=>
-        array(2) {
-          ["indexsymbol"]=>
-          string(4) "^OEX"
-          ["indexname"]=>
-          string(7) "S&P 100"
-        }
-        [1]=>
-        array(2) {
-          ["indexsymbol"]=>
-          string(11) "^QM31168144"
-          ["indexname"]=>
-          string(30) "Internet Content & Information"
-        }
-        [2]=>
-        array(2) {
-          ["indexsymbol"]=>
-          string(7) "^DJUSNS"
-          ["indexname"]=>
-          string(29) "Dow Jones U.S. Internet Index"
-        }
-        [3]=>
-        array(2) {
-          ["indexsymbol"]=>
-          string(4) "^SPX"
-          ["indexname"]=>
-          string(7) "S&P 500"
-        }
-        [4]=>
-        array(2) {
-          ["indexsymbol"]=>
-          string(5) "^GDOW"
-          ["indexname"]=>
-          string(20) "The Global Dow (USD)"
-        }
+        ...
       }
     }
-    ["sector"]=>
+    'sector' =>
     string(10) "Technology"
-    ["industry"]=>
+    'industry' =>
     string(12) "Online Media"
-    ["qmid"]=>
+    'qmid' =>
     string(8) "31168144"
-    ["qmdescription"]=>
+    'qmdescription' =>
     string(30) "Internet Content & Information"
-    ["cik"]=>
+    'cik' =>
     string(7) "1288776"
-    ["naics"]=>
+    'naics' =>
     string(6) "519130"
-    ["sics"]=>
+    'sics' =>
     array(1) {
-      ["sic"]=>
+      'sic' =>
       string(4) "7375"
     }
-    ["shortdescription"]=>
+    'shortdescription' =>
     string(48) "Offers advertising and internet search solutions"
-    ["longdescription"]=>
+    'longdescription' =>
     string(157) "Google Inc is a web search and online advertising company that offers search, advertising, operating systems and platforms, enterprise and hardware products."
+    'day21movingavg' =>
+    string(7) "541.747"
+    'day50movingavg' =>
+    string(7) "559.858"
+    'day200movingavg' =>
+    string(6) "559.15"
+    'avg10dayvolume' =>
+    string(7) "1419513"
+    'avg30dayvolume' =>
+    string(7) "2054165"
+    'avg90dayvolume' =>
+    string(7) "1695460"
+    'alpha' =>
+    string(9) "-0.004898"
+    'beta' =>
+    string(8) "0.262499"
+    'r2' =>
+    string(8) "0.017802"
+    'stddev' =>
+    string(8) "0.036665"
+    'periods' =>
+    string(1) "8"
+    'day21ema' =>
+    string(6) "547.65"
+    'day50ema' =>
+    string(7) "555.075"
+    'day200ema' =>
+    string(6) "560.36"
+    'sdate' =>
+    string(10) "2014-10-31"
+    'sshares' =>
+    string(7) "2614149"
+    'sratio' =>
+    string(5) "1.136"
+    'spercent' =>
+    string(4) "0.40"
+    'adrratio' =>
+    string(1) "0"
+    'ptbratio' =>
+    string(4) "4.71"
+    'pcfratio' =>
+    string(5) "20.80"
+    'pfcfratio' =>
+    string(5) "54.10"
+    'revenue' =>
+    string(11) "64756000000"
+    'revenuepershare' =>
+    string(8) "95.45885"
+    'revenue3years' =>
+    string(5) "19.16"
+    'revenue5years' =>
+    string(5) "23.38"
+    'quickratio' =>
+    string(3) "4.0"
+    'currentratio' =>
+    string(3) "4.5"
+    'longtermdebttocapital' =>
+    string(4) "0.03"
+    'totaldebttoequity' =>
+    string(4) "0.05"
+    'intcoverage' =>
+    string(5) "159.7"
+    'leverageratio' =>
+    string(3) "1.3"
+    'returnonequity' =>
+    string(5) "14.37"
+    'returnoncapital' =>
+    string(5) "10.81"
+    'returnonassets' =>
+    string(3) "4.1"
+    'pehighlast5years' =>
+    array(0) {
+    }
+    'pelowlast5years' =>
+    array(0) {
+    }
+    'pricetosales' =>
+    string(9) "5.7132473"
+    'pricetobook' =>
+    string(4) "3.74"
+    'pricetotangiblebook' =>
+    string(4) "4.71"
+    'pricetocashflow' =>
+    string(4) "20.8"
+    'pricetofreecash' =>
+    string(4) "54.1"
+    'dividendrate' =>
+    array(0) {
+    }
+    'dividendyield' =>
+    array(0) {
+    }
+    'dividend3years' =>
+    array(0) {
+    }
+    'dividend5years' =>
+    array(0) {
+    }
+    'paymenttype' =>
+    array(0) {
+    }
+    'exdividenddate' =>
+    array(0) {
+    }
+    'grossmargin' =>
+    string(4) "55.4"
+    'ebitmargin' =>
+    string(4) "24.7"
+    'ebitdamargin' =>
+    string(4) "32.0"
+    'pretaxprofitmargin' =>
+    string(4) "29.6"
+    'profitmargincont' =>
+    string(4) "19.9"
+    'profitmargintot' =>
+    string(5) "20.17"
+    'assetsturnover' =>
+    string(3) "0.6"
+    'invoiceturnover' =>
+    string(5) "112.4"
+    'receivablesturnover' =>
+    string(3) "7.0"
+  }
+}
+</pre>
+
+If you want to grab only a few sections instead of all, you can use the get() function, like so
+
+<pre>
+$webmaster_id = 000000;//user inputs webmaster id 
+$input = array( 'GOOG');
+$api = new QuoteMediaBatcher($webmaster_id);
+$result = $api->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES);
+var_dump($result);
+</pre>
+
+The var dump would look something like
+
+<pre>
+array(1) {
+  [0] =>
+  array(64) {
+    'symbol' =>
+    string(4) "GOOG"
+    'exchange' =>
+    string(3) "NGS"
+    'longname' =>
+    string(10) "Google Inc"
+    'shortname' =>
+    string(4) "GOOG"
+    'revenue' =>
+    string(11) "64756000000"
+    'revenuepershare' =>
+    string(8) "95.45885"
+    'revenue3years' =>
+    string(5) "19.16"
+    'revenue5years' =>
+    string(5) "23.38"
+    'quickratio' =>
+    string(3) "4.0"
+    'currentratio' =>
+    string(3) "4.5"
+    'longtermdebttocapital' =>
+    string(4) "0.03"
+    'totaldebttoequity' =>
+    string(4) "0.05"
+    'intcoverage' =>
+    string(5) "159.7"
+    'leverageratio' =>
+    string(3) "1.3"
+    'returnonequity' =>
+    string(5) "14.37"
+    'returnoncapital' =>
+    string(5) "10.81"
+    'returnonassets' =>
+    string(3) "4.1"
+    'peratio' =>
+    string(5) "28.60"
+    'pehighlast5years' =>
+    array(0) {
+    }
+    'pelowlast5years' =>
+    array(0) {
+    }
+    'pricetosales' =>
+    string(9) "5.7132473"
+    'pricetobook' =>
+    string(4) "3.74"
+    'pricetotangiblebook' =>
+    string(4) "4.71"
+    'pricetocashflow' =>
+    string(4) "20.8"
+    'pricetofreecash' =>
+    string(4) "54.1"
+    'dividendrate' =>
+    array(0) {
+    }
+    'dividendyield' =>
+    array(0) {
+    }
+    'dividend3years' =>
+    array(0) {
+    }
+    'dividend5years' =>
+    array(0) {
+    }
+    'paymenttype' =>
+    array(0) {
+    }
+    'exdividenddate' =>
+    array(0) {
+    }
+    'grossmargin' =>
+    string(4) "55.4"
+    'ebitmargin' =>
+    string(4) "24.7"
+    'ebitdamargin' =>
+    string(4) "32.0"
+    'pretaxprofitmargin' =>
+    string(4) "29.6"
+    'profitmargincont' =>
+    string(4) "19.9"
+    'profitmargintot' =>
+    string(5) "20.17"
+    'assetsturnover' =>
+    string(3) "0.6"
+    'invoiceturnover' =>
+    string(5) "112.4"
+    'receivablesturnover' =>
+    string(3) "7.0"
+    'last' =>
+    string(6) "543.93"
+    'change' =>
+    string(5) "-1.45"
+    'changepercent' =>
+    string(8) "-0.26587"
+    'tick' =>
+    string(1) "1"
+    'open' =>
+    string(6) "546.68"
+    'high' =>
+    string(6) "546.68"
+    'low' =>
+    string(6) "542.15"
+    'prevclose' =>
+    string(6) "545.38"
+    'bid' =>
+    string(6) "543.89"
+    'ask' =>
+    string(6) "543.93"
+    'bidsize' =>
+    string(3) "100"
+    'asksize' =>
+    string(3) "100"
+    'rawbidsize' =>
+    string(1) "1"
+    'rawasksize' =>
+    string(1) "1"
+    'tradevolume' =>
+    string(5) "12896"
+    'sharevolume' =>
+    string(6) "877890"
+    'vwap' =>
+    string(10) "544.073422"
+    'lasttradedatetime' =>
+    string(25) "2014-11-14T15:27:55-05:00"
+    'sharesoutstanding' =>
+    string(9) "678365654"
+    'marketcap' =>
+    string(12) "368983430180"
+    'eps' =>
+    string(5) "19.07"
+    'pbratio' =>
+    string(5) "3.734"
+    'week52high' =>
+    string(6) "604.83"
+    'week52low' =>
+    string(6) "502.80"
   }
 }
 </pre>

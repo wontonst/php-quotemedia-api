@@ -92,6 +92,27 @@ var_dump($api->getAll($input));
 ?>
 </pre>
 
+If you want to grab only a few sections instead of all, you can use the get() function, like so
+
+<pre>
+$webmaster_id = 000000;//user inputs webmaster id 
+$input = array( 'GOOG');
+$api = new QuoteMediaBatcher($webmaster_id);
+$result = $api->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES);
+var_dump($result);
+</pre>
+
+The var dump would look something like
+
+<pre>
+<?php
+$input = array( 'GOOG');
+$api = new QuoteMediaBatcher(TEST_WEBMASTER_ID);
+$result = $api->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES));
+var_dump($result);
+?>
+</pre>
+
 ## Articles
 N/A TBA
 
