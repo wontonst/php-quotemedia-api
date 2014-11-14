@@ -96,10 +96,12 @@ class QuoteMediaBatcher extends QuoteMediaBase {
         }
         $result = array();
         foreach ($functions as $function) {
-            $result[] = $this->getSubrtn($arr, QuoteMediaConst::getMaxSymbols($function), QuoteMediaConst::functIdToStr($function));
-            if ($result[$function] == false) {
+            $res = $this->getSubrtn($arr, QuoteMediaConst::getMaxSymbols($function), QuoteMediaConst::functIdToStr($function));
+            if($res == false){
+                $this->error = $this->api->getErrorID();
                 return false;
             }
+            $result[]=$res;
         }
         return $this->mergeResults($result, $use_assoc);
     }
