@@ -41,7 +41,7 @@ class QuoteMediaApi {
     /**
      * Convert an array of tickers into a comma delimited string for use in web API
      * @param array $tickers array of ticker strings
-     * @return type
+     * @return string comma delimited ticker string
      */
     public function stringifyTickers(&$tickers) {
         return implode(',', $tickers);

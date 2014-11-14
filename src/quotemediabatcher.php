@@ -94,6 +94,10 @@ class QuoteMediaBatcher extends QuoteMediaBase {
             $this->error = QuoteMediaError::INPUT_IS_NOT_ARRAY;
             return false;
         }
+        if (!is_array($functions)) {//make sure input is valid
+            $this->error = QuoteMediaError::INPUT_IS_NOT_ARRAY;
+            return false;
+        }
         $result = array();
         foreach ($functions as $function) {
             $res = $this->getSubrtn($arr, QuoteMediaConst::getMaxSymbols($function), QuoteMediaConst::functIdToStr($function));
