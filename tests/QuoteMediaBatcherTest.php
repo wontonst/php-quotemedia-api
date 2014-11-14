@@ -7,6 +7,16 @@ class QuoteMediaBatcherTest extends QuoteMediaStocksTester {
         $this->setUpInputs();
     }
 
+    public function testNotArrayInput(){
+        
+    }
+    public function testMalformedSymbol(){
+        
+    }
+    public function testSymbolNotString(){
+        
+    }
+    
     private function validate(&$output) {
         $this->validateGetKeyRatios($output);
         $this->validateGetFundamentals($output);

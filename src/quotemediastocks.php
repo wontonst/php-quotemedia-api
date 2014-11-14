@@ -36,8 +36,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @return boolean
      */
     private function verifyInput(&$input, $max_symbols, $max_exceed_error) {
-        if (!is_array($input)) {
-            $this->error = QuoteMediaError::INPUT_IS_NOT_ARRAY;
+        if (!$this->verifySymbolArray($input)) {
             return false;
         }
         if (count($input) > $max_symbols) {
@@ -73,8 +72,10 @@ class QuoteMediaStocks extends QuoteMediaBase {
      */
     public function getQuotes($array, $use_assoc = false) {
         $xml = $this->getSubrtn($array, QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOLS);
+        if (!$xml) {
+            return false;
+        }
         $json = QuoteMediaApi::xml2json($xml);
-
         return $this->flattenResults($json['quote'], 'flattenQuote', $use_assoc);
     }
 
@@ -84,6 +85,9 @@ class QuoteMediaStocks extends QuoteMediaBase {
      */
     public function getProfiles($array, $use_assoc = false) {
         $xml = $this->getSubrtn($array, QuoteMediaConst::GET_PROFILES, QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS, QuoteMediaError::GET_PROFILES_EXCEED_MAX_SYMBOLS);
+        if (!$xml) {
+            return false;
+        }
         $json = QuoteMediaApi::xml2json($xml);
         return $this->flattenResults($json['company'], 'flattenProfile', $use_assoc);
     }
@@ -94,12 +98,18 @@ class QuoteMediaStocks extends QuoteMediaBase {
      */
     public function getFundamentals($array, $use_assoc = false) {
         $xml = $this->getSubrtn($array, QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS);
+        if (!$xml) {
+            return false;
+        }
         $json = QuoteMediaApi::xml2json($xml);
         return $this->flattenResults($json['company'], 'flattenFundamental', $use_assoc);
     }
 
     public function getKeyRatios(&$array, $use_assoc = false) {
         $xml = $this->getSubrtn($array, QuoteMediaConst::GET_KEY_RATIOS, QuoteMediaConst::GET_KEY_RATIOS_MAX_SYMBOLS, QuoteMediaError::GET_KEY_RATIOS_EXCEED_MAX_SYMBOLS);
+        if (!$xml) {
+            return false;
+        }
         $json = QuoteMediaApi::xml2json($xml);
         return $this->flattenResults($json['company'], 'flattenKeyRatios', $use_assoc);
     }

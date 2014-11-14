@@ -10,6 +10,8 @@ final class QuoteMediaError {
     const GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS = -5;
     const GET_KEY_RATIOS_EXCEED_MAX_SYMBOLS = -6;
     const API_XML_PARSE_ERROR = -7;
+    const SYMBOL_IS_NOT_STRING = -8;
+    const MALFORMED_SYMBOL = -9;
 
     private static $instance = null;
 
@@ -23,6 +25,8 @@ final class QuoteMediaError {
             QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS => 'getFundamentals cannot request more than ' . QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS . ' symbols at a time.',
             QuoteMediaError::GET_KEY_RATIOS_EXCEED_MAX_SYMBOLS => 'getKeyRatios cannot request more than ' . QuoteMediaConst::GET_KEY_RATIOS_MAX_SYMBOLS . ' symbols at a time.',
             QuoteMediaError::API_XML_PARSE_ERROR => 'Result from QuoteMedia is not a parsable XML file.s',
+            QuoteMediaError::MALFORMED_SYMBOL => 'Symbol contains invalid characters',
+            QuoteMediaError::SYMBOL_IS_NOT_STRING => 'Expected a symbols string but was not passed a string',
         );
     }
 

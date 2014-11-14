@@ -25,6 +25,17 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
                 'GBLI', 'GBNK', 'GBX', 'GCA', 'GCAP', 'GCO', 'GDOT', 'GDP', 'GEO',
             ),
         );
+        $this->notArrayInputs = array(
+            123, '123', $this, false, true
+        );
+        $this->malformedSymbols = array(
+            '$$', 'GOOG!', '123', 'LUV@', 'antidisestablishmentarianismheyo', 'BRK A'
+        );
+        $this->nonStringSymbol = array(
+            array(123, 123),
+            array(array(), array()),
+            array(1 => 2, 3 => 3),
+        );
     }
 
     protected function validateStandard(&$output) {

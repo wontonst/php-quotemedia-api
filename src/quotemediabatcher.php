@@ -90,8 +90,7 @@ class QuoteMediaBatcher extends QuoteMediaBase {
     }
 
     public function get($arr, $functions, $use_assoc = false) {
-        if (!is_array($arr)) {//make sure input is valid
-            $this->error = QuoteMediaError::INPUT_IS_NOT_ARRAY;
+        if (!$this->verifySymbolArray($arr)) {
             return false;
         }
         if (!is_array($functions)) {//make sure input is valid
@@ -101,11 +100,11 @@ class QuoteMediaBatcher extends QuoteMediaBase {
         $result = array();
         foreach ($functions as $function) {
             $res = $this->getSubrtn($arr, QuoteMediaConst::getMaxSymbols($function), QuoteMediaConst::functIdToStr($function));
-            if($res == false){
+            if ($res == false) {
                 $this->error = $this->api->getErrorID();
                 return false;
             }
-            $result[]=$res;
+            $result[] = $res;
         }
         return $this->mergeResults($result, $use_assoc);
     }
