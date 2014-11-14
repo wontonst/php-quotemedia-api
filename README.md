@@ -35,7 +35,7 @@ The var dump will show something like this
 <pre>
 array(1) {
   [0] =>
-  array(29) {
+  array(28) {
     'symbol' =>
     string(4) "GOOG"
     'exchange' =>
@@ -45,13 +45,11 @@ array(1) {
     'shortname' =>
     string(4) "GOOG"
     'last' =>
-    string(6) "544.02"
+    string(6) "544.40"
     'change' =>
-    string(5) "-1.36"
+    string(5) "-0.98"
     'changepercent' =>
-    string(9) "-0.249367"
-    'tick' =>
-    string(2) "-1"
+    string(9) "-0.179691"
     'open' =>
     string(6) "546.68"
     'high' =>
@@ -61,35 +59,35 @@ array(1) {
     'prevclose' =>
     string(6) "545.38"
     'bid' =>
-    string(6) "544.01"
+    string(6) "543.00"
     'ask' =>
-    string(6) "544.05"
+    string(6) "544.35"
     'bidsize' =>
-    string(3) "100"
+    string(3) "200"
     'asksize' =>
-    string(3) "100"
+    string(3) "200"
     'rawbidsize' =>
-    string(1) "1"
+    string(1) "2"
     'rawasksize' =>
-    string(1) "1"
+    string(1) "2"
     'tradevolume' =>
-    string(5) "12969"
+    string(5) "16104"
     'sharevolume' =>
-    string(6) "883866"
+    string(7) "1285702"
     'vwap' =>
-    string(10) "544.072853"
+    string(10) "543.995019"
     'lasttradedatetime' =>
-    string(25) "2014-11-14T15:30:54-05:00"
+    string(25) "2014-11-14T16:16:03-05:00"
     'sharesoutstanding' =>
     string(9) "678365654"
     'marketcap' =>
-    string(12) "369044483089"
+    string(12) "369302262038"
     'eps' =>
     string(5) "19.07"
     'peratio' =>
     string(5) "28.60"
     'pbratio' =>
-    string(5) "3.735"
+    string(5) "3.737"
     'week52high' =>
     string(6) "604.83"
     'week52low' =>
@@ -135,7 +133,7 @@ The var dump would look something like this
 <pre>
 array(1) {
   [0] =>
-  array(113) {
+  array(112) {
     'symbol' =>
     string(4) "GOOG"
     'exchange' =>
@@ -145,13 +143,11 @@ array(1) {
     'shortname' =>
     string(4) "GOOG"
     'last' =>
-    string(6) "544.02"
+    string(6) "544.40"
     'change' =>
-    string(5) "-1.36"
+    string(5) "-0.98"
     'changepercent' =>
-    string(9) "-0.249367"
-    'tick' =>
-    string(2) "-1"
+    string(9) "-0.179691"
     'open' =>
     string(6) "546.68"
     'high' =>
@@ -161,25 +157,25 @@ array(1) {
     'prevclose' =>
     string(6) "545.38"
     'bid' =>
-    string(6) "544.01"
+    string(6) "543.00"
     'ask' =>
-    string(6) "544.05"
+    string(6) "544.35"
     'bidsize' =>
-    string(3) "100"
+    string(3) "200"
     'asksize' =>
-    string(3) "100"
+    string(3) "200"
     'rawbidsize' =>
-    string(1) "1"
+    string(1) "2"
     'rawasksize' =>
-    string(1) "1"
+    string(1) "2"
     'tradevolume' =>
-    string(5) "12969"
+    string(5) "16104"
     'sharevolume' =>
-    string(6) "883866"
+    string(7) "1285702"
     'vwap' =>
-    string(10) "544.072853"
+    string(10) "543.995019"
     'lasttradedatetime' =>
-    string(25) "2014-11-14T15:30:54-05:00"
+    string(25) "2014-11-14T16:16:03-05:00"
     'sharesoutstanding' =>
     string(9) "678365654"
     'marketcap' =>
@@ -399,7 +395,7 @@ The var dump would look something like
 <pre>
 array(1) {
   [0] =>
-  array(64) {
+  array(63) {
     'symbol' =>
     string(4) "GOOG"
     'exchange' =>
@@ -489,13 +485,11 @@ array(1) {
     'receivablesturnover' =>
     string(3) "7.0"
     'last' =>
-    string(6) "544.02"
+    string(6) "544.40"
     'change' =>
-    string(5) "-1.36"
+    string(5) "-0.98"
     'changepercent' =>
-    string(9) "-0.249367"
-    'tick' =>
-    string(2) "-1"
+    string(9) "-0.179691"
     'open' =>
     string(6) "546.68"
     'high' =>
@@ -505,33 +499,33 @@ array(1) {
     'prevclose' =>
     string(6) "545.38"
     'bid' =>
-    string(6) "544.01"
+    string(6) "543.00"
     'ask' =>
-    string(6) "544.05"
+    string(6) "544.35"
     'bidsize' =>
     string(3) "200"
     'asksize' =>
-    string(3) "100"
+    string(3) "200"
     'rawbidsize' =>
     string(1) "2"
     'rawasksize' =>
-    string(1) "1"
+    string(1) "2"
     'tradevolume' =>
-    string(5) "12969"
+    string(5) "16104"
     'sharevolume' =>
-    string(6) "883866"
+    string(7) "1285702"
     'vwap' =>
-    string(10) "544.072853"
+    string(10) "543.995019"
     'lasttradedatetime' =>
-    string(25) "2014-11-14T15:30:54-05:00"
+    string(25) "2014-11-14T16:16:03-05:00"
     'sharesoutstanding' =>
     string(9) "678365654"
     'marketcap' =>
-    string(12) "369044483089"
+    string(12) "369302262038"
     'eps' =>
     string(5) "19.07"
     'pbratio' =>
-    string(5) "3.735"
+    string(5) "3.737"
     'week52high' =>
     string(6) "604.83"
     'week52low' =>
@@ -560,3 +554,6 @@ N/A TBA
 + -5 : getFundamentals cannot request more than 50 symbols at a time.
 + -6 : getKeyRatios cannot request more than 1 symbols at a time.
 + -7 : Result from QuoteMedia is not a parsable XML file.s
++ -8 : Expected a symbols string but was not passed a string
++ -9 : Symbol contains invalid characters
++ -10 : Invalid function identifier
