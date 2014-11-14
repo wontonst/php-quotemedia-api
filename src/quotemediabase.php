@@ -4,6 +4,7 @@ class QuoteMediaBase {
 
     public function __construct() {
         $this->error = QuoteMediaError::GOOD;
+        $this->error_info = array();
     }
 
     public function getErrorID() {
@@ -12,6 +13,10 @@ class QuoteMediaBase {
 
     public function getError() {
         return QuoteMediaError::IDtoError($this->error);
+    }
+
+    public function getErrorInfo() {
+        return $this->error_info;
     }
 
     protected function verifySymbolArray(&$input) {
@@ -26,6 +31,7 @@ class QuoteMediaBase {
             }
             if (0 == preg_match('/^[a-zA-Z\-]{1,10}$/', trim($v))) {
                 $this->error = QuoteMediaError::MALFORMED_SYMBOL;
+                $this->error_info = trim($v);
                 return false;
             }
         }
