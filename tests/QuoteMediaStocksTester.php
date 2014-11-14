@@ -14,8 +14,28 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             array('GOOG', 'AAPL'),
             array('SWHC', 'MSFT', 'MS', 'C', 'XLNX', 'GOOG', 'AAPL', 'KO', 'PX', 'F')
         );
+        $this->lArray = array(
+            array(
+                'WTS', 'WTW', 'WWD', 'WSO', 'WSR', 'WERN', 'WEX', 'WEYS', 'DISCK', 'LLL',
+                'DLPH', 'DLTR', 'DNB', 'DNR', 'DO', 'DOV', 'DOW', 'DPS', 'DRI', 'DTE',
+                'DTV', 'DUK', 'DVA', 'DVN', 'EA', 'EBAY', 'ECL', 'ED', 'EFX', 'FRGI',
+                'FRM', 'FRME', 'FRNK', 'FRO', 'FRP', 'FSP', 'FSS', 'FST', 'FSTR', 'LEG',
+                'FSYS', 'FTD', 'FTK', 'FUEL', 'FUL', 'FUR', 'HIVE', 'FVE', 'FWRD', 'LLY',
+                'FXCB', 'FXCM', 'FXEN', 'GABC', 'GAIA', 'GALE', 'GALT', 'GB', 'GBCI', 'GBL',
+                'GBLI', 'GBNK', 'GBX', 'GCA', 'GCAP', 'GCO', 'GDOT', 'GDP', 'GEO',
+            ),
+        );
     }
 
+    protected function validateStandard(&$output) {
+        $fields = array(
+            'symbol',
+            'exchange',
+            'longname',
+            'shortname',
+        );
+        $this->validateHasFields($fields, $output);
+    }
 
     protected function validateGetProfiles(&$output) {
         $fields = array(
@@ -79,7 +99,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             //'week52performance',//apparently optional too
             'day21movingavg',
             'day50movingavg',
-            'day200movingavg',
+            //'day200movingavg',//apparently some dont' have this
             'avg10dayvolume',
             'avg30dayvolume',
             'avg90dayvolume',
@@ -121,8 +141,8 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             'sharesoutstanding',
             'marketcap',
             'eps',
-            'peratio',
-            'pbratio',
+            //'peratio',
+            //'pbratio',
             'week52high',
             'week52low',
                 //'dividenddate',//optional
@@ -174,6 +194,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
         );
         $this->validateHasFields($fields, $output);
     }
+
     /**
      * Checks to make sure there are no errors, that the result is an array, that the array size is same as input array size, and makes sure each row in the array is also an array/
      * @param type $input
@@ -195,7 +216,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
     protected function validateHasFields(&$fields, &$output) {
         foreach ($output as $out) {
             foreach ($fields as $f) {
-                $this->assertTrue(isset($out[$f]), 'Resulting array is missing field ' . $f . "\n" . print_r($out, true));
+                $this->assertTrue(isset($out[$f]), 'Resulting array' . (isset($out['symbol']) ? ' for symbol ' . $out['symbol'] : '') . ' is missing field ' . $f . "\n" . print_r($out, true));
             }
         }
     }

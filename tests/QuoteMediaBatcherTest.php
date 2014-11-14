@@ -84,24 +84,25 @@ class QuoteMediaBatcherTest extends QuoteMediaStocksTester {
 
     public function testGetQuotesProfilesArray() {
         $functions = array(QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_PROFILES);
-        $validates = array('validateGetQuotes','validateGetProfiles');
+        $validates = array('validateGetQuotes', 'validateGetProfiles');
         $this->getArrayTest($this->sArray, $functions, $validates);
     }
 
     public function testGetQuotesProfilesArrayMultiple() {
         $functions = array(QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_PROFILES);
-        $validates = array('validateGetQuotes','validateGetProfiles');
+        $validates = array('validateGetQuotes', 'validateGetProfiles');
         $this->getArrayTest($this->mArray, $functions, $validates);
     }
+
     public function testGetFundamentalsKeyRatiosArray() {
         $functions = array(QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_KEY_RATIOS);
-        $validates = array('validateGetFundamentals','validateGetKeyRatios');
+        $validates = array('validateGetFundamentals', 'validateGetKeyRatios');
         $this->getArrayTest($this->sArray, $functions, $validates);
     }
 
     public function testGetFundamentalsKeyRatiosArrayMultiple() {
         $functions = array(QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_KEY_RATIOS);
-        $validates = array('validateGetFundamentals','validateGetKeyRatios');
+        $validates = array('validateGetFundamentals', 'validateGetKeyRatios');
         $this->getArrayTest($this->mArray, $functions, $validates);
     }
 
@@ -111,6 +112,10 @@ class QuoteMediaBatcherTest extends QuoteMediaStocksTester {
 
     public function testGetAssocMultiple() {
         $this->getAssocAllTest($this->mArray);
+    }
+
+    public function testGetAssocLarge() {
+        $this->getAssocAllTest($this->lArray);
     }
 
     public function testGetQuotesAssoc() {
@@ -125,6 +130,12 @@ class QuoteMediaBatcherTest extends QuoteMediaStocksTester {
         $this->getAssocTest($this->mArray, $functions, $validates);
     }
 
+    public function testGetQuotesAssocLarge() {
+        $functions = array(QuoteMediaConst::GET_QUOTES);
+        $validates = array('validateGetQuotes');
+        $this->getAssocTest($this->lArray, $functions, $validates);
+    }
+
     public function testGetProfilesAssoc() {
         $functions = array(QuoteMediaConst::GET_PROFILES);
         $validates = array('validateGetProfiles');
@@ -137,27 +148,46 @@ class QuoteMediaBatcherTest extends QuoteMediaStocksTester {
         $this->getAssocTest($this->mArray, $functions, $validates);
     }
 
+    public function testGetProfilesAssocLarge() {
+        $functions = array(QuoteMediaConst::GET_PROFILES);
+        $validates = array('validateGetProfiles');
+        $this->getAssocTest($this->lArray, $functions, $validates);
+    }
+
     public function testGetQuotesProfilesAssoc() {
         $functions = array(QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_PROFILES);
-        $validates = array('validateGetQuotes','validateGetProfiles');
+        $validates = array('validateGetQuotes', 'validateGetProfiles');
         $this->getAssocTest($this->sArray, $functions, $validates);
     }
 
     public function testGetQuotesProfilesAssocMultiple() {
         $functions = array(QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_PROFILES);
-        $validates = array('validateGetQuotes','validateGetProfiles');
+        $validates = array('validateGetQuotes', 'validateGetProfiles');
         $this->getAssocTest($this->mArray, $functions, $validates);
     }
+
+    public function testGetQuotesProfilesAssocLarge() {
+        $functions = array(QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_PROFILES);
+        $validates = array('validateGetQuotes', 'validateGetProfiles');
+        $this->getAssocTest($this->lArray, $functions, $validates);
+    }
+
     public function testGetFundamentalsKeyRatiosAssoc() {
         $functions = array(QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_KEY_RATIOS);
-        $validates = array('validateGetFundamentals','validateGetKeyRatios');
+        $validates = array('validateGetFundamentals', 'validateGetKeyRatios');
         $this->getAssocTest($this->sArray, $functions, $validates);
     }
 
     public function testGetFundamentalsKeyRatiosAssocMultiple() {
         $functions = array(QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_KEY_RATIOS);
-        $validates = array('validateGetFundamentals','validateGetKeyRatios');
+        $validates = array('validateGetFundamentals', 'validateGetKeyRatios');
         $this->getAssocTest($this->mArray, $functions, $validates);
+    }
+
+    public function testGetFundamentalsKeyRatiosAssocLarge() {
+        $functions = array(QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_KEY_RATIOS);
+        $validates = array('validateGetFundamentals', 'validateGetKeyRatios');
+        $this->getAssocTest($this->lArray, $functions, $validates);
     }
 
 }
