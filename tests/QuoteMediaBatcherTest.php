@@ -8,123 +8,156 @@ class QuoteMediaBatcherTest extends QuoteMediaStocksTester {
     }
 
     private function validate(&$output) {
-        $fields = array(
-            'symbol',
-            'exchange',
-            'longname',
-            'shortname',
-            'shortdescription',
-            'longdescription',
-            'address1',
-            'address2',
-            'city',
-            'state',
-            'country',
-            'postcode',
-            'telephone',
-            'facisimile',
-            'website',
-            'email',
-            'ceo',
-            'employees',
-            'issuetype',
-            'isocfi',
-            'auditor',
-            'lastAudit',
-            'marketcap',
-            'sector',
-            'industry',
-            'qmid',
-            'qmdescription',
-            'cik',
-            'naics',
-            'sics',
-            'sharesoutstanding',
-            'marketcap',
-            'eps',
-            'peratio',
-            'pbratio',
-            //'dividenddate',//optional
-            //'dividendamount',
-            //'dividendyield',
-            'sdate',
-            'sshares',
-            'sratio',
-            'adrratio',
-            'ptbratio',
-            'pcfratio',
-            'pfcfratio',
-            'week52high',
-            'week52low',
-            //'week52performance',//apparently optional too
-            'day21movingavg',
-            'day50movingavg',
-            'day200movingavg',
-            'avg10dayvolume',
-            'avg30dayvolume',
-            'avg90dayvolume',
-            'alpha',
-            'beta',
-            'r2',
-            'stddev',
-            'periods',
-            'day21ema',
-            'day50ema',
-            'day200ema',
-            'last',
-            'change',
-            'changepercent',
-            'open',
-            'high',
-            'low',
-            'prevclose',
-            //'bid',//optional if past aftermarket
-            //'ask',
-            'bidsize',
-            'asksize',
-            'rawbidsize',
-            'rawasksize',
-            'tradevolume',
-            'sharevolume',
-            'vwap',
-            'lasttradedatetime',
-            'eps',
-            'peratio',
-            'pbratio',
-        );
-        $this->validateHasFields($fields, $output);
+        $this->validateGetKeyRatios($output);
+        $this->validateGetFundamentals($output);
+        $this->validateGetProfiles($output);
+        $this->validateGetQuotes($output);
     }
 
-    private function getArrayTest($input) {
+    private function getArrayAllTest($input) {
         foreach ($input as $v) {
-            $result = $this->api->getAll($v,false);
+            $result = $this->api->getAll($v, false);
             $this->validateArray($v, $result, 'getAll');
             $this->validate($result);
         }
     }
 
-    private function getAssocTest($input) {
+    private function getArrayTest($input, $functions, $validates) {
         foreach ($input as $v) {
-            $result = $this->api->getAll($v,true);
+            $result = $this->api->get($v, $functions, false);
+            $this->validateArray($v, $result, 'get');
+            foreach ($validates as $validate) {
+                $this->$validate($result);
+            }
+        }
+    }
+
+    private function getAssocAllTest($input) {
+        foreach ($input as $v) {
+            $result = $this->api->getAll($v, true);
             $this->validateAssoc($v, $result, 'getAll');
             $this->validate($result);
         }
     }
 
+    private function getAssocTest($input, $functions, $validates) {
+        foreach ($input as $v) {
+            $result = $this->api->get($v, $functions, true);
+            $this->validateArray($v, $result, 'get');
+            foreach ($validates as $validate) {
+                $this->$validate($result);
+            }
+        }
+    }
+
     public function testGetArray() {
-        $this->getArrayTest($this->sArray);
+        $this->getArrayAllTest($this->sArray);
     }
 
     public function testGetArrayMultiple() {
-        $this->getArrayTest($this->sArray);
+        $this->getArrayAllTest($this->sArray);
+    }
+
+    public function testGetQuotesArray() {
+        $functions = array(QuoteMediaConst::GET_QUOTES);
+        $validates = array('validateGetQuotes');
+        $this->getArrayTest($this->sArray, $functions, $validates);
+    }
+
+    public function testGetQuotesArrayMultiple() {
+        $functions = array(QuoteMediaConst::GET_QUOTES);
+        $validates = array('validateGetQuotes');
+        $this->getArrayTest($this->mArray, $functions, $validates);
+    }
+
+    public function testGetProfilesArray() {
+        $functions = array(QuoteMediaConst::GET_PROFILES);
+        $validates = array('validateGetProfiles');
+        $this->getArrayTest($this->sArray, $functions, $validates);
+    }
+
+    public function testGetProfilesArrayMultiple() {
+        $functions = array(QuoteMediaConst::GET_PROFILES);
+        $validates = array('validateGetProfiles');
+        $this->getArrayTest($this->mArray, $functions, $validates);
+    }
+
+    public function testGetQuotesProfilesArray() {
+        $functions = array(QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_PROFILES);
+        $validates = array('validateGetQuotes','validateGetProfiles');
+        $this->getArrayTest($this->sArray, $functions, $validates);
+    }
+
+    public function testGetQuotesProfilesArrayMultiple() {
+        $functions = array(QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_PROFILES);
+        $validates = array('validateGetQuotes','validateGetProfiles');
+        $this->getArrayTest($this->mArray, $functions, $validates);
+    }
+    public function testGetFundamentalsKeyRatiosArray() {
+        $functions = array(QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_KEY_RATIOS);
+        $validates = array('validateGetFundamentals','validateGetKeyRatios');
+        $this->getArrayTest($this->sArray, $functions, $validates);
+    }
+
+    public function testGetFundamentalsKeyRatiosArrayMultiple() {
+        $functions = array(QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_KEY_RATIOS);
+        $validates = array('validateGetFundamentals','validateGetKeyRatios');
+        $this->getArrayTest($this->mArray, $functions, $validates);
     }
 
     public function testGetAssoc() {
-        $this->getAssocTest($this->mArray);
+        $this->getAssocAllTest($this->mArray);
     }
 
     public function testGetAssocMultiple() {
-        $this->getAssocTest($this->mArray);
+        $this->getAssocAllTest($this->mArray);
+    }
+
+    public function testGetQuotesAssoc() {
+        $functions = array(QuoteMediaConst::GET_QUOTES);
+        $validates = array('validateGetQuotes');
+        $this->getAssocTest($this->sArray, $functions, $validates);
+    }
+
+    public function testGetQuotesAssocMultiple() {
+        $functions = array(QuoteMediaConst::GET_QUOTES);
+        $validates = array('validateGetQuotes');
+        $this->getAssocTest($this->mArray, $functions, $validates);
+    }
+
+    public function testGetProfilesAssoc() {
+        $functions = array(QuoteMediaConst::GET_PROFILES);
+        $validates = array('validateGetProfiles');
+        $this->getAssocTest($this->sArray, $functions, $validates);
+    }
+
+    public function testGetProfilesAssocMultiple() {
+        $functions = array(QuoteMediaConst::GET_PROFILES);
+        $validates = array('validateGetProfiles');
+        $this->getAssocTest($this->mArray, $functions, $validates);
+    }
+
+    public function testGetQuotesProfilesAssoc() {
+        $functions = array(QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_PROFILES);
+        $validates = array('validateGetQuotes','validateGetProfiles');
+        $this->getAssocTest($this->sArray, $functions, $validates);
+    }
+
+    public function testGetQuotesProfilesAssocMultiple() {
+        $functions = array(QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_PROFILES);
+        $validates = array('validateGetQuotes','validateGetProfiles');
+        $this->getAssocTest($this->mArray, $functions, $validates);
+    }
+    public function testGetFundamentalsKeyRatiosAssoc() {
+        $functions = array(QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_KEY_RATIOS);
+        $validates = array('validateGetFundamentals','validateGetKeyRatios');
+        $this->getAssocTest($this->sArray, $functions, $validates);
+    }
+
+    public function testGetFundamentalsKeyRatiosAssocMultiple() {
+        $functions = array(QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_KEY_RATIOS);
+        $validates = array('validateGetFundamentals','validateGetKeyRatios');
+        $this->getAssocTest($this->mArray, $functions, $validates);
     }
 
 }
