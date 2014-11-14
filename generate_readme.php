@@ -98,7 +98,7 @@ If you want to grab only a few sections instead of all, you can use the get() fu
 $webmaster_id = 000000;//user inputs webmaster id 
 $input = array( 'GOOG');
 $api = new QuoteMediaBatcher($webmaster_id);
-$result = $api->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES);
+$result = $api->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES));
 var_dump($result);
 </pre>
 
@@ -111,6 +111,13 @@ $api = new QuoteMediaBatcher(TEST_WEBMASTER_ID);
 $result = $api->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES));
 var_dump($result);
 ?>
+</pre>
+
+Again, you can choose to return an associative map instead of an array using an optional parameter, ie
+
+<pre>
+$api->getAll($input,true);
+$result = $api->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES),true);
 </pre>
 
 ## Articles

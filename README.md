@@ -47,13 +47,13 @@ array(1) {
     'shortname' =>
     string(4) "GOOG"
     'last' =>
-    string(6) "543.93"
+    string(6) "544.02"
     'change' =>
-    string(5) "-1.45"
+    string(5) "-1.36"
     'changepercent' =>
-    string(8) "-0.26587"
+    string(9) "-0.249367"
     'tick' =>
-    string(1) "1"
+    string(2) "-1"
     'open' =>
     string(6) "546.68"
     'high' =>
@@ -63,9 +63,9 @@ array(1) {
     'prevclose' =>
     string(6) "545.38"
     'bid' =>
-    string(6) "543.89"
+    string(6) "544.01"
     'ask' =>
-    string(6) "543.97"
+    string(6) "544.05"
     'bidsize' =>
     string(3) "100"
     'asksize' =>
@@ -75,23 +75,23 @@ array(1) {
     'rawasksize' =>
     string(1) "1"
     'tradevolume' =>
-    string(5) "12896"
+    string(5) "12969"
     'sharevolume' =>
-    string(6) "877890"
+    string(6) "883866"
     'vwap' =>
-    string(10) "544.073422"
+    string(10) "544.072853"
     'lasttradedatetime' =>
-    string(25) "2014-11-14T15:27:55-05:00"
+    string(25) "2014-11-14T15:30:54-05:00"
     'sharesoutstanding' =>
     string(9) "678365654"
     'marketcap' =>
-    string(12) "368983430180"
+    string(12) "369044483089"
     'eps' =>
     string(5) "19.07"
     'peratio' =>
     string(5) "28.60"
     'pbratio' =>
-    string(5) "3.734"
+    string(5) "3.735"
     'week52high' =>
     string(6) "604.83"
     'week52low' =>
@@ -147,13 +147,13 @@ array(1) {
     'shortname' =>
     string(4) "GOOG"
     'last' =>
-    string(6) "543.93"
+    string(6) "544.02"
     'change' =>
-    string(5) "-1.45"
+    string(5) "-1.36"
     'changepercent' =>
-    string(8) "-0.26587"
+    string(9) "-0.249367"
     'tick' =>
-    string(1) "1"
+    string(2) "-1"
     'open' =>
     string(6) "546.68"
     'high' =>
@@ -163,9 +163,9 @@ array(1) {
     'prevclose' =>
     string(6) "545.38"
     'bid' =>
-    string(6) "543.89"
+    string(6) "544.01"
     'ask' =>
-    string(6) "543.97"
+    string(6) "544.05"
     'bidsize' =>
     string(3) "100"
     'asksize' =>
@@ -175,13 +175,13 @@ array(1) {
     'rawasksize' =>
     string(1) "1"
     'tradevolume' =>
-    string(5) "12896"
+    string(5) "12969"
     'sharevolume' =>
-    string(6) "877890"
+    string(6) "883866"
     'vwap' =>
-    string(10) "544.073422"
+    string(10) "544.072853"
     'lasttradedatetime' =>
-    string(25) "2014-11-14T15:27:55-05:00"
+    string(25) "2014-11-14T15:30:54-05:00"
     'sharesoutstanding' =>
     string(9) "678365654"
     'marketcap' =>
@@ -392,7 +392,7 @@ If you want to grab only a few sections instead of all, you can use the get() fu
 $webmaster_id = 000000;//user inputs webmaster id 
 $input = array( 'GOOG');
 $api = new QuoteMediaBatcher($webmaster_id);
-$result = $api->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES);
+$result = $api->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES));
 var_dump($result);
 </pre>
 
@@ -491,13 +491,13 @@ array(1) {
     'receivablesturnover' =>
     string(3) "7.0"
     'last' =>
-    string(6) "543.93"
+    string(6) "544.02"
     'change' =>
-    string(5) "-1.45"
+    string(5) "-1.36"
     'changepercent' =>
-    string(8) "-0.26587"
+    string(9) "-0.249367"
     'tick' =>
-    string(1) "1"
+    string(2) "-1"
     'open' =>
     string(6) "546.68"
     'high' =>
@@ -507,39 +507,46 @@ array(1) {
     'prevclose' =>
     string(6) "545.38"
     'bid' =>
-    string(6) "543.89"
+    string(6) "544.01"
     'ask' =>
-    string(6) "543.93"
+    string(6) "544.05"
     'bidsize' =>
-    string(3) "100"
+    string(3) "200"
     'asksize' =>
     string(3) "100"
     'rawbidsize' =>
-    string(1) "1"
+    string(1) "2"
     'rawasksize' =>
     string(1) "1"
     'tradevolume' =>
-    string(5) "12896"
+    string(5) "12969"
     'sharevolume' =>
-    string(6) "877890"
+    string(6) "883866"
     'vwap' =>
-    string(10) "544.073422"
+    string(10) "544.072853"
     'lasttradedatetime' =>
-    string(25) "2014-11-14T15:27:55-05:00"
+    string(25) "2014-11-14T15:30:54-05:00"
     'sharesoutstanding' =>
     string(9) "678365654"
     'marketcap' =>
-    string(12) "368983430180"
+    string(12) "369044483089"
     'eps' =>
     string(5) "19.07"
     'pbratio' =>
-    string(5) "3.734"
+    string(5) "3.735"
     'week52high' =>
     string(6) "604.83"
     'week52low' =>
     string(6) "502.80"
   }
 }
+</pre>
+
+Again, you can choose to return an associative map instead of an array using an optional parameter, ie
+
+<pre>
+$api->getAll($input,true);
+$result = $api->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES),true);
 </pre>
 
 ## Articles
