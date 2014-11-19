@@ -11,8 +11,6 @@ Download/clone this repo from Github.
 
 To start using this library, you must first include the autoload.php in the root directory.
 
-If you want thorough documentation, the code is in doxygen/javadoc style so you can generate it yourself if you wish.
-
 ## Stocks
 
 This library includes code for using QuoteMedia's stock APIs.
@@ -130,3 +128,10 @@ foreach($array as $a){
 echo '+ '.$a.' : '.QuoteMediaError::IDtoError($a)."\n";
 }
 ?>
+
+# Contributing
+Contributions can be submitted right here on Github through a pull request. 
+
+All functions should be documented in doxygen/javadoc style. The current code the code is in doxygen/javadoc style so you can generate it yourself for reference.
+
+Before any pull request can be submitted, be sure to run the unit tests. You can use the run_tests.sh script if you don't know phpunit. Don't forget to add your webmaster ID to testsautoload.php before running the test or it will give you a syntax error.
