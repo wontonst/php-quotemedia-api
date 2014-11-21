@@ -59,6 +59,10 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             }
         }
     }
+    
+    public function testSymbolDoesNotExist(){
+        $this->api->getQuotes(array('GROL'));
+    }
 
     /* get array routines & tests */
 
