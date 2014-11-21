@@ -63,6 +63,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
+        $this->error_info = array();
         return $xml;
     }
 
@@ -145,6 +146,9 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @return array flattened array
      */
     private function flattenQuote(&$company) {
+        if(!isset($company['equityinfo'])){
+            return;
+        }
         //var_dump($company);
         $add = $company['key'];
         $add = array_merge($add, $company['equityinfo'], $company['pricedata']);
@@ -203,7 +207,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
             foreach ($rekey as $k => $v) {
                 $dividend[$v] = $company['fundamental']['dividend'][$k];
             }
-            unset($company['fundamental']['divident']);
+            unset($company['fundamental']['dividend']);
             $add = array_merge($add, $dividend);
         }
         unset($company['fundamental']['shortinterest']);
