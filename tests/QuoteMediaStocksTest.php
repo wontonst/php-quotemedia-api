@@ -31,6 +31,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
             $this->assertFalse($this->api->$function_name($this->malformedSymbols, false), 'Malformed symbol array ' . print_r($this->malformedSymbols, true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $this->api->getErrorID(), 'Giving ' . $function_name . ' a malformed symbol yields incorrect error ' . $this->api->getError());
+            $this->assertEquals('$$', $this->api->getErrorInfo(), 'Malformed symbol error info mismatch');
             $this->setUp();
         }
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
@@ -58,6 +59,11 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
                 $this->setUp();
             }
         }
+    }
+
+    public function testSymbolDoesNotExist() {
+        $this->api->getQuotes(array('GROL'));
+        $this->assertEquals(QuoteMediaError::SYMBOL_DOES_NOT_EXIST, $this->api->getErrorId(), 'Not receving symbol does not exist error.');
     }
 
     /* get array routines & tests */

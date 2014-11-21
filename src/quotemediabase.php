@@ -2,6 +2,9 @@
 
 class QuoteMediaBase {
 
+    protected $error;
+    protected $error_info;
+
     public function __construct() {
         $this->error = QuoteMediaError::GOOD;
         $this->error_info = array();
