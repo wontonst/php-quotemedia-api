@@ -16,6 +16,12 @@ final class QuoteMediaConst {
         QuoteMediaConst::GET_FUNDAMENTALS,
         QuoteMediaConst::GET_KEY_RATIOS
     );
+    private static $ID_STR_MAP = array(
+        QuoteMediaConst::GET_QUOTES => 'getQuotes',
+        QuoteMediaConst::GET_PROFILES => 'getProfiles',
+        QuoteMediaConst::GET_FUNDAMENTALS => 'getFundamentals',
+        QuoteMediaConst::GET_KEY_RATIOS => 'getKeyRatios',
+    );
 
     /**
      * Convert a function ID to string.
@@ -24,16 +30,10 @@ final class QuoteMediaConst {
      * @return string function name
      */
     public static function functIdToStr($id) {
-        static $map = array(
-            QuoteMediaConst::GET_QUOTES => 'getQuotes',
-            QuoteMediaConst::GET_PROFILES => 'getProfiles',
-            QuoteMediaConst::GET_FUNDAMENTALS => 'getFundamentals',
-            QuoteMediaConst::GET_KEY_RATIOS => 'getKeyRatios',
-        );
-        if (!isset($map[$id])) {
+        if (!isset(QuoteMediaConst::$ID_STR_MAP[$id])) {
             die('QuoteMediaConst::functIdToStr passed invalid $id ' . $id);
         }
-        return $map[$id];
+        return QuoteMediaConst::$ID_STR_MAP[$id];
     }
 
     /* Constants */
@@ -43,17 +43,18 @@ final class QuoteMediaConst {
     const GET_FUNDAMENTALS_MAX_SYMBOLS = 50; ///< maximum symbols per getFundamentals call
     const GET_KEY_RATIOS_MAX_SYMBOLS = 1; ///< maximum symbols per getKeyRatios call
 
+    private static $MAX_SYMBOLS_MAP = array(
+        QuoteMediaConst::GET_QUOTES => QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS,
+        QuoteMediaConst::GET_PROFILES => QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS,
+        QuoteMediaConst::GET_FUNDAMENTALS => QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS,
+        QuoteMediaConst::GET_KEY_RATIOS => QuoteMediaConst::GET_KEY_RATIOS_MAX_SYMBOLS,
+    );
+
     public static function getMaxSymbols($id) {
-        static $map = array(
-            QuoteMediaConst::GET_QUOTES => QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS,
-            QuoteMediaConst::GET_PROFILES => QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS,
-            QuoteMediaConst::GET_FUNDAMENTALS => QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS,
-            QuoteMediaConst::GET_KEY_RATIOS => QuoteMediaConst::GET_KEY_RATIOS_MAX_SYMBOLS,
-        );
-        if (!isset($map[$id])) {
+        if (!isset(QuoteMediaConst::$MAX_SYMBOLS_MAP[$id])) {
             die('QuoteMediaConst::getMaxSymbols passed invalid id ' . $id);
         }
-        return $map[$id];
+        return QuoteMediaConst::$MAX_SYMBOLS_MAP[$id];
     }
 
 }
