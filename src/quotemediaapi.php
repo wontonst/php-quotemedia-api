@@ -32,9 +32,6 @@ class QuoteMediaApi {
             $this->errorID = QuoteMediaError::API_XML_PARSE_ERROR;
             return false;
         }
-        if (QuoteMediaStocks::getXmlSymbolCount($type, $xml) != count($tickers)) {
-            // TODO: determine which ticker didn't get included and report it or retry
-        }
         return $xml;
     }
 
