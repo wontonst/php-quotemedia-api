@@ -10,8 +10,6 @@ Download/clone this repo from Github.
 
 To start using this library, you must first include the autoload.php in the root directory.
 
-If you want thorough documentation, the code is in doxygen/javadoc style so you can generate it yourself if you wish.
-
 ## Stocks
 
 This library includes code for using QuoteMedia's stock APIs.
@@ -35,7 +33,7 @@ The var dump will show something like this
 <pre>
 array(1) {
   [0] =>
-  array(28) {
+  array(26) {
     'symbol' =>
     string(4) "GOOG"
     'exchange' =>
@@ -45,49 +43,45 @@ array(1) {
     'shortname' =>
     string(4) "GOOG"
     'last' =>
-    string(6) "544.40"
+    string(6) "537.50"
     'change' =>
-    string(5) "-0.98"
+    string(4) "2.67"
     'changepercent' =>
-    string(9) "-0.179691"
+    string(8) "0.499224"
     'open' =>
-    string(6) "546.68"
+    string(6) "541.61"
     'high' =>
-    string(6) "546.68"
+    string(6) "542.14"
     'low' =>
-    string(6) "542.15"
+    string(6) "536.56"
     'prevclose' =>
-    string(6) "545.38"
-    'bid' =>
-    string(6) "543.00"
-    'ask' =>
-    string(6) "544.35"
+    string(6) "534.83"
     'bidsize' =>
-    string(3) "200"
+    string(1) "0"
     'asksize' =>
-    string(3) "200"
+    string(1) "0"
     'rawbidsize' =>
-    string(1) "2"
+    string(1) "0"
     'rawasksize' =>
-    string(1) "2"
+    string(1) "0"
     'tradevolume' =>
-    string(5) "16104"
+    string(5) "24093"
     'sharevolume' =>
-    string(7) "1285702"
+    string(7) "2218249"
     'vwap' =>
-    string(10) "543.995019"
+    string(10) "538.767956"
     'lasttradedatetime' =>
-    string(25) "2014-11-14T16:16:03-05:00"
+    string(25) "2014-11-21T16:45:04-05:00"
     'sharesoutstanding' =>
     string(9) "678365654"
     'marketcap' =>
-    string(12) "369302262038"
+    string(12) "364621539025"
     'eps' =>
     string(5) "19.07"
     'peratio' =>
-    string(5) "28.60"
+    string(5) "28.00"
     'pbratio' =>
-    string(5) "3.737"
+    string(4) "3.69"
     'week52high' =>
     string(6) "604.83"
     'week52low' =>
@@ -133,7 +127,7 @@ The var dump would look something like this
 <pre>
 array(1) {
   [0] =>
-  array(112) {
+  array(110) {
     'symbol' =>
     string(4) "GOOG"
     'exchange' =>
@@ -143,49 +137,45 @@ array(1) {
     'shortname' =>
     string(4) "GOOG"
     'last' =>
-    string(6) "544.40"
+    string(6) "537.50"
     'change' =>
-    string(5) "-0.98"
+    string(4) "2.67"
     'changepercent' =>
-    string(9) "-0.179691"
+    string(8) "0.499224"
     'open' =>
-    string(6) "546.68"
+    string(6) "541.61"
     'high' =>
-    string(6) "546.68"
+    string(6) "542.14"
     'low' =>
-    string(6) "542.15"
+    string(6) "536.56"
     'prevclose' =>
-    string(6) "545.38"
-    'bid' =>
-    string(6) "543.00"
-    'ask' =>
-    string(6) "544.35"
+    string(6) "534.83"
     'bidsize' =>
-    string(3) "200"
+    string(1) "0"
     'asksize' =>
-    string(3) "200"
+    string(1) "0"
     'rawbidsize' =>
-    string(1) "2"
+    string(1) "0"
     'rawasksize' =>
-    string(1) "2"
+    string(1) "0"
     'tradevolume' =>
-    string(5) "16104"
+    string(5) "24093"
     'sharevolume' =>
-    string(7) "1285702"
+    string(7) "2218249"
     'vwap' =>
-    string(10) "543.995019"
+    string(10) "538.767956"
     'lasttradedatetime' =>
-    string(25) "2014-11-14T16:16:03-05:00"
+    string(25) "2014-11-21T16:45:04-05:00"
     'sharesoutstanding' =>
     string(9) "678365654"
     'marketcap' =>
-    string(12) "369967060378"
+    string(12) "364621539025"
     'eps' =>
     string(5) "19.07"
     'peratio' =>
-    string(4) "28.6"
+    string(4) "28.0"
     'pbratio' =>
-    string(5) "3.744"
+    string(4) "3.69"
     'week52high' =>
     string(6) "604.83"
     'week52low' =>
@@ -255,33 +245,33 @@ array(1) {
     'longdescription' =>
     string(157) "Google Inc is a web search and online advertising company that offers search, advertising, operating systems and platforms, enterprise and hardware products."
     'day21movingavg' =>
-    string(7) "541.747"
+    string(7) "544.867"
     'day50movingavg' =>
-    string(7) "559.858"
+    string(7) "554.425"
     'day200movingavg' =>
-    string(6) "559.15"
+    string(7) "558.378"
     'avg10dayvolume' =>
-    string(7) "1419513"
+    string(7) "1468849"
     'avg30dayvolume' =>
-    string(7) "2054165"
+    string(7) "1997116"
     'avg90dayvolume' =>
-    string(7) "1695460"
+    string(7) "1687450"
     'alpha' =>
-    string(9) "-0.004898"
+    string(9) "-0.004902"
     'beta' =>
-    string(8) "0.262499"
+    string(8) "0.088778"
     'r2' =>
-    string(8) "0.017802"
+    string(8) "0.001966"
     'stddev' =>
-    string(8) "0.036665"
+    string(8) "0.038205"
     'periods' =>
     string(1) "8"
     'day21ema' =>
-    string(6) "547.65"
+    string(6) "543.13"
     'day50ema' =>
-    string(7) "555.075"
+    string(7) "551.308"
     'day200ema' =>
-    string(6) "560.36"
+    string(6) "559.03"
     'sdate' =>
     string(10) "2014-10-31"
     'sshares' =>
@@ -293,11 +283,11 @@ array(1) {
     'adrratio' =>
     string(1) "0"
     'ptbratio' =>
-    string(4) "4.71"
+    string(4) "4.62"
     'pcfratio' =>
-    string(5) "20.80"
+    string(5) "20.40"
     'pfcfratio' =>
-    string(5) "54.10"
+    string(5) "53.10"
     'revenue' =>
     string(11) "64756000000"
     'revenuepershare' =>
@@ -331,15 +321,15 @@ array(1) {
     array(0) {
     }
     'pricetosales' =>
-    string(9) "5.7132473"
+    string(8) "5.602729"
     'pricetobook' =>
-    string(4) "3.74"
+    string(4) "3.67"
     'pricetotangiblebook' =>
-    string(4) "4.71"
+    string(4) "4.62"
     'pricetocashflow' =>
-    string(4) "20.8"
+    string(4) "20.4"
     'pricetofreecash' =>
-    string(4) "54.1"
+    string(4) "53.1"
     'dividendrate' =>
     array(0) {
     }
@@ -395,7 +385,7 @@ The var dump would look something like
 <pre>
 array(1) {
   [0] =>
-  array(63) {
+  array(61) {
     'symbol' =>
     string(4) "GOOG"
     'exchange' =>
@@ -431,7 +421,7 @@ array(1) {
     'returnonassets' =>
     string(3) "4.1"
     'peratio' =>
-    string(5) "28.60"
+    string(5) "28.00"
     'pehighlast5years' =>
     array(0) {
     }
@@ -439,15 +429,15 @@ array(1) {
     array(0) {
     }
     'pricetosales' =>
-    string(9) "5.7132473"
+    string(8) "5.602729"
     'pricetobook' =>
-    string(4) "3.74"
+    string(4) "3.67"
     'pricetotangiblebook' =>
-    string(4) "4.71"
+    string(4) "4.62"
     'pricetocashflow' =>
-    string(4) "20.8"
+    string(4) "20.4"
     'pricetofreecash' =>
-    string(4) "54.1"
+    string(4) "53.1"
     'dividendrate' =>
     array(0) {
     }
@@ -485,47 +475,43 @@ array(1) {
     'receivablesturnover' =>
     string(3) "7.0"
     'last' =>
-    string(6) "544.40"
+    string(6) "537.50"
     'change' =>
-    string(5) "-0.98"
+    string(4) "2.67"
     'changepercent' =>
-    string(9) "-0.179691"
+    string(8) "0.499224"
     'open' =>
-    string(6) "546.68"
+    string(6) "541.61"
     'high' =>
-    string(6) "546.68"
+    string(6) "542.14"
     'low' =>
-    string(6) "542.15"
+    string(6) "536.56"
     'prevclose' =>
-    string(6) "545.38"
-    'bid' =>
-    string(6) "543.00"
-    'ask' =>
-    string(6) "544.35"
+    string(6) "534.83"
     'bidsize' =>
-    string(3) "200"
+    string(1) "0"
     'asksize' =>
-    string(3) "200"
+    string(1) "0"
     'rawbidsize' =>
-    string(1) "2"
+    string(1) "0"
     'rawasksize' =>
-    string(1) "2"
+    string(1) "0"
     'tradevolume' =>
-    string(5) "16104"
+    string(5) "24093"
     'sharevolume' =>
-    string(7) "1285702"
+    string(7) "2218249"
     'vwap' =>
-    string(10) "543.995019"
+    string(10) "538.767956"
     'lasttradedatetime' =>
-    string(25) "2014-11-14T16:16:03-05:00"
+    string(25) "2014-11-21T16:45:04-05:00"
     'sharesoutstanding' =>
     string(9) "678365654"
     'marketcap' =>
-    string(12) "369302262038"
+    string(12) "364621539025"
     'eps' =>
     string(5) "19.07"
     'pbratio' =>
-    string(5) "3.737"
+    string(4) "3.69"
     'week52high' =>
     string(6) "604.83"
     'week52low' =>
@@ -557,3 +543,10 @@ N/A TBA
 + -8 : Expected a symbols string but was not passed a string
 + -9 : Symbol contains invalid characters
 + -10 : Invalid function identifier
+
+# Contributing
+Contributions can be submitted right here on Github through a pull request. 
+
+All functions should be documented in doxygen/javadoc style. The current code the code is in doxygen/javadoc style so you can generate it yourself for reference.
+
+Before any pull request can be submitted, be sure to run the unit tests. You can use the run_tests.sh script if you don't know phpunit. Don't forget to add your webmaster ID to testsautoload.php before running the test or it will give you a syntax error.
