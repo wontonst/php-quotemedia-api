@@ -1,8 +1,5 @@
 <?php
 
-/**
- * TODO: Custom keys for result
- */
 class QuoteMediaStocks extends QuoteMediaBase {
 
     /**

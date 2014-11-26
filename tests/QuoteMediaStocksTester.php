@@ -37,6 +37,9 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             array(array(), array()),
             array(1 => 2, 3 => 3),
         );
+        $this->nonexistantSymbols = array(
+          'GROL','LXX'  
+        );
     }
 
     protected function validateStandard(&$output) {

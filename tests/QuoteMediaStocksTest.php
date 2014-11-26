@@ -61,9 +61,23 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         }
     }
 
-    public function testSymbolDoesNotExist() {
-        $this->api->getQuotes(array('GROL'));
+    private function validateSymbolDoesNotExist($result, $bad_expected, $bad_actual) {
         $this->assertEquals(QuoteMediaError::SYMBOL_DOES_NOT_EXIST, $this->api->getErrorId(), 'Not receving symbol does not exist error.');
+        foreach ($bad_expected as $bad) {
+            $this->assertFalse(in_array($bad, array_keys($result)), 'Nonexistant symbol ' . $bad . ' was found in the result array: ' . print_r($result, true));
+        }
+        foreach ($bad_expected as $bad) {
+            $this->assertTrue(in_array($bad, $bad_actual), 'Invalid symbol '.$bad.' was not recorded by QuoteMediaStocks; Actual bad array dump :'.print_r($bad_actual, true));
+            )
+        }
+    }
+
+    public function testGetQuotesSymbolDoesNotExist() {
+        //all bad
+        $result = $this->api->getQuotes($this->nonexistantSymbols);
+        $this->validateSymbolDoesNotExist($result, $this->nonexistantSymbols, $api->getMissingSymbols());
+        //some bad
+        $result = $this->api->getQuotes(array_merge($this->nonexistantSymbols, $this->sArray));
     }
 
     /* get array routines & tests */
