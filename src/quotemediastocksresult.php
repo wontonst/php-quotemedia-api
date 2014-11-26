@@ -31,7 +31,7 @@ class QuoteMediaStocksResult {
      * @return bool
      */
     public function hasMissingSymbols() {
-        return $this->$has_missing;
+        return $this->has_missing;
     }
 
     /**
@@ -41,7 +41,6 @@ class QuoteMediaStocksResult {
     public function getMissingSymbols() {
         return $this->missing;
     }
-
 }
 
 ?>

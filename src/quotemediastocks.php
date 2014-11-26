@@ -1,6 +1,6 @@
 <?php
 
-class QuoteMediaStocks extends QuoteMediaBase {
+class QuoteMediaStocks extends QuoteMediaStocksBase {
 
     /**
      * Get the number of symbols described in XML.
