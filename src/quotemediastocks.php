@@ -2,6 +2,7 @@
 
 class QuoteMediaStocks extends QuoteMediaStocksBase {
 
+    private $builder;///< temp QuoteMediaStocksResultBuilder object to be used to generate result
     /**
      * Get the number of symbols described in XML.
      * @param int $function_id function id as specified in QuoteMediaConst

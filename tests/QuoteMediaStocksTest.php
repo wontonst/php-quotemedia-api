@@ -68,7 +68,6 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         }
         foreach ($bad_expected as $bad) {
             $this->assertTrue(in_array($bad, $bad_actual), 'Invalid symbol '.$bad.' was not recorded by QuoteMediaStocks; Actual bad array dump :'.print_r($bad_actual, true));
-            )
         }
     }
 

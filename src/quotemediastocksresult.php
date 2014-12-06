@@ -3,7 +3,7 @@
 /**
  * Class that stores the result of a call to the stocks library. This class should not be instantiated by the user.
  */
-class QuoteMediaStocksResult {
+class QuoteMediaStocksResult extends QuoteMediaResult {
 
     protected $has_missing; /// <boolean of whether or not there are missing symbols
     protected $missing; ///< array of missing symbols
