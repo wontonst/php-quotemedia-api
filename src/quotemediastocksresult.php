@@ -14,16 +14,10 @@ class QuoteMediaStocksResult extends QuoteMediaResult {
      * @param array $missing list of missing symbols
      */
 
-    public function __construct($result, $missing = NULL) {
-        if ($missing != NULL) {
-            $this->$has_missing = true;
-            $this->missing = $missing;
-            parent::construct($result, QuoteMediaError::SYMBOL_DOES_NOT_EXIST);
-        } else {
-            $this->$has_missing = false;
-            $this->missing = array();
-            parent::construct($result, QuoteMediaError::GOOD);
-        }
+    public function __construct($result, $error, $missing) {
+        parent::construct($result, $error);
+        $this->missing = $missing;
+        $this->has_missing = !empty($missing);
     }
 
     /**
@@ -41,6 +35,7 @@ class QuoteMediaStocksResult extends QuoteMediaResult {
     public function getMissingSymbols() {
         return $this->missing;
     }
+
 }
 
 ?>

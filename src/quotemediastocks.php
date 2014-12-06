@@ -2,13 +2,15 @@
 
 class QuoteMediaStocks extends QuoteMediaStocksBase {
 
-    private $builder;///< temp QuoteMediaStocksResultBuilder object to be used to generate result
+    private $builder; ///< temp QuoteMediaStocksResultBuilder object to be used to generate result
+
     /**
      * Get the number of symbols described in XML.
      * @param int $function_id function id as specified in QuoteMediaConst
      * @param SimpleXMLElement $xml file returned from API
      * @returns int number of symbols in the XML
      */
+
     static public function getXmlSymbolCount($function_id, &$xml) {
         switch ($function_id) {//at this point $type is guaranteed to be correct due to $url
             case QuoteMediaConst::GET_QUOTES:
@@ -38,7 +40,7 @@ class QuoteMediaStocks extends QuoteMediaStocksBase {
             return false;
         }
         if (count($input) > $max_symbols) {
-            $this->error = $max_exceed_error;
+            $this->builder->setError($max_exceed_error);
             return false;
         }
         return true;
@@ -61,7 +63,6 @@ class QuoteMediaStocks extends QuoteMediaStocksBase {
         if (!$xml) {
             return false;
         }
-        $this->error_info = array();
         return $xml;
     }
 
@@ -71,6 +72,7 @@ class QuoteMediaStocks extends QuoteMediaStocksBase {
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      */
     public function getQuotes($array, $use_assoc = false) {
+        $this->builder = new QuoteMediaStocksResultBuilder();
         $xml = $this->getSubrtn($array, QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOLS);
         if (!$xml) {
             return false;
@@ -144,7 +146,7 @@ class QuoteMediaStocks extends QuoteMediaStocksBase {
      * @return array flattened array
      */
     private function flattenQuote(&$company) {
-        if(!isset($company['equityinfo'])){
+        if (!isset($company['equityinfo'])) {
             return;
         }
         //var_dump($company);
