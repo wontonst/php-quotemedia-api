@@ -10,6 +10,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             array('MS'),
             array('GOOG'),
             array('CRD.B'),
+	    array('VNP:CA'),
         );
         $this->mArray = array(
             array('GOOG', 'AAPL'),
@@ -30,7 +31,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             123, '123', $this, false, true
         );
         $this->malformedSymbols = array(
-            '$$', 'GOOG!', '123', 'LUV@', 'antidisestablishmentarianismheyo', 'BRK A'
+            '$$', 'GOOG!', '123', 'LUV@', 'antidisestablishmentarianismheyo', 'BRK A', 'AAPL:123','AAPL:LUV@','AAPL:AA!','AAPL:$$','AAPL:antidisestablishmentarianismismheyo','AAPL:A A',
         );
         $this->nonStringSymbol = array(
             array(123, 123),
