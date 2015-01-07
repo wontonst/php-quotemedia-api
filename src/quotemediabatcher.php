@@ -11,22 +11,13 @@ class QuoteMediaBatcher extends QuoteMediaBase {
 
     //private $batching; ///< whether or not the batching is complete
 
-    public function __construct($in) {
+    public function __construct($parent) {
         parent::__construct();
-        if (is_int($in) || ctype_digit($in)) {
-            $this->api = new QuoteMediaStocks($in);
-        } else {
-            $type = get_class($in);
-            if ($type == 'QuoteMediaStocks') {
-                //TODO: if we upgrade to PHP 5.5 this 
-                //should be replaced with QuoteMediaStocks::class so
-                //code doesn't break in event of class name change
-                $this->api = $in;
-            } else {
-                throw new Exception('Invalid QuoteMediaBatcher constructor parameter');
-            }
+        $type = get_class($in);
+        if ($type != 'QuoteMediaStocks') {
+            throw new Exception('Invalid QuoteMediaBatcher constructor parameter. Only accepts a QuoteMediaStocks parent object.');
         }
-        //$batching=false;
+        $this->api = $parent;
     }
 
     /**

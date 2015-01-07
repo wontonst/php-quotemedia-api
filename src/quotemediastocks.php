@@ -5,6 +5,8 @@
  */
 class QuoteMediaStocks extends QuoteMediaBase {
 
+    private $batcher;
+
     /**
      * Bottom of the call stack for grabbing data from QM. Sets errors for connection issues and XML validity issues.
      * @param QuoteMediaStocks(constant) $type type of call to make
@@ -12,7 +14,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @returns array returns raw xml data from API call
      */
     public function callStock($type, $tickers) {
-        $url = QuoteMediaStocksHelper::buildStockURL($type, $tickers,$this->getWebmasterId());
+        $url = QuoteMediaStocksHelper::buildStockURL($type, $tickers, $this->getWebmasterId());
         // echo $url;
         $response = file_get_contents($url);
         if (!$response) {
@@ -52,6 +54,14 @@ class QuoteMediaStocks extends QuoteMediaBase {
 
     public function __construct($webmaster_id) {
         parent::__construct($webmaster_id);
+        $this->batcher = NULL;
+    }
+
+    public function getBatcher() {
+        if ($this->batcher == NULL) {
+            $this->batcher = new QuoteMediaBatcher($this);
+        }
+        return $this->batcher;
     }
 
     /**
@@ -85,7 +95,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
             return false;
         }
         $cleaned = $this->cleanSymbolArray($symbols);
-        $xml = $this->api->callStock($function_id, $cleaned);
+        $xml = $this->callStock($function_id, $cleaned);
         if (!$xml) {
             return false;
         }

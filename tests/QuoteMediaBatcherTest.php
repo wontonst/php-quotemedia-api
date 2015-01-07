@@ -3,7 +3,8 @@
 class QuoteMediaBatcherTest extends QuoteMediaStocksTester {
 
     protected function setUp() {
-        $this->api = new QuoteMediaBatcher(TEST_WEBMASTER_ID);
+        $stocks = new QuoteMediaStocks(TEST_WEBMASTER_ID);
+        $this->api = $stocks->getBatcher();
         $this->setUpInputs();
     }
 
