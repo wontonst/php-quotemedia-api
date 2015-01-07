@@ -10,6 +10,7 @@ abstract class QuoteMediaResult {
 
     public function __construct($result, $error) {
         $this->error = $error;
+        $this->result = $result;
     }
 
     public function getErrorID() {
