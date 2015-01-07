@@ -5,6 +5,7 @@
  */
 class QuoteMediaStories extends QuoteMediaBase {
 
+    public function getHeadlines
 }
 
 ?>
