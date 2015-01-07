@@ -2,9 +2,29 @@
 
 class QuoteMediaBase {
 
-    public function __construct() {
+    /**
+     * Convert an array of tickers into a comma delimited string for use in web API
+     * @param array $tickers array of ticker strings
+     * @return string comma delimited ticker string
+     */
+    public static function stringifyTickers(&$tickers) {
+        return implode(',', $tickers);
+    }
+
+    public static function xml2json(&$xml) {
+        //may the programming Gods have mercy on my soul
+        $ihavenodignity = json_encode($xml);
+        return json_decode($ihavenodignity, TRUE);
+    }
+
+    public function __construct($webmaster_id) {
         $this->error = QuoteMediaError::GOOD;
         $this->error_info = array();
+        $this->webmaster_id = $webmaster_id;
+    }
+
+    public function getWebmasterId() {
+        return $this->webmaster_id;
     }
 
     public function getErrorID() {

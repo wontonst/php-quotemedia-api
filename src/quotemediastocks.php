@@ -1,9 +1,36 @@
 <?php
 
 /**
- * TODO: Custom keys for result
+ * Class for all stock related requests.
  */
 class QuoteMediaStocks extends QuoteMediaBase {
+
+    /**
+     * Bottom of the call stack for grabbing data from QM. Sets errors for connection issues and XML validity issues.
+     * @param QuoteMediaStocks(constant) $type type of call to make
+     * @param array $tickers array of ticker strings
+     * @returns array returns raw xml data from API call
+     */
+    public function callStock($type, $tickers) {
+        $url = QuoteMediaStocksHelper::buildStockURL($type, $tickers,$this->getWebmasterId());
+        // echo $url;
+        $response = file_get_contents($url);
+        if (!$response) {
+            //error can't reach the url
+            $this->errorID = QuoteMediaError::API_HTTP_REQUEST_ERROR;
+            return false;
+        }
+        $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+        if (!$xml) {
+            //error parsing the XML
+            $this->errorID = QuoteMediaError::API_XML_PARSE_ERROR;
+            return false;
+        }
+        if (QuoteMediaStocks::getXmlSymbolCount($type, $xml) != count($tickers)) {
+            // TODO: determine which ticker didn't get included and report it or retry
+        }
+        return $xml;
+    }
 
     /**
      * Get the number of symbols described in XML.
@@ -24,8 +51,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     public function __construct($webmaster_id) {
-        parent::__construct();
-        $this->api = new QuoteMediaApi($webmaster_id);
+        parent::__construct($webmaster_id);
     }
 
     /**
