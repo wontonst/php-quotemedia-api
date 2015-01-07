@@ -549,4 +549,4 @@ Contributions can be submitted right here on Github through a pull request.
 
 All functions should be documented in doxygen/javadoc style. The current code the code is in doxygen/javadoc style so you can generate it yourself for reference.
 
-Before any pull request can be submitted, be sure to run the unit tests. You can use the run_tests.sh script if you don't know phpunit. Don't forget to add your webmaster ID to testsautoload.php before running the test or it will give you a syntax error.
+Before any pull request can be submitted, be sure to run the unit tests. You can use the run_tests.sh script if you don't know phpunit. Don't forget to add your webmaster ID to testsautoload.php before running the test or it will give you a syntax error. Also note that some tests validates data that is only available during the weekday, so be weary of running tests over the weekend...
