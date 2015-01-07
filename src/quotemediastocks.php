@@ -112,7 +112,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        $json = QuoteMediaApi::xml2json($xml);
+        $json = $this->xml2json($xml);
         return $this->flattenResults($json['quote'], 'flattenQuote', $use_assoc);
     }
 
@@ -125,7 +125,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        $json = QuoteMediaApi::xml2json($xml);
+        $json = $this->xml2json($xml);
         return $this->flattenResults($json['company'], 'flattenProfile', $use_assoc);
     }
 
@@ -138,7 +138,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        $json = QuoteMediaApi::xml2json($xml);
+        $json = $this->xml2json($xml);
         return $this->flattenResults($json['company'], 'flattenFundamental', $use_assoc);
     }
 
@@ -147,7 +147,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
         if (!$xml) {
             return false;
         }
-        $json = QuoteMediaApi::xml2json($xml);
+        $json = $this->xml2json($xml);
         return $this->flattenResults($json['company'], 'flattenKeyRatios', $use_assoc);
     }
 
