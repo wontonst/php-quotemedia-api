@@ -10,6 +10,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             array('MS'),
             array('GOOG'),
             array('CRD.B'),
+	    array('VNP:CA'),
         );
         $this->mArray = array(
             array('GOOG', 'AAPL'),
@@ -20,7 +21,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
                 'WTS', 'WTW', 'WWD', 'WSO', 'WSR', 'WERN', 'WEX', 'WEYS', 'DISCK', 'LLL',
                 'DLPH', 'DLTR', 'DNB', 'DNR', 'DO', 'DOV', 'DOW', 'DPS', 'DRI', 'DTE',
                 'DTV', 'DUK', 'DVA', 'DVN', 'EA', 'EBAY', 'ECL', 'ED', 'EFX', 'FRGI',
-                'FRM', 'FRME', 'FRNK', 'FRO', 'FRP', 'FSP', 'FSS', 'FST', 'FSTR', 'LEG',
+                'FRM', 'FRME', 'CVX', 'FRO', 'FRP', 'FSP', 'FSS', 'MMM', 'FSTR', 'LEG',
                 'FSYS', 'FTD', 'FTK', 'FUEL', 'FUL', 'FUR', 'HIVE', 'FVE', 'FWRD', 'LLY',
                 'FXCB', 'FXCM', 'FXEN', 'GABC', 'GAIA', 'GALE', 'GALT', 'GB', 'GBCI', 'GBL',
                 'GBLI', 'GBNK', 'GBX', 'GCA', 'GCAP', 'GCO', 'GDOT', 'GDP', 'GEO',
@@ -30,7 +31,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             123, '123', $this, false, true
         );
         $this->malformedSymbols = array(
-            '$$', 'GOOG!', '123', 'LUV@', 'antidisestablishmentarianismheyo', 'BRK A'
+            '$$', 'GOOG!', '123', 'LUV@', 'antidisestablishmentarianismheyo', 'BRK A', 'AAPL:123','AAPL:LUV@','AAPL:AA!','AAPL:$$','AAPL:antidisestablishmentarianismismheyo','AAPL:A A',
         );
         $this->nonStringSymbol = array(
             array(123, 123),
