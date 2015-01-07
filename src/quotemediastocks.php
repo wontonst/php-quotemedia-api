@@ -1,8 +1,39 @@
 <?php
 
+/**
+ * Class for all stock related requests.
+ */
 class QuoteMediaStocks extends QuoteMediaStocksBase {
 
     private $builder; ///< temp QuoteMediaStocksResultBuilder object to be used to generate result
+    private $batcher;
+
+    /**
+     * Bottom of the call stack for grabbing data from QM. Sets errors for connection issues and XML validity issues.
+     * @param QuoteMediaStocks(constant) $type type of call to make
+     * @param array $tickers array of ticker strings
+     * @returns array returns raw xml data from API call
+     */
+    public function callStock($type, $tickers) {
+        $url = QuoteMediaStocksHelper::buildStockURL($type, $tickers, $this->getWebmasterId());
+        // echo $url;
+        $response = file_get_contents($url);
+        if (!$response) {
+            //error can't reach the url
+            $this->errorID = QuoteMediaError::API_HTTP_REQUEST_ERROR;
+            return false;
+        }
+        $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+        if (!$xml) {
+            //error parsing the XML
+            $this->errorID = QuoteMediaError::API_XML_PARSE_ERROR;
+            return false;
+        }
+        if (QuoteMediaStocks::getXmlSymbolCount($type, $xml) != count($tickers)) {
+            // TODO: determine which ticker didn't get included and report it or retry
+        }
+        return $xml;
+    }
 
     /**
      * Get the number of symbols described in XML.
@@ -24,8 +55,15 @@ class QuoteMediaStocks extends QuoteMediaStocksBase {
     }
 
     public function __construct($webmaster_id) {
-        parent::__construct();
-        $this->api = new QuoteMediaApi($webmaster_id);
+        parent::__construct($webmaster_id);
+        $this->batcher = NULL;
+    }
+
+    public function getBatcher() {
+        if ($this->batcher == NULL) {
+            $this->batcher = new QuoteMediaBatcher($this);
+        }
+        return $this->batcher;
     }
 
     /**
@@ -59,7 +97,7 @@ class QuoteMediaStocks extends QuoteMediaStocksBase {
             return false;
         }
         $cleaned = $this->cleanSymbolArray($symbols);
-        $xml = $this->api->callStock($function_id, $cleaned);
+        $xml = $this->callStock($function_id, $cleaned);
         if (!$xml) {
             return false;
         }
@@ -77,7 +115,7 @@ class QuoteMediaStocks extends QuoteMediaStocksBase {
         if (!$xml) {
             return false;
         }
-        $json = QuoteMediaApi::xml2json($xml);
+        $json = $this->xml2json($xml);
         return $this->flattenResults($json['quote'], 'flattenQuote', $use_assoc);
     }
 
@@ -90,7 +128,7 @@ class QuoteMediaStocks extends QuoteMediaStocksBase {
         if (!$xml) {
             return false;
         }
-        $json = QuoteMediaApi::xml2json($xml);
+        $json = $this->xml2json($xml);
         return $this->flattenResults($json['company'], 'flattenProfile', $use_assoc);
     }
 
@@ -103,7 +141,7 @@ class QuoteMediaStocks extends QuoteMediaStocksBase {
         if (!$xml) {
             return false;
         }
-        $json = QuoteMediaApi::xml2json($xml);
+        $json = $this->xml2json($xml);
         return $this->flattenResults($json['company'], 'flattenFundamental', $use_assoc);
     }
 
@@ -112,7 +150,7 @@ class QuoteMediaStocks extends QuoteMediaStocksBase {
         if (!$xml) {
             return false;
         }
-        $json = QuoteMediaApi::xml2json($xml);
+        $json = $this->xml2json($xml);
         return $this->flattenResults($json['company'], 'flattenKeyRatios', $use_assoc);
     }
 

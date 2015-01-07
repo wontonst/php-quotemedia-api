@@ -5,28 +5,18 @@
  * Todo
  * Enforce getSubrtn $cmd parameter
  */
-class QuoteMediaBatcher extends QuoteMediaBase {
+class QuoteMediaBatcher{
 
     private $api; ///< instance of QuoteMediaStocks
 
     //private $batching; ///< whether or not the batching is complete
 
-    public function __construct($in) {
-        parent::__construct();
-        if (is_int($in) || ctype_digit($in)) {
-            $this->api = new QuoteMediaStocks($in);
-        } else {
-            $type = get_class($in);
-            if ($type == 'QuoteMediaStocks') {
-                //TODO: if we upgrade to PHP 5.5 this 
-                //should be replaced with QuoteMediaStocks::class so
-                //code doesn't break in event of class name change
-                $this->api = $in;
-            } else {
-                throw new Exception('Invalid QuoteMediaBatcher constructor parameter');
-            }
+    public function __construct($stocks) {
+        $type = get_class($stocks);
+        if ($type != 'QuoteMediaStocks') {
+            throw new Exception('Invalid QuoteMediaBatcher constructor parameter. Only accepts a QuoteMediaStocks parent object.');
         }
-        //$batching=false;
+        $this->api = $stocks;
     }
 
     /**
