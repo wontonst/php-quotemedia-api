@@ -11,16 +11,18 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             foreach ($this->notArrayInputs as $bad) {
                 $function_name = QuoteMediaConst::functIdToStr($fnctid);
-                $this->assertFalse($this->api->$function_name($bad, false), 'Bad input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
-                $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving ' . $function_name . ' a non array input yields incorrect error ' . $this->api->getError());
+                $result = $this->api->$function_name($bad, false);
+                $this->assertTrue($result->hasError(), 'Bad input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
+                $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $result->getErrorID(), 'Giving ' . $function_name . ' a non array input yields incorrect error ' . $this->api->getError());
                 $this->setUp();
             }
         }
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             foreach ($this->notArrayInputs as $bad) {
                 $function_name = QuoteMediaConst::functIdToStr($fnctid);
-                $this->assertFalse($this->api->$function_name($bad, true), 'Bad input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
-                $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving ' . $function_name . ' a non array input yields incorrect error ' . $this->api->getError());
+                $result = $this->api->$function_name($bad, true);
+                $this->assertTrue($result->hasError(), 'Bad input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
+                $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $result->getErrorID(), 'Giving ' . $function_name . ' a non array input yields incorrect error ' . $this->api->getError());
                 $this->setUp();
             }
         }
@@ -29,35 +31,48 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
     public function testMalformedSymbol() {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
-            $this->assertFalse($this->api->$function_name($this->malformedSymbols, false), 'Malformed symbol array ' . print_r($this->malformedSymbols, true) . ' was not caught by ' . $function_name);
-            $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $this->api->getErrorID(), 'Giving ' . $function_name . ' a malformed symbol yields incorrect error ' . $this->api->getError());
-            $this->assertEquals('$$', $this->api->getErrorInfo(), 'Malformed symbol error info mismatch');
+            $result = $this->api->$function_name($this->malformedSymbols['input'], false);
+            $this->assertTrue($result->hasError(), 'Malformed symbol array ' . print_r($this->malformedSymbols, true) . ' was not caught by ' . $function_name);
+            $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $result->getErrorID(), 'Giving ' . $function_name . ' a malformed symbol yields incorrect error ' . $this->api->getError());
+            $malformed = $result->getMalformed();
+            foreach ($this->malformedSymbols['malformed'] as $m) {
+                $this->assertTrue(in_array($malformed, $m), 'Malformed symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
+            }
             $this->setUp();
         }
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
-            $this->assertFalse($this->api->$function_name($this->malformedSymbols, true), 'Malformed symbol array ' . print_r($this->malformedSymbols, true) . ' was not caught by ' . $function_name);
-            $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $this->api->getErrorID(), 'Giving ' . $function_name . ' a malformed symbol yields incorrect error ' . $this->api->getError());
+            $result = $this->api->$function_name($this->malformedSymbols['input'], true);
+            $this->assertTrue($result->hasError(), 'Malformed symbol array ' . print_r($this->malformedSymbols, true) . ' was not caught by ' . $function_name);
+            $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $result->getErrorID(), 'Giving ' . $function_name . ' a malformed symbol yields incorrect error ' . $this->api->getError());
+            $malformed = $result->getMalformed();
+            foreach ($this->malformedSymbols['malformed'] as $m) {
+                $this->assertTrue(in_array($malformed, $m), 'Malformed symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
+            }
             $this->setUp();
         }
     }
 
     public function testSymbolNotString() {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
-            foreach ($this->nonStringSymbol as $bad) {
-                $function_name = QuoteMediaConst::functIdToStr($fnctid);
-                $this->assertFalse($this->api->$function_name($bad, false), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
-                $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $this->api->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $this->api->getError());
-                $this->setUp();
+            $function_name = QuoteMediaConst::functIdToStr($fnctid);
+            $result = $this->api->$function_name($this->nonStringSymbol['input'], false);
+            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
+            $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $this->api->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $this->api->getError());
+            foreach ($this->nonStringSymbol['malformed'] as $m) {
+                $this->assertTrue(in_array($malformed, $m), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
             }
+            $this->setUp();
         }
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
-            foreach ($this->nonStringSymbol as $bad) {
-                $function_name = QuoteMediaConst::functIdToStr($fnctid, true);
-                $this->assertFalse($this->api->$function_name($bad), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
-                $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $this->api->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $this->api->getError());
-                $this->setUp();
+            $function_name = QuoteMediaConst::functIdToStr($fnctid);
+            $result = $this->api->$function_name($this->nonStringSymbol['input'], false);
+            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
+            $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $this->api->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $this->api->getError());
+            foreach ($this->nonStringSymbol['malformed'] as $m) {
+                $this->assertTrue(in_array($malformed, $m), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
             }
+            $this->setUp();
         }
     }
 
@@ -67,14 +82,14 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $this->assertFalse(in_array($bad, array_keys($result)), 'Nonexistant symbol ' . $bad . ' was found in the result array: ' . print_r($result, true));
         }
         foreach ($bad_expected as $bad) {
-            $this->assertTrue(in_array($bad, $bad_actual), 'Invalid symbol '.$bad.' was not recorded by QuoteMediaStocks; Actual bad array dump :'.print_r($bad_actual, true));
+            $this->assertTrue(in_array($bad, $bad_actual), 'Invalid symbol ' . $bad . ' was not recorded by QuoteMediaStocks; Actual bad array dump :' . print_r($bad_actual, true));
         }
     }
 
     public function testGetQuotesSymbolDoesNotExist() {
         //all bad
         $result = $this->api->getQuotes($this->nonexistantSymbols);
-        $this->validateSymbolDoesNotExist($result, $this->nonexistantSymbols, $api->getMissingSymbols());
+        $this->validateSymbolDoesNotExist($result(), $this->nonexistantSymbols);
         //some bad
         $result = $this->api->getQuotes(array_merge($this->nonexistantSymbols, $this->sArray));
     }

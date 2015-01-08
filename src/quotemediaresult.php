@@ -21,6 +21,13 @@ abstract class QuoteMediaResult {
         return QuoteMediaError::IDtoError($this->error);
     }
 
+    /**
+     * @returns the result, if the result is null means it couldn't get any meaningful result from API, like if a connection error occurred.
+     */
+    public function getResult() {
+        return $this->result;
+    }
+
 }
 
 ?>

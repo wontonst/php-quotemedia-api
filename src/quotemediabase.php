@@ -27,40 +27,28 @@ class QuoteMediaBase {
         return $this->webmaster_id;
     }
 
-    public function getErrorID() {
-        return $this->error;
-    }
-
-    public function getError() {
-        return QuoteMediaError::IDtoError($this->error);
-    }
-
-    public function getErrorInfo() {
-        return $this->error_info;
-    }
-
     /**
      * Check that the input array of symbols is well formed.
      * @param array $input array of tickers, presumably
-     * @return boolean whether or not the array is well formed
+     * @param QuoteMediaResultBuilder $builder
+     * @return array of malformed symbols
      */
-    protected function verifySymbolArray(&$input) {
+    protected function verifySymbolArray(&$input, &$builder) {
+        $error = array();
         if (!is_array($input)) {
-            $this->error = QuoteMediaError::INPUT_IS_NOT_ARRAY;
-            return false;
+            $builder->setError(QuoteMediaError::INPUT_IS_NOT_ARRAY);
         }
         foreach ($input as $v) {
             if (!is_string($v)) {
-                $this->error = QuoteMediaError::SYMBOL_IS_NOT_STRING;
-                return false;
+                $builder->setError(QuoteMediaError::SYMBOL_IS_NOT_STRING);
+                $error[] = $v;
             }
             if (0 == preg_match('/^[a-zA-Z\-.]{1,10}(:[a-zA-Z\-.]{1,10})?$/', trim($v))) {
-                $this->error = QuoteMediaError::MALFORMED_SYMBOL;
-                $this->error_info = trim($v);
-                return false;
+                $builder->setError(QuoteMediaError::MALFORMED_SYMBOL);
+                $error[] = trim($v);
             }
         }
-        return true;
+        return $error;
     }
 
     /**

@@ -14,10 +14,12 @@ class QuoteMediaStocksResult extends QuoteMediaResult {
      * @param array $missing list of missing symbols
      */
 
-    public function __construct($result, $error, $missing) {
+    public function __construct($result, $error, $missing, $malformed) {
         parent::construct($result, $error);
         $this->missing = $missing;
         $this->has_missing = !empty($missing);
+        $this->malformed = $malformed;
+        $this->has_malformed = !empty($malformed);
     }
 
     /**
@@ -34,6 +36,14 @@ class QuoteMediaStocksResult extends QuoteMediaResult {
      */
     public function getMissingSymbols() {
         return $this->missing;
+    }
+
+    public function hasMalformedSymbols() {
+        return $this->has_malformd;
+    }
+
+    public function getMalformedSymbols() {
+        return $this->malformed;
     }
 
 }

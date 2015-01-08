@@ -10,7 +10,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             array('MS'),
             array('GOOG'),
             array('CRD.B'),
-	    array('VNP:CA'),
+            array('VNP:CA'),
         );
         $this->mArray = array(
             array('GOOG', 'AAPL'),
@@ -31,15 +31,19 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             123, '123', $this, false, true
         );
         $this->malformedSymbols = array(
-            '$$', 'GOOG!', '123', 'LUV@', 'antidisestablishmentarianismheyo', 'BRK A', 'AAPL:123','AAPL:LUV@','AAPL:AA!','AAPL:$$','AAPL:antidisestablishmentarianismismheyo','AAPL:A A',
+            'input' => array(
+                'AAPL', 'GOOG', '$$', 'GOOG!', '123', 'LUV@', 'antidisestablishmentarianismheyo', 'CVS', 'BRK A', 'AAPL:123', 'AAPL:LUV@', 'AAPL:AA!', 'AAPL:$$', 'AAPL:antidisestablishmentarianismismheyo', 'AAPL:A A', 'SWHC'
+            ),
+            'malformed' => array(
+                '$$', 'GOOG!', '123', 'LUV@', 'antidisestablishmentarianismheyo', 'BRK A', 'AAPL:123', 'AAPL:LUV@', 'AAPL:AA!', 'AAPL:$$', 'AAPL:antidisestablishmentarianismismheyo', 'AAPL:A A',
+            )
         );
         $this->nonStringSymbol = array(
-            array(123, 123),
-            array(array(), array()),
-            array(1 => 2, 3 => 3),
+            'input' => array('AAPL', 'CVS', 123, 321, 2, 'SWHC', 3, array(), 'CVX', 'C'),
+            'malformed' => array(123, 321, 2, 3, array()),
         );
         $this->nonexistantSymbols = array(
-          'GROL','LXX'  
+            'GROL', 'LXX'
         );
     }
 
