@@ -19,7 +19,9 @@ abstract class QuoteMediaResultBuilder {
     public function setError($error) {
         $this->error = $error;
     }
-
+    public function getError(){
+      return $this->error;
+    }
     public function setResult($result) {
         $this->result = $result;
     }
@@ -35,7 +37,6 @@ abstract class QuoteMediaResultBuilder {
     public function getXml() {
         return $this->xml;
     }
-
     public abstract function build();
 }
 

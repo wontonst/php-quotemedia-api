@@ -25,14 +25,15 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
     public function setMalformed($malformedarray) {
         $this->malformed = $malformedarray;
     }
-
-    public function build($build_function_name, $use_assoc) {
-        if (!$this->getXml()) {
+    public function processXml($build_function_name, $use_assoc){
+      if(!$this->getXml()){
             $this->setResult(NULL);
-            return new QuoteMediaStocksResult($this->getResult(), $this->getError(), $this->missing, $this->malformed);
-        }
+	return;
+      }
         $this->setResult($this->flattenResult(QuoteMediaBase::xml2json($this->getXml()), $build_function_name, $use_assoc));
-        return new QuoteMediaStocksResult($this->getResult(), $this->getError(), $this->missing, $this->malformed);
+    }
+    public function build() {
+            return new QuoteMediaStocksResult($this->getResult(), $this->getError(), $this->missing, $this->malformed);
     }
 
     /**

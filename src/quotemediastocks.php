@@ -3,7 +3,7 @@
 /**
  * Class for all stock related requests.
  */
-class QuoteMediaStocks extends QuoteMediaStocksBase {
+class QuoteMediaStocks extends QuoteMediaBase {
 
     private $builder; ///< temp QuoteMediaStocksResultBuilder object to be used to generate result
     private $batcher; ///< instance of QuoteMediaStocksBatcher
@@ -90,7 +90,7 @@ class QuoteMediaStocks extends QuoteMediaStocksBase {
      */
     private function getSubrtn(&$symbols, $function_id, $max_symbols, $max_symbols_error) {
         $builder = new QuoteMediaStocksResultBuilder();
-        verifyInput($symbols, $max_symbols, $max_symbols_error, $builder);
+        $this->verifyInput($symbols, $max_symbols, $max_symbols_error, $builder);
         $cleaned = $this->cleanSymbolArray($symbols);
         $this->callStock($function_id, $cleaned, $builder);
         return $builder;

@@ -15,7 +15,7 @@ class QuoteMediaStocksResult extends QuoteMediaResult {
      */
 
     public function __construct($result, $error, $missing, $malformed) {
-        parent::construct($result, $error);
+        parent::__construct($result, $error);
         $this->missing = $missing;
         $this->has_missing = !empty($missing);
         $this->malformed = $malformed;
