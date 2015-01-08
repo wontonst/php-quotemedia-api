@@ -87,11 +87,11 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
     }
 
     public function testGetQuotesSymbolDoesNotExist() {
-        //all bad
-        $result = $this->api->getQuotes($this->nonexistantSymbols);
-        $this->validateSymbolDoesNotExist($result(), $this->nonexistantSymbols);
-        //some bad
-        $result = $this->api->getQuotes(array_merge($this->nonexistantSymbols, $this->sArray));
+        foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
+            $function_name = QuoteMediaConst::functIdToStr($fnctid);
+            $result = $this->api->$function_name($this->nonexistantSymbols, true);
+            $this->validateSymbolDoesNotExist($result->getResults(), $this->nonexistantSymbols, $result->getMissing());
+        }
     }
 
     /* get array routines & tests */
@@ -99,7 +99,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
     private function getArrayTest($function, $inputArrays) {
         foreach ($inputArrays as $input) {
             $result = $this->api->$function($input, false);
-            $this->validateArray($input, $result, $function);
+            $this->validateArray($input, $result->getResult(), $function);
             $out[] = $result;
         }
         return $out;
@@ -159,7 +159,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
     private function getAssocTest($function, $inputArrays) {
         foreach ($inputArrays as $input) {
             $result = $this->api->$function($input, true);
-            $this->validateAssoc($input, $result, $function);
+            $this->validateAssoc($input, $result->getResult(), $function);
             $out[] = $result;
         }
         return $out;
