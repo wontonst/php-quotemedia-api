@@ -14,8 +14,8 @@ class QuoteMediaStocksResult extends QuoteMediaResult {
      * @param array $missing list of missing symbols
      */
 
-    public function __construct($builder $result, $error, $missing, $malformed) {
-        parent::__construct($result, $error);
+    public function __construct($builder) {
+        parent::__construct($builder);
         $this->missing = $builder->getMissing();
         $this->has_missing = !empty($this->missing);
         $this->malformed = $builder->getMalformed();

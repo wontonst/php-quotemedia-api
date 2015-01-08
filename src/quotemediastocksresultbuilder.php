@@ -43,7 +43,7 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
     }
 
     public function build() {
-        return new QuoteMediaStocksResult($this->getResult(), $this->getError(), $this->missing, $this->malformed);
+        return new QuoteMediaStocksResult($this);
     }
 
     /**
