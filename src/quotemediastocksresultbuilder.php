@@ -18,6 +18,10 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
         $this->missing = $missingarray;
     }
 
+    public function getMissing() {
+        return $this->missing;
+    }
+
     public function addMalformed($malformed) {
         $this->malformed[] = $malformed();
     }
@@ -25,15 +29,21 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
     public function setMalformed($malformedarray) {
         $this->malformed = $malformedarray;
     }
-    public function processXml($build_function_name, $use_assoc){
-      if(!$this->getXml()){
+
+    public function getMalformed() {
+        return $this->malformed;
+    }
+
+    public function processXml($build_function_name, $use_assoc) {
+        if (!$this->getXml()) {
             $this->setResult(NULL);
-	return;
-      }
+            return;
+        }
         $this->setResult($this->flattenResult(QuoteMediaBase::xml2json($this->getXml()), $build_function_name, $use_assoc));
     }
+
     public function build() {
-            return new QuoteMediaStocksResult($this->getResult(), $this->getError(), $this->missing, $this->malformed);
+        return new QuoteMediaStocksResult($this->getResult(), $this->getError(), $this->missing, $this->malformed);
     }
 
     /**

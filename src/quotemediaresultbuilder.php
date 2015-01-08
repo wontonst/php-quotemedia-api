@@ -6,6 +6,7 @@
 abstract class QuoteMediaResultBuilder {
 
     protected $error;
+    protected $errorhistory;
     protected $result;
 
     public function __construct() {
@@ -17,11 +18,20 @@ abstract class QuoteMediaResultBuilder {
     }
 
     public function setError($error) {
-        $this->error = $error;
+        if ($this->error != $error) {
+            $this->errorhistory[] = $this->error;
+            $this->error = $error;
+        }
     }
-    public function getError(){
-      return $this->error;
+
+    public function getErrorHistory() {
+        return $this->errorhistory;
     }
+
+    public function getError() {
+        return $this->error;
+    }
+
     public function setResult($result) {
         $this->result = $result;
     }
@@ -37,6 +47,7 @@ abstract class QuoteMediaResultBuilder {
     public function getXml() {
         return $this->xml;
     }
+
     public abstract function build();
 }
 

@@ -17,6 +17,9 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
                 $this->setUp();
             }
         }
+    }
+
+    public function testNotArrayInput() {//tests every single input value in $this->badInputs and every single function in QuoteMediaConst::$STOCKS_FUNCTIONS
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             foreach ($this->notArrayInputs as $bad) {
                 $function_name = QuoteMediaConst::functIdToStr($fnctid);
@@ -36,10 +39,13 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $result->getErrorID(), 'Giving ' . $function_name . ' a malformed symbol yields incorrect error ' . $this->api->getError());
             $malformed = $result->getMalformed();
             foreach ($this->malformedSymbols['malformed'] as $m) {
-                $this->assertTrue(in_array($malformed, $m), 'Malformed symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
+                $this->assertTrue(in_array($m, $malformed), 'Malformed symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
             }
             $this->setUp();
         }
+    }
+
+    public function testMalformedSymbolAssoc() {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
             $result = $this->api->$function_name($this->malformedSymbols['input'], true);
@@ -47,7 +53,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $result->getErrorID(), 'Giving ' . $function_name . ' a malformed symbol yields incorrect error ' . $this->api->getError());
             $malformed = $result->getMalformed();
             foreach ($this->malformedSymbols['malformed'] as $m) {
-                $this->assertTrue(in_array($malformed, $m), 'Malformed symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
+                $this->assertTrue(in_array($m, $malformed), 'Malformed symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
             }
             $this->setUp();
         }
@@ -60,17 +66,20 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $this->api->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $this->api->getError());
             foreach ($this->nonStringSymbol['malformed'] as $m) {
-                $this->assertTrue(in_array($malformed, $m), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
+                $this->assertTrue(in_array($m, $malformed), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
             }
             $this->setUp();
         }
+    }
+
+    public function testSymbolNotStringAssoc() {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
             $result = $this->api->$function_name($this->nonStringSymbol['input'], false);
             $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $this->api->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $this->api->getError());
             foreach ($this->nonStringSymbol['malformed'] as $m) {
-                $this->assertTrue(in_array($malformed, $m), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
+                $this->assertTrue(in_array($m, $malformed), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
             }
             $this->setUp();
         }
@@ -92,6 +101,10 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $result = $this->api->$function_name($this->nonexistantSymbols, true);
             $this->validateSymbolDoesNotExist($result->getResults(), $this->nonexistantSymbols, $result->getMissing());
         }
+    }
+
+    public function testErrorHistory() {
+        //TODO
     }
 
     /* get array routines & tests */

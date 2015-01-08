@@ -6,11 +6,13 @@
 abstract class QuoteMediaResult {
 
     protected $error;
+    protected $errorhistory;
     protected $result;
 
-    public function __construct($result, $error) {
-        $this->error = $error;
-        $this->result = $result;
+    public function __construct($builder) {
+        $this->error = $builder->getError();
+        $this->errorhistory = $builder->getErrorHistory();
+        $this->result = $builder->getResult();
     }
 
     public function getErrorID() {
@@ -19,6 +21,10 @@ abstract class QuoteMediaResult {
 
     public function getError() {
         return QuoteMediaError::IDtoError($this->error);
+    }
+
+    public function getErrorIDHistory() {
+        return $this->errorhistory;
     }
 
     /**
