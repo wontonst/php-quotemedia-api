@@ -26,7 +26,7 @@ class QuoteMediaStocksResult extends QuoteMediaResult {
      * Whether or not symbols are missing.
      * @return bool
      */
-    public function hasMissingSymbols() {
+    public function hasMissing() {
         return $this->has_missing;
     }
 
@@ -34,15 +34,15 @@ class QuoteMediaStocksResult extends QuoteMediaResult {
      * Return list of missing symbols.
      * @return array missing symbols
      */
-    public function getMissingSymbols() {
+    public function getMissing() {
         return $this->missing;
     }
 
-    public function hasMalformedSymbols() {
+    public function hasMalformed() {
         return $this->has_malformd;
     }
 
-    public function getMalformedSymbols() {
+    public function getMalformed() {
         return $this->malformed;
     }
 
