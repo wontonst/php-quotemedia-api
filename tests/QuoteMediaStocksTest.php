@@ -19,7 +19,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         }
     }
 
-    public function testNotArrayInput() {//tests every single input value in $this->badInputs and every single function in QuoteMediaConst::$STOCKS_FUNCTIONS
+    public function testNotArrayInputAssoc() {//tests every single input value in $this->badInputs and every single function in QuoteMediaConst::$STOCKS_FUNCTIONS
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             foreach ($this->notArrayInputs as $bad) {
                 $function_name = QuoteMediaConst::functIdToStr($fnctid);
