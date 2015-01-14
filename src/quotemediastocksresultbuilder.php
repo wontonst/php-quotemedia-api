@@ -6,6 +6,7 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
     private $malformed; ///<malformed tickers
 
     public function __construct() {
+        parent::__construct();
         $this->missing = array();
         $this->malformed = array();
     }
@@ -39,7 +40,6 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
      * @param type $function_id id of the function, ie QuoteMediaConst::GET_QUOTES
      * @param type $json_entry generally speaking, its quotes for getQuotes and company for all else
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
-     * @return type
      */
     public function processXml($function_id, $json_entry, $use_assoc) {
         if (!$this->getXml()) {
@@ -48,7 +48,43 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
         }
         $json = QuoteMediaBase::xml2json($this->getXml());
         $this->setResult($this->flattenResults($json[$json_entry], $function_id, $use_assoc));
-        //var_dump($this);
+        $this->setMissing($use_assoc ? $this->calcMissingAssoc() : $this->calcMissingArray());
+        if (!empty($this->getMissing())) {
+            $this->setError(QuoteMediaError::SYMBOL_DOES_NOT_EXIST);
+        }
+    }
+
+    /**
+     * Find the symbols that the API did not return. This version is for $use_assoc=false.
+     * @return array missing symbols
+     */
+    private function calcMissingArray() {
+        $missing = array();
+        $in = array_keys($this->getResult());
+        foreach ($this->getInput() as $input) {
+            if (!in_array($input, $in)) {
+                $missing[] = $input;
+            }
+        }
+        return $missing;
+    }
+
+    /**
+     * Find the symbols that the API did not return. This version is for $use_assoc=true.
+     * @return array missing symbols
+     */
+    private function calcMissingAssoc() {
+        $missing = array();
+        $results = $this->getResult();
+        foreach ($this->getInput() as $input) {
+            foreach ($results as $i) {
+                if ($i['symbol'] == $input) {
+                    continue;
+                }
+                $missing[] = $input;
+            }
+        }
+        return $missing;
     }
 
     public function build() {

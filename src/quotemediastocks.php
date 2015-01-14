@@ -78,15 +78,17 @@ class QuoteMediaStocks extends QuoteMediaBase {
      */
     private function getSubrtn(&$symbols, $function_id, $max_symbols, $max_symbols_error, $json_entry, $use_assoc) {
         $builder = new QuoteMediaStocksResultBuilder();
-        if (!$this->verifyInputIsArray($symbols, $builder)) {
+        $builder->setRawInput($symbols);
+        if (!$builder->verifyRawInputIsArray()) {
             return $builder; //cannot proceed if input is not array
-        }
-        if (count($symbols) > $max_symbols) {
-            $builder->setError($max_symbols_error);
-            return $builder; //cannot proceed if input size exceeds $max_symbols
         }
         $verified = $this->removeMalformed($symbols, $builder); //malformed symbols are not in $verified
         $cleaned = $this->cleanSymbolArray($verified);
+        $builder->setInput($cleaned);
+        if (count($cleaned) > $max_symbols) {
+            $builder->setError($max_symbols_error);
+            return $builder; //cannot proceed if input size exceeds $max_symbols
+        }
         $this->callStock($function_id, $cleaned, $builder);
         $builder->processXml($function_id, $json_entry, $use_assoc);
         return $builder;
@@ -96,6 +98,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * Perform a getQuotes call to retrieve basic stock quote information. The max size of the $array is QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS
      * @param array $array array of ticker strings
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
+     * @return QuoteMediaStocksResult
      */
     public function getQuotes($array, $use_assoc = false) {
         $builder = $this->getSubrtn($array, QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOLS, 'quote', $use_assoc);
@@ -106,6 +109,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * Perform a getQuotes call to retrieve basic company information. The max size of the $array is QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS
      * @param type $array array of ticker strings
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
+     * @return QuoteMediaStocksResult
      */
     public function getProfiles($array, $use_assoc = false) {
         $builder = $this->getSubrtn($array, QuoteMediaConst::GET_PROFILES, QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS, QuoteMediaError::GET_PROFILES_EXCEED_MAX_SYMBOLS, 'company', $use_assoc);
@@ -116,6 +120,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * Perform a getQuotes call to retrieve company fundamental information. The max size of the $array is QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS
      * @param type $array array of ticker strings
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
+     * @return QuoteMediaStocksResult
      */
     public function getFundamentals($array, $use_assoc = false) {
         $builder = $this->getSubrtn($array, QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS, 'company', $use_assoc);
@@ -126,7 +131,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * Perform a getKeyRatios call to retrieve company financial ratio information. The max size of the $array is QuoteMediaConst::GET_KEYRATIOS_MAX_SYMBOLS
      * @param type $array array of ticker strings
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
-     * @return type
+     * @return QuoteMediaStocksResult
      */
     public function getKeyRatios(&$array, $use_assoc = false) {
         $builder = $this->getSubrtn($array, QuoteMediaConst::GET_KEY_RATIOS, QuoteMediaConst::GET_KEY_RATIOS_MAX_SYMBOLS, QuoteMediaError::GET_KEY_RATIOS_EXCEED_MAX_SYMBOLS, 'company', $use_assoc);

@@ -28,19 +28,6 @@ class QuoteMediaBase {
     }
 
     /**
-     * Check that input array is of type array, if not set the appropriate error.
-     * @param mixed $input
-     * @param QuoteMediaStocksResultBuilder $builder
-     */
-    protected function verifyInputIsArray($input, &$builder) {
-        if (!is_array($input)) {
-            $builder->setError(QuoteMediaError::INPUT_IS_NOT_ARRAY);
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Check that the input array of symbols is well formed.
      * @param array $input array of tickers, presumably
      * @param QuoteMediaResultBuilder $builder
@@ -52,7 +39,7 @@ class QuoteMediaBase {
         foreach ($input as $v) {
             if (!is_string($v)) {
                 $builder->setError(QuoteMediaError::SYMBOL_IS_NOT_STRING);
-                $malformed[] = is_array($v) ? 'array':$v;//we'll be putting "array" instead of actual array
+                $malformed[] = is_array($v) ? 'array' : $v; //we'll be putting "array" instead of actual array
                 continue;
             }
             $trimmed = trim($v);

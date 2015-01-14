@@ -111,7 +111,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
 
     private function validateSymbolDoesNotExist($result, $bad_expected) {
         $this->assertNotNull($result, 'Result is NULL!');
-        $this->assertEquals(QuoteMediaError::SYMBOL_DOES_NOT_EXIST, $result->getErrorID(), 'Not receving symbol does not exist error.');
+        $this->assertEquals(QuoteMediaError::SYMBOL_DOES_NOT_EXIST, $result->getErrorID(), 'Did not find the expected Symbol Does Not Exist error, instead got ' . $result->getError());
         $output = $result->getResult();
         foreach ($bad_expected as $bad) {
             $this->assertFalse(in_array($bad, array_keys($output)), 'Nonexistant symbol ' . $bad . ' was found in the result array: ' . print_r($output, true));
