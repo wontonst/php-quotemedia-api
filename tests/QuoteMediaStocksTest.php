@@ -83,10 +83,10 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
             $result = $this->api->$function_name($this->nonStringSymbol['input'], false);
             $this->assertNotNull($result, 'Result is NULL!');
-            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
-            $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $this->api->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $result->getError());
+            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($this->nonStringSymbol['input'], true) . ' was not caught by ' . $function_name);
+            $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $result->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $result->getError());
             foreach ($this->nonStringSymbol['malformed'] as $m) {
-                $this->assertTrue(in_array($m, $malformed), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
+                $this->assertTrue(in_array($m, $result->getMalformed()), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
             }
             $this->setUp();
         }
@@ -100,10 +100,10 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
             $result = $this->api->$function_name($this->nonStringSymbol['input'], false);
             $this->assertNotNull($result, 'Result is NULL!');
-            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
-            $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $this->api->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $result->getError());
+            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($this->nonStringSymbol['input'], true) . ' was not caught by ' . $function_name);
+            $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $result->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $result->getError());
             foreach ($this->nonStringSymbol['malformed'] as $m) {
-                $this->assertTrue(in_array($m, $malformed), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
+                $this->assertTrue(in_array($m, $result->getMalformed()), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
             }
             $this->setUp();
         }

@@ -39,40 +39,41 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
             $this->setResult(NULL);
             return;
         }
-        $this->setResult($this->flattenResult(QuoteMediaBase::xml2json($this->getXml()), $build_function, $use_assoc));
+        $this->setResult($this->flattenResults(QuoteMediaBase::xml2json($this->getXml()), $build_function, $use_assoc));
     }
 
     public function build() {
+       // var_dump($this);
         return new QuoteMediaStocksResult($this);
     }
 
     /**
      * Take a list of companies and flatten them.
      * @param array $json deserialized array built from XML->json
-     * @param string $build_function_name
+     * @param string $function_id function ID
      * @param bool $use_assoc
      * @return array flattened array
      */
-    private function flattenResults(&$json, $build_function, $use_assoc) {
+    private function flattenResults(&$json, $function_id, $use_assoc) {
+        switch ($function_id) {
+            case QuoteMediaConst::GET_QUOTES:
+                $build_function_name = 'flattenQuote';
+                break;
+            case QuoteMediaConst::GET_PROFILES:
+                $build_function_name = 'flattenProfile';
+                break;
+            case QuoteMediaConst::GET_FUNDAMENTALS:
+                $build_function_name = 'flattenFundamental';
+                break;
+            case QuoteMediaConst::GET_KEY_RATIOS:
+                $build_function_name = 'flattenKeyRatio';
+                break;
+        }
         if (array_key_exists('symbolinfo', $json) || array_key_exists('key', $json)) {//there is only one company
             $result = $this->$build_function_name($json);
             return array($use_assoc ? $result['symbol'] : 0 => $result);
         }
         $result = array();
-        switch ($build_function) {
-            case QuoteMediaConst::GET_QUOTES:
-                $build_function_name = 'flattenQuote';
-                return;
-            case QuoteMediaConst::GET_PROFILES:
-                $build_function_name = 'flattenProfiles';
-                return;
-            case QuoteMediaConst::GET_FUNDAMENTALS:
-                $build_function_name = 'flattenFundamentals';
-                return;
-            case QuoteMediaConst::GET_KEY_RATIOS:
-                $build_function_name = 'flattenKeyRatios';
-                return;
-        }
         foreach ($json as &$company) {
             $line = $this->$build_function_name($company);
             if (!$use_assoc) {//simple array
@@ -81,6 +82,7 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
             }//else
             $result[$line['symbol']] = $line;
         }
+        var_dump($result);
         return $result;
     }
 
