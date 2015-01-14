@@ -14,6 +14,10 @@ abstract class QuoteMediaResult {
         $this->errorhistory = $builder->getErrorHistory();
         $this->result = $builder->getResult();
     }
+    
+    public function hasError(){
+        return $this->error != QuoteMediaError::GOOD;
+    }
 
     public function getErrorID() {
         return $this->error;

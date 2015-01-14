@@ -68,31 +68,27 @@ class QuoteMediaStocks extends QuoteMediaBase {
     }
 
     /**
-     * Validate that input array is correct and set appropriate error if not.
-     * @param array $input list of stock tickers
-     * @param int $max maximum number of tickers in array
-     * @param int $max_exceed_error error code if the tickers in array exceeds $max
-     */
-    private function verifyInput(&$input, $max_symbols, $max_exceed_error, &$builder) {
-        $builder->setMalformed($this->verifySymbolArray($input, $builder));
-        if (count($input) > $max_symbols) {
-            $this->builder->setError($max_exceed_error);
-        }
-    }
-
-    /**
      * getQuote/getProfiles/getFundamentals all use this function to validate input and retrieve XML from API.
      * @param array $symbols list of tickers
      * @param int $function_id function id as specified in QuoteMediaConst
      * @param int $max_symbols maximum number of tickers in array
      * @param int $max_symbols_error error code if the tickers in array exceeds $max_symbols
+     * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      * @return SimplXMLElement xml file root
      */
-    private function getSubrtn(&$symbols, $function_id, $max_symbols, $max_symbols_error) {
+    private function getSubrtn(&$symbols, $function_id, $max_symbols, $max_symbols_error, $use_assoc) {
         $builder = new QuoteMediaStocksResultBuilder();
-        $this->verifyInput($symbols, $max_symbols, $max_symbols_error, $builder);
-        $cleaned = $this->cleanSymbolArray($symbols);
+        if (!$this->verifyInputIsArray($symbols, $builder)) {
+            return $builder; //cannot proceed if input is not array
+        }
+        if (count($symbols) > $max_symbols) {
+            $builder->setError($max_symbols_error);
+            return $builder; //cannot proceed if input size exceeds $max_symbols
+        }
+        $verified = $this->removeMalformed($symbols, $builder); //malformed symbols are not in $verified
+        $cleaned = $this->cleanSymbolArray($verified);
         $this->callStock($function_id, $cleaned, $builder);
+        $builder->processXml($function_id, $use_assoc);
         return $builder;
     }
 
@@ -102,8 +98,8 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      */
     public function getQuotes($array, $use_assoc = false) {
-        $builder = $this->getSubrtn($array, QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOLS);
-        return $builder->build('flattenQuote', $use_assoc);
+        $builder = $this->getSubrtn($array, QuoteMediaConst::GET_QUOTES, QuoteMediaConst::GET_QUOTES_MAX_SYMBOLS, QuoteMediaError::GET_QUOTES_EXCEED_MAX_SYMBOLS, $use_assoc);
+        return $builder->build();
     }
 
     /**
@@ -112,8 +108,8 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      */
     public function getProfiles($array, $use_assoc = false) {
-        $builder = $this->getSubrtn($array, QuoteMediaConst::GET_PROFILES, QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS, QuoteMediaError::GET_PROFILES_EXCEED_MAX_SYMBOLS);
-        return $builder->build('flattenProfile', $use_assoc);
+        $builder = $this->getSubrtn($array, QuoteMediaConst::GET_PROFILES, QuoteMediaConst::GET_PROFILES_MAX_SYMBOLS, QuoteMediaError::GET_PROFILES_EXCEED_MAX_SYMBOLS, $use_assoc);
+        return $builder->build();
     }
 
     /**
@@ -122,8 +118,8 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      */
     public function getFundamentals($array, $use_assoc = false) {
-        $builder = $this->getSubrtn($array, QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS);
-        return $builder->build('flattenFundamental', $use_assoc);
+        $builder = $this->getSubrtn($array, QuoteMediaConst::GET_FUNDAMENTALS, QuoteMediaConst::GET_FUNDAMENTALS_MAX_SYMBOLS, QuoteMediaError::GET_FUNDAMENTALS_EXCEED_MAX_SYMBOLS, $use_assoc);
+        return $builder->build();
     }
 
     /**
@@ -133,8 +129,8 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @return type
      */
     public function getKeyRatios(&$array, $use_assoc = false) {
-        $builder = $this->getSubrtn($array, QuoteMediaConst::GET_KEY_RATIOS, QuoteMediaConst::GET_KEY_RATIOS_MAX_SYMBOLS, QuoteMediaError::GET_KEY_RATIOS_EXCEED_MAX_SYMBOLS);
-        return $builder->build('flattenKeyRatio', $use_assoc);
+        $builder = $this->getSubrtn($array, QuoteMediaConst::GET_KEY_RATIOS, QuoteMediaConst::GET_KEY_RATIOS_MAX_SYMBOLS, QuoteMediaError::GET_KEY_RATIOS_EXCEED_MAX_SYMBOLS, $use_assoc);
+        return $builder->build();
     }
 
 }

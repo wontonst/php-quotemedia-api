@@ -28,27 +28,43 @@ class QuoteMediaBase {
     }
 
     /**
+     * Check that input array is of type array, if not set the appropriate error.
+     * @param mixed $input
+     * @param QuoteMediaStocksResultBuilder $builder
+     */
+    protected function verifyInputIsArray($input, &$builder) {
+        if (!is_array($input)) {
+            $builder->setError(QuoteMediaError::INPUT_IS_NOT_ARRAY);
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Check that the input array of symbols is well formed.
      * @param array $input array of tickers, presumably
      * @param QuoteMediaResultBuilder $builder
-     * @return array of malformed symbols
+     * @return array of stocks that match stock regex pattern
      */
-    protected function verifySymbolArray(&$input, &$builder) {
-        $error = array();
-        if (!is_array($input)) {
-            $builder->setError(QuoteMediaError::INPUT_IS_NOT_ARRAY);
-        }
+    protected function removeMalformed($input, &$builder) {
+        $malformed = array();
+        $clean = array();
         foreach ($input as $v) {
             if (!is_string($v)) {
                 $builder->setError(QuoteMediaError::SYMBOL_IS_NOT_STRING);
-                $error[] = $v;
+                $malformed[] = $v;
+                continue;
             }
-            if (0 == preg_match('/^[a-zA-Z\-.]{1,10}(:[a-zA-Z\-.]{1,10})?$/', trim($v))) {
+            $trimmed = trim($v);
+            if (0 == preg_match('/^[a-zA-Z\-.]{1,10}(:[a-zA-Z\-.]{1,10})?$/', $trimmed)) {
                 $builder->setError(QuoteMediaError::MALFORMED_SYMBOL);
-                $error[] = trim($v);
+                $malformed[] = $trimmed;
+                continue;
             }
+            $clean[] = $trimmed;
         }
-        return $error;
+        $builder->setMalformed($malformed);
+        return $clean;
     }
 
     /**
