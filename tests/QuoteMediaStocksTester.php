@@ -43,7 +43,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             'malformed' => array(123, 321, 2, 3, 'array'),
         );
         $this->nonexistantSymbols = array(
-            'GROL', 'LXX'
+            'GROL', 'GRLO'
         );
     }
 

@@ -47,26 +47,13 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
             return;
         }
         $json = QuoteMediaBase::xml2json($this->getXml());
+//        print_r($json);
         $this->setResult($this->flattenResults($json[$json_entry], $function_id, $use_assoc));
         $this->setMissing($use_assoc ? $this->calcMissingAssoc() : $this->calcMissingArray());
         if (!empty($this->getMissing())) {
             $this->setError(QuoteMediaError::SYMBOL_DOES_NOT_EXIST);
+            print_r($this);
         }
-    }
-
-    /**
-     * Find the symbols that the API did not return. This version is for $use_assoc=false.
-     * @return array missing symbols
-     */
-    private function calcMissingArray() {
-        $missing = array();
-        $in = array_keys($this->getResult());
-        foreach ($this->getInput() as $input) {
-            if (!in_array($input, $in)) {
-                $missing[] = $input;
-            }
-        }
-        return $missing;
     }
 
     /**
@@ -75,12 +62,32 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
      */
     private function calcMissingAssoc() {
         $missing = array();
+        $result_symbols = array_keys($this->getResult());
+//        var_dump($result_symbols);
+        foreach ($this->getInput() as $input) {
+            if (!in_array($input, $result_symbols)) {
+                $missing[] = $input;
+            }
+        }
+        return $missing;
+    }
+
+    /**
+     * Find the symbols that the API did not return. This version is for $use_assoc=false.
+     * @return array missing symbols
+     */
+    private function calcMissingArray() {
+        $missing = array();
         $results = $this->getResult();
         foreach ($this->getInput() as $input) {
+            $found = false;
             foreach ($results as $i) {
                 if ($i['symbol'] == $input) {
-                    continue;
+                    $found = true;
+                    break;
                 }
+            }
+            if (!$found) {
                 $missing[] = $input;
             }
         }
@@ -99,6 +106,7 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
      * @return array flattened array
      */
     private function flattenResults($json, $function_id, $use_assoc) {
+//        print_r($json);
         switch ($function_id) {
             case QuoteMediaConst::GET_QUOTES:
                 $build_function_name = 'flattenQuote';
@@ -119,6 +127,9 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
         }
         $result = array();
         foreach ($json as &$company) {
+            if (isset($company['@attributes']['datatype']) && $company['@attributes']['datatype'] == 'n/a') {
+                continue;
+            }
             $line = $this->$build_function_name($company);
             if (!$use_assoc) {//simple array
                 $result[] = $line;
