@@ -13,6 +13,7 @@ abstract class QuoteMediaResultBuilder {
 
     public function __construct() {
         $this->error = QuoteMediaError::GOOD;
+        $this->errorhistory = array();
     }
 
     public function hasError() {
@@ -46,11 +47,11 @@ abstract class QuoteMediaResultBuilder {
         return $this->input;
     }
 
-    public function setErrorHistory($errorhistory) {
+    public function setErrorIDHistory($errorhistory) {
         $this->errorhistory = $errorhistory;
     }
 
-    public function getErrorHistory() {
+    public function getErrorIDHistory() {
         return $this->errorhistory;
     }
 

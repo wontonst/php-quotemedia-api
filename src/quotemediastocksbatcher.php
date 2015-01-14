@@ -95,12 +95,12 @@ class QuoteMediaStocksBatcher extends QuoteMediaBase {
         $result = array();
         foreach ($functions as $function) {
             $res = $this->getSubrtn($cleaned, QuoteMediaConst::getMaxSymbols($function), QuoteMediaConst::functIdToStr($function));
-            $result[] = $res;
+            $result = array_merge($result, $res);
         }
         $this->mergeResults($builder, $result, $use_assoc);
         $this->mergeOther($builder, $result, 'Missing');
         $this->mergeOther($builder, $result, 'Malformed');
-        $this->mergeOther($builder, $result, 'ErrorHistory');
+        $this->mergeOther($builder, $result, 'ErrorIDHistory');
 
         return $builder->build();
     }

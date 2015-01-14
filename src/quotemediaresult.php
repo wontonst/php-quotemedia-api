@@ -11,11 +11,11 @@ abstract class QuoteMediaResult {
 
     public function __construct($builder) {
         $this->error = $builder->getError();
-        $this->errorhistory = $builder->getErrorHistory();
+        $this->errorhistory = $builder->getErrorIDHistory();
         $this->result = $builder->getResult();
     }
-    
-    public function hasError(){
+
+    public function hasError() {
         return $this->error != QuoteMediaError::GOOD;
     }
 

@@ -18,7 +18,7 @@ class QuoteMediaStocksBatcherTest extends QuoteMediaStocksTester {
         foreach ($this->notArrayInputs as $bad) {
             $result = $this->api->getAll($bad, true);
             $this->assertTrue($result->hasError(), 'Bad first parameter ' . print_r($bad, true) . ' was not caught by get()');
-            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $result->getError());
+            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $result->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $result->getError());
             $this->setUp();
         }
     }
@@ -27,30 +27,43 @@ class QuoteMediaStocksBatcherTest extends QuoteMediaStocksTester {
         foreach ($this->notArrayInputs as $bad) {
             $result = $this->api->get(array('AAPL'), $bad, false);
             $this->assertTrue($result->hasError(), 'Bad second parameter ' . print_r($bad, true) . ' was not caught by get()');
-            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $result->getError());
+            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $result->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $result->getError());
             $this->setUp();
         }
         foreach ($this->notArrayInputs as $bad) {
             $result = $this->api->get(array('AAPL'), $bad, true);
             $this->assertTrue($result->hasError(), 'Bad second parameter ' . print_r($bad, true) . ' was not caught by get()');
-            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $result->getError());
+            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $result->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $result->getError());
             $this->setUp();
         }
     }
 
-    public function testMalformedSymbol() {
-        $this->assertFalse($this->api->getAll($this->malformedSymbols, false), 'Malformed symbol array ' . print_r($this->malformedSymbols, true) . ' was not caught by get()');
-        $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $this->api->getErrorID(), 'Giving get() a malformed symbol yields incorrect error ' . $this->api->getError());
-        $this->setUp();
-        $this->assertFalse($this->api->getAll($this->malformedSymbols, true), 'Malformed symbol array ' . print_r($this->malformedSymbols, true) . ' was not caught by get()');
-        $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $this->api->getErrorID(), 'Giving get() a malformed symbol yields incorrect error ' . $this->api->getError());
-        $this->setUp();
+    public function testMalformedSymbolArr() {
+        $result = $this->api->getAll($this->malformedSymbols['input'], false);
+        $this->assertTrue($result->hasError(), 'Malformed symbol array ' . print_r($this->malformedSymbols['input'], true) . ' was not caught by get()');
+        $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $result->getErrorID(), 'Giving get() a malformed symbol yields incorrect error ' . $result->getError());
     }
 
-    public function testSymbolNotString() {
+    public function testMalformedSymbolAssoc() {
+        $result = $this->api->getAll($this->malformedSymbols['input'], true);
+        $this->assertTrue($result->hasError(), 'Malformed symbol array ' . print_r($this->malformedSymbols['input'], true) . ' was not caught by get()');
+        $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $result->getErrorID(), 'Giving get() a malformed symbol yields incorrect error ' . $result->getError());
+    }
+
+    public function testSymbolNotStringArr() {
         foreach ($this->nonStringSymbol as $bad) {
-            $this->assertFalse($this->api->getAll($bad, false), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by get()');
-            $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $this->api->getErrorID(), 'Giving get() a symbol that is not a string yields incorrect error ' . $this->api->getError());
+            $result = $this->api->getAll($bad, false);
+            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by get()');
+            $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $result->getErrorID(), 'Giving get() a symbol that is not a string yields incorrect error ' . $result->getError());
+            $this->setUp();
+        }
+    }
+
+    public function testSymbolNotStringAssoc() {
+        foreach ($this->nonStringSymbol as $bad) {
+            $result = $this->api->getAll($bad, true);
+            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by get()');
+            $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $result->getErrorID(), 'Giving get() a symbol that is not a string yields incorrect error ' . $result->getError());
             $this->setUp();
         }
     }
