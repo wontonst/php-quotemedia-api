@@ -26,6 +26,10 @@ abstract class QuoteMediaResultBuilder {
         }
     }
 
+    public function getError() {
+        return $this->error;
+    }
+
     public function setRawInput($input) {
         $this->raw_input = $input;
     }
@@ -42,12 +46,12 @@ abstract class QuoteMediaResultBuilder {
         return $this->input;
     }
 
-    public function getErrorHistory() {
-        return $this->errorhistory;
+    public function setErrorHistory($errorhistory) {
+        $this->errorhistory = $errorhistory;
     }
 
-    public function getError() {
-        return $this->error;
+    public function getErrorHistory() {
+        return $this->errorhistory;
     }
 
     public function setResult($result) {

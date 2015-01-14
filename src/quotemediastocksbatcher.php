@@ -30,32 +30,45 @@ class QuoteMediaStocksBatcher extends QuoteMediaBase {
         $iter = ceil(count($array) / $max_per_call);
         for ($i = 0; $i != $iter; $i++) {
             $slice = array_slice($array, $i * $max_per_call, $max_per_call);
-            $res = $this->api->$cmd($slice);
+            $res = $this->api->$cmd($slice, true); //always grab as assoc
             $ret[] = $res;
         }
         return $ret;
     }
 
     /**
-     * Merges the results of getProfile getFundamentals getQuotes into a single array.
+     * Merges an array of QuoteMediaResult objects into a single results array.
+     * @param QuoteMediaStocksResultsBuilder $builder
      * @param array $results array size 3 keyed 'quotes','fundamentals','profiles' to be merged into a single array.
-     * @return array merged array
      */
-    private function mergeResults($results, $use_assoc) {
+    private function mergeResults(&$builder, $results, $use_assoc) {
         $ret = array();
 
-        foreach ($results[0] as $k => &$q) {
-            $line = $q;
-            for ($i = 1; $i != count($results); $i++) {
-                $line = array_merge($line, $results[$i][$k]);
+        foreach ($results as $ro) {
+            $result = $ro->getResult();
+            foreach ($result as $symbol => $data) {
+                if (isset($ret[$symbol])) {
+                    $ret[$symbol] = array_merge($ret[$symbol], $data);
+                } else {
+                    $ret[$symbol] = $data;
+                    if (!$use_assoc) {
+                        $ret[$symbol]['symbol'] = $symbol;
+                    }
+                }
             }
-            if ($use_assoc) {
-                $ret[$line['symbol']] = $line;
-                continue;
-            }//else
-            $ret[] = $line;
         }
-        return $ret;
+        $builder->setResult($use_assoc ? $ret : array_values($ret));
+    }
+
+    private function mergeOther(&$builder, $results, $name) {
+        $ret = array();
+        $get = 'get' . $name;
+        $set = 'set' . $name;
+        foreach ($results as $ro) {
+            $result = $ro->$get();
+            $ret = array_unique(array_merge($ret, $result));
+        }
+        $builder->$set($ret);
     }
 
     /**
@@ -84,7 +97,12 @@ class QuoteMediaStocksBatcher extends QuoteMediaBase {
             $res = $this->getSubrtn($cleaned, QuoteMediaConst::getMaxSymbols($function), QuoteMediaConst::functIdToStr($function));
             $result[] = $res;
         }
-        return $this->mergeResults($result, $use_assoc);
+        $this->mergeResults($builder, $result, $use_assoc);
+        $this->mergeOther($builder, $result, 'Missing');
+        $this->mergeOther($builder, $result, 'Malformed');
+        $this->mergeOther($builder, $result, 'ErrorHistory');
+
+        return $builder->build();
     }
 
     /**

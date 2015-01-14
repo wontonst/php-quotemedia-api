@@ -62,7 +62,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
 
     public function getBatcher() {
         if ($this->batcher == NULL) {
-            $this->batcher = new QuoteMediaBatcher($this);
+            $this->batcher = new QuoteMediaStocksBatcher($this);
         }
         return $this->batcher;
     }

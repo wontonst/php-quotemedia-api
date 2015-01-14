@@ -8,25 +8,32 @@ class QuoteMediaStocksBatcherTest extends QuoteMediaStocksTester {
         $this->setUpInputs();
     }
 
-    public function testNotArrayInput() {
+    public function testNotArraySymbolInput() {
         foreach ($this->notArrayInputs as $bad) {
-            $this->assertFalse($this->api->getAll($bad, false), 'Bad first parameter ' . print_r($bad, true) . ' was not caught by get()');
-            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $this->api->getError());
+            $result = $this->api->getAll($bad, false);
+            $this->assertTrue($result->hasError(), 'Bad first parameter ' . print_r($bad, true) . ' was not caught by get()');
+            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $result->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $result->getError());
             $this->setUp();
         }
         foreach ($this->notArrayInputs as $bad) {
-            $this->assertFalse($this->api->getAll($bad, true), 'Bad first parameter ' . print_r($bad, true) . ' was not caught by get()');
-            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $this->api->getError());
+            $result = $this->api->getAll($bad, true);
+            $this->assertTrue($result->hasError(), 'Bad first parameter ' . print_r($bad, true) . ' was not caught by get()');
+            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $result->getError());
+            $this->setUp();
+        }
+    }
+
+    public function testNotArrayFunctionInput() {
+        foreach ($this->notArrayInputs as $bad) {
+            $result = $this->api->get(array('AAPL'), $bad, false);
+            $this->assertTrue($result->hasError(), 'Bad second parameter ' . print_r($bad, true) . ' was not caught by get()');
+            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $result->getError());
             $this->setUp();
         }
         foreach ($this->notArrayInputs as $bad) {
-            $this->assertFalse($this->api->get(array('AAPL'), $bad, false), 'Bad second parameter ' . print_r($bad, true) . ' was not caught by get()');
-            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $this->api->getError());
-            $this->setUp();
-        }
-        foreach ($this->notArrayInputs as $bad) {
-            $this->assertFalse($this->api->get(array('AAPL'), $bad, true), 'Bad second parameter ' . print_r($bad, true) . ' was not caught by get()');
-            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $this->api->getError());
+            $result = $this->api->get(array('AAPL'), $bad, true);
+            $this->assertTrue($result->hasError(), 'Bad second parameter ' . print_r($bad, true) . ' was not caught by get()');
+            $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $this->api->getErrorID(), 'Giving get() a non array input yields incorrect error ' . $result->getError());
             $this->setUp();
         }
     }
@@ -59,7 +66,7 @@ class QuoteMediaStocksBatcherTest extends QuoteMediaStocksTester {
         foreach ($input as $v) {
             $result = $this->api->getAll($v, false);
             $this->validateArray($v, $result, 'getAll');
-            $this->validate($result);
+            $this->validate($result->getResult());
         }
     }
 
@@ -68,7 +75,7 @@ class QuoteMediaStocksBatcherTest extends QuoteMediaStocksTester {
             $result = $this->api->get($v, $functions, false);
             $this->validateArray($v, $result, 'get');
             foreach ($validates as $validate) {
-                $this->$validate($result);
+                $this->$validate($result->getResult());
             }
         }
     }
@@ -77,7 +84,7 @@ class QuoteMediaStocksBatcherTest extends QuoteMediaStocksTester {
         foreach ($input as $v) {
             $result = $this->api->getAll($v, true);
             $this->validateAssoc($v, $result, 'getAll');
-            $this->validate($result);
+            $this->validate($result->getResult());
         }
     }
 
@@ -86,7 +93,7 @@ class QuoteMediaStocksBatcherTest extends QuoteMediaStocksTester {
             $result = $this->api->get($v, $functions, true);
             $this->validateArray($v, $result, 'get');
             foreach ($validates as $validate) {
-                $this->$validate($result);
+                $this->$validate($result->getResult());
             }
         }
     }
