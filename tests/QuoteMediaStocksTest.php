@@ -12,6 +12,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             foreach ($this->notArrayInputs as $bad) {
                 $function_name = QuoteMediaConst::functIdToStr($fnctid);
                 $result = $this->api->$function_name($bad, false);
+      $this->assertNotNull($result,'Result is NULL!');        
                 $this->assertTrue($result->hasError(), 'Bad input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
                 $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $result->getErrorID(), 'Giving ' . $function_name . ' a non array input yields incorrect error ' . $this->api->getError());
                 $this->setUp();
@@ -24,6 +25,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             foreach ($this->notArrayInputs as $bad) {
                 $function_name = QuoteMediaConst::functIdToStr($fnctid);
                 $result = $this->api->$function_name($bad, true);
+      $this->assertNotNull($result,'Result is NULL!');        
                 $this->assertTrue($result->hasError(), 'Bad input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
                 $this->assertEquals(QuoteMediaError::INPUT_IS_NOT_ARRAY, $result->getErrorID(), 'Giving ' . $function_name . ' a non array input yields incorrect error ' . $this->api->getError());
                 $this->setUp();
@@ -35,6 +37,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
             $result = $this->api->$function_name($this->malformedSymbols['input'], false);
+      $this->assertNotNull($result,'Result is NULL!');        
             $this->assertTrue($result->hasError(), 'Malformed symbol array ' . print_r($this->malformedSymbols, true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $result->getErrorID(), 'Giving ' . $function_name . ' a malformed symbol yields incorrect error ' . $this->api->getError());
             $malformed = $result->getMalformed();
@@ -49,6 +52,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
             $result = $this->api->$function_name($this->malformedSymbols['input'], true);
+      $this->assertNotNull($result,'Result is NULL!');        
             $this->assertTrue($result->hasError(), 'Malformed symbol array ' . print_r($this->malformedSymbols, true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $result->getErrorID(), 'Giving ' . $function_name . ' a malformed symbol yields incorrect error ' . $this->api->getError());
             $malformed = $result->getMalformed();
@@ -63,6 +67,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
             $result = $this->api->$function_name($this->nonStringSymbol['input'], false);
+      $this->assertNotNull($result,'Result is NULL!');        
             $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $this->api->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $this->api->getError());
             foreach ($this->nonStringSymbol['malformed'] as $m) {
@@ -76,6 +81,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
             $result = $this->api->$function_name($this->nonStringSymbol['input'], false);
+      $this->assertNotNull($result,'Result is NULL!');        
             $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $this->api->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $this->api->getError());
             foreach ($this->nonStringSymbol['malformed'] as $m) {
@@ -86,7 +92,8 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
     }
 
     private function validateSymbolDoesNotExist($result, $bad_expected, $bad_actual) {
-        $this->assertEquals(QuoteMediaError::SYMBOL_DOES_NOT_EXIST, $result->getErrorId(), 'Not receving symbol does not exist error.');
+      $this->assertNotNull($result,'Result is NULL!');        
+$this->assertEquals(QuoteMediaError::SYMBOL_DOES_NOT_EXIST, $result->getErrorId(), 'Not receving symbol does not exist error.');
         foreach ($bad_expected as $bad) {
             $this->assertFalse(in_array($bad, array_keys($result)), 'Nonexistant symbol ' . $bad . ' was found in the result array: ' . print_r($result, true));
         }
@@ -112,7 +119,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
     private function getArrayTest($function, $inputArrays) {
         foreach ($inputArrays as $input) {
             $result = $this->api->$function($input, false);
-            $this->validateArray($input, $result->getResult(), $function);
+            $this->validateArray($input, $result, $function);
             $out[] = $result;
         }
         return $out;
@@ -172,7 +179,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
     private function getAssocTest($function, $inputArrays) {
         foreach ($inputArrays as $input) {
             $result = $this->api->$function($input, true);
-            $this->validateAssoc($input, $result->getResult(), $function);
+            $this->validateAssoc($input, $result, $function);
             $out[] = $result;
         }
         return $out;

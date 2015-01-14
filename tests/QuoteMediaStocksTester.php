@@ -221,14 +221,15 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
      * @param type $output
      * @param type $function_name
      */
-    private function validateOutput(&$input, &$output, $function_name) {
-        $this->assertInternalType('array', $output, 'Error is ' . $this->api->getError());
-        $this->assertEquals(QuoteMediaError::GOOD, $this->api->getErrorID(), 'No longer in GOOD state, current state is ' . $this->api->getError());
-        $this->assertEquals(count($output), count($input), 'Array size returned by ' . $function_name . ' does not matched input array size.' . "\n" . print_r($output, true));
+    private function validateOutput($input, $result, $function_name) {
+      $this->assertInternalType('array', $result->getResult(), 'Error is ' . $result->getError());
+        $this->assertEquals(QuoteMediaError::GOOD, $result->getErrorID(), 'No longer in GOOD state, current state is ' . $result->getError());
+	$getresult = $result->getResult();
+        $this->assertEquals(count($getresult), count($input), 'Array size returned by ' . $function_name . ' does not matched input array size.' . "\n" . print_r($getresult, true));
 
-        foreach ($output as &$row) {
+        foreach ($getresult as $row) {
             $error_msg = 'A row in the result of ' . $function_name . ' is type ' . gettype($row) . ' instead of array. ';
-            $error_msg .= $row === false ? 'Encountered error: ' . $this->api->getError() : 'Dump: ' . print_r($row, true);
+            $error_msg .= $row === false ? 'Encountered error: ' . $result->getError() : 'Dump: ' . print_r($row, true);
             $this->assertInternalType('array', $row, $error_msg);
         }
     }
@@ -241,26 +242,28 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
         }
     }
 
-    protected function validateArray(&$input, &$output, $function_name) {
-        $this->validateOutput($input, $output, $function_name);
+    protected function validateArray($input, $result, $function_name) {
+        $this->validateOutput($input, $result, $function_name);
         //assert tickers
+	$getresult=$result->getResult();
         for ($i = 0; $i != count($input); $i++) {
             $found = false;
-            foreach ($output as $out) {
+            foreach ($getresult as $out) {
                 if ($input[$i] == $out['symbol']) {
                     $found = true;
                     break;
                 }
             }
-            $this->assertTrue($found, 'Ticker ' . $input[$i] . ' could not be found in the resulting array. Dump: ' . print_r($output, true));
+            $this->assertTrue($found, 'Ticker ' . $input[$i] . ' could not be found in the resulting array. Dump: ' . print_r($getresult, true));
         }
     }
 
-    protected function validateAssoc(&$input, &$output, $function_name) {
-        $this->validateOutput($input, $output, $function_name);
+    protected function validateAssoc($input, $result, $function_name) {
+        $this->validateOutput($input, $result, $function_name);
+	$getresult = $result->getResult();
         foreach ($input as $in) {
-            $this->assertTrue(isset($output[$in]), $in . ' could not be found in the resulting associative array. Dump: ' . print_r($output, true));
-            $this->assertEquals($in, $output[$in]['symbol'], 'Resulting associative array has incorrect symbol "' . $output[$in]['symbol'] . '", expecting ' . $in);
+            $this->assertTrue(isset($getresult[$in]), $in . ' could not be found in the resulting associative array. Dump: ' . print_r($getresult, true));
+            $this->assertEquals($in, $getresult[$in]['symbol'], 'Resulting associative array has incorrect symbol "' . $getresult[$in]['symbol'] . '", expecting ' . $in);
         }
     }
 
