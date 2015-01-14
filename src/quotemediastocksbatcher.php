@@ -5,7 +5,7 @@
  * Todo
  * Enforce getSubrtn $cmd parameter
  */
-class QuoteMediaBatcher{
+class QuoteMediaStocksBatcher extends QuoteMediaBase {
 
     private $api; ///< instance of QuoteMediaStocks
 
@@ -20,25 +20,11 @@ class QuoteMediaBatcher{
     }
 
     /**
-     * Return the error in the QuoteMediaStocks instance.
-     */
-    public function getStocksError() {
-        return $this->api->getError();
-    }
-
-    /**
-     * Return the error ID in the QuoteMediaStocks instance.
-     */
-    public function getStocksErrorID() {
-        return $this->api->getErrorID();
-    }
-
-    /**
      * Calls ((QuoteMediaStocks)this->api)->$cmd() to call and grab data from QuoteMedia.
-     * @param type $array arbitrarily long array of stock tickers
-     * @param type $max_per_call maximum number of tickers to pass to the api on each call.
-     * @param type $cmd id of function to run, ex QuoteMediaConst::GET_QUOTES
-     * @return array list of data for reach stock ticker passed
+     * @param array $array arbitrarily long array of stock tickers
+     * @param int $max_per_call maximum number of tickers to pass to the api on each call.
+     * @param int $cmd id of function to run, ex QuoteMediaConst::GET_QUOTES
+     * @return array array of QuoteMediaStocksResult objects
      */
     private function getSubrtn($array, $max_per_call, $cmd) {
         $ret = array();
@@ -46,13 +32,7 @@ class QuoteMediaBatcher{
         for ($i = 0; $i != $iter; $i++) {
             $slice = array_slice($array, $i * $max_per_call, $max_per_call);
             $res = $this->api->$cmd($slice);
-            if ($res === false) {
-                $this->errorID = $this->api->getErrorID();
-                return false;
-            }
-            foreach ($res as &$v) {
-                $ret[$v['symbol']] = $v;
-            }
+            $ret[] = $res;
         }
         return $ret;
     }
@@ -82,26 +62,27 @@ class QuoteMediaBatcher{
     /**
      * Retrieve specified stock data for arbitrarily long input.
      * @param array $symbols array of tickers
-     * @param type $functions array of function identifiers (see QuoteMediaConst)
+     * @param array $functions array of function identifiers (see QuoteMediaConst)
      * @param bool $use_assoc whether not to return an associative map
      * @return array array/map of stock data
      */
     public function get($symbols, $functions, $use_assoc = false) {
-        if (!$this->verifySymbolArray($symbols)) {
-            return false;
-        }
+        $builder = new QuoteMediaStocksResultBuilder();
         if (!is_array($functions)) {//make sure input is valid
-            $this->error = QuoteMediaError::INPUT_IS_NOT_ARRAY;
-            return false;
+            $builder->setError(QuoteMediaError::INPUT_IS_NOT_ARRAY);
+            return $builder->build();
         }
+        $builder->setRawInput($symbols);
+        if (!$builder->verifyRawInputIsArray()) {
+            return $builder->build(); //cannot proceed if input is not array
+        }
+        $verified = $this->removeMalformed($symbols, $builder); //malformed symbols are not in $verified
+        $cleaned = $this->cleanSymbolArray($verified);
+        $builder->setInput($cleaned);
+
         $result = array();
-        $cleaned = $this->cleanSymbolArray($symbols);
         foreach ($functions as $function) {
             $res = $this->getSubrtn($cleaned, QuoteMediaConst::getMaxSymbols($function), QuoteMediaConst::functIdToStr($function));
-            if ($res == false) {
-                $this->error = $this->api->getErrorID();
-                return false;
-            }
             $result[] = $res;
         }
         return $this->mergeResults($result, $use_assoc);
