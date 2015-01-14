@@ -143,7 +143,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         foreach ($inputArrays as $input) {
             $result = $this->api->$function($input, false);
             $this->validateArray($input, $result, $function);
-            $out[] = $result;
+            $out[] = $result->getResult();
         }
         return $out;
     }
@@ -203,7 +203,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         foreach ($inputArrays as $input) {
             $result = $this->api->$function($input, true);
             $this->validateAssoc($input, $result, $function);
-            $out[] = $result;
+            $out[] = $result->getResult();
         }
         return $out;
     }
