@@ -1,6 +1,6 @@
 <?php
 
-class QuoteMediaBatcherTest extends QuoteMediaStocksTester {
+class QuoteMediaStocksBatcherTest extends QuoteMediaStocksTester {
 
     protected function setUp() {
         $stocks = new QuoteMediaStocks(TEST_WEBMASTER_ID);

@@ -1,9 +1,8 @@
 <?php
 
 /**
-  Retrieves all stock data at once for an arbitrarily long input. Built on top of QuoteMediaStocks thru composition.
- * Todo
- * Enforce getSubrtn $cmd parameter
+ * Retrieves all stock data at once for an arbitrarily long input. Built on top of QuoteMediaStocks thru composition.
+ * DO NOT call the constructor, instead create a QuoteMediaStocks object and call getBatcher()
  */
 class QuoteMediaStocksBatcher extends QuoteMediaBase {
 
