@@ -124,6 +124,9 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
 
     public function testGetQuotesSymbolDoesNotExist() {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
+            if ($fnctid == QuoteMediaConst::GET_KEY_RATIOS) {
+                continue;
+            }
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
             $result = $this->api->$function_name($this->nonexistantSymbols, true);
             $this->validateSymbolDoesNotExist($result, $this->nonexistantSymbols);

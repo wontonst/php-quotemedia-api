@@ -47,8 +47,11 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
             return;
         }
         $json = QuoteMediaBase::xml2json($this->getXml());
-//        print_r($json);
-        $this->setResult($this->flattenResults($json[$json_entry], $function_id, $use_assoc));
+        if (isset($json['@attributes']['size']) && $json['@attributes']['size'] == 0) {
+            $this->setResult(array());
+        } else {
+            $this->setResult($this->flattenResults($json[$json_entry], $function_id, $use_assoc));
+        }
         $this->setMissing($use_assoc ? $this->calcMissingAssoc() : $this->calcMissingArray());
         if (!empty($this->getMissing())) {
             $this->setError(QuoteMediaError::SYMBOL_DOES_NOT_EXIST);
@@ -62,10 +65,13 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
      */
     private function calcMissingAssoc() {
         $missing = array();
-        $result_symbols = array_keys($this->getResult());
-//        var_dump($result_symbols);
+        $rs = array_keys($this->getResult());
+        $results_symbols = array();
+        foreach ($rs as $a) {
+            $results_symbols[] = preg_replace("/[^A-Za-z0-9 ]/", '', $a);
+        }
         foreach ($this->getInput() as $input) {
-            if (!in_array($input, $result_symbols)) {
+            if (!in_array(preg_replace("/[^A-Za-z0-9 ]/", '', $input), $results_symbols)) {
                 $missing[] = $input;
             }
         }
@@ -82,7 +88,7 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
         foreach ($this->getInput() as $input) {
             $found = false;
             foreach ($results as $i) {
-                if ($i['symbol'] == $input) {
+                if (preg_replace("/[^A-Za-z0-9 ]/", '', $i['symbol']) == preg_replace("/[^A-Za-z0-9 ]/", '', $input)) {
                     $found = true;
                     break;
                 }
@@ -126,8 +132,11 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
             return array($use_assoc ? $result['symbol'] : 0 => $result);
         }
         $result = array();
-        foreach ($json as &$company) {
+        foreach ($json as $company) {
             if (isset($company['@attributes']['datatype']) && $company['@attributes']['datatype'] == 'n/a') {
+                continue;
+            }
+            if (empty($company)) {
                 continue;
             }
             $line = $this->$build_function_name($company);
@@ -147,7 +156,7 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
      * @param array $company all relevant data for a single company taken straight from raw response->json->array
      * @return array flattened array
      */
-    private function flattenQuote(&$company) {
+    private function flattenQuote($company) {
         if (!isset($company['equityinfo'])) {
             return;
         }
@@ -178,7 +187,7 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
      * @param array $company all relevant data for a single company taken straight from raw response->json->array
      * @return array flattened array
      */
-    private function flattenProfile(&$company) {
+    private function flattenProfile($company) {
         //var_dump($company);
         $add = $company['symbolinfo']['key'];
         $add = array_merge($add, $company['symbolinfo']['equityinfo'], $company['profile']['info']['address']);
@@ -197,7 +206,7 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
      * @param array $company all relevant data for a single company taken straight from raw response->json->array
      * @return array flattened array
      */
-    private function flattenFundamental(&$company) {
+    private function flattenFundamental($company) {
         $add = $company['symbolinfo']['key'];
         $add = array_merge($add, $company['symbolinfo']['equityinfo'], $company['statistical'], $company['fundamental']['shortinterest']);
         if (isset($company['fundamental']['dividend'])) {
@@ -217,7 +226,7 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
         return $add;
     }
 
-    private function flattenKeyRatio(&$company) {
+    private function flattenKeyRatio($company) {
         $add = $company['symbolinfo']['key'];
         $add = array_merge($add, $company['symbolinfo']['equityinfo'], $company['keyratios']['incomestatements'], $company['keyratios']['financialstrength'], $company['keyratios']['managementeffectiveness'], $company['keyratios']['valuationmeasures'], $company['keyratios']['dividendssplits'], $company['keyratios']['profitability'], $company['keyratios']['assets']);
         return $add;
