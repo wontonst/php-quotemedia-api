@@ -109,14 +109,16 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         }
     }
 
-    private function validateSymbolDoesNotExist($result, $bad_expected, $bad_actual) {
+    private function validateSymbolDoesNotExist($result, $bad_expected) {
         $this->assertNotNull($result, 'Result is NULL!');
-        $this->assertEquals(QuoteMediaError::SYMBOL_DOES_NOT_EXIST, $result->getErrorId(), 'Not receving symbol does not exist error.');
+        $this->assertEquals(QuoteMediaError::SYMBOL_DOES_NOT_EXIST, $result->getErrorID(), 'Not receving symbol does not exist error.');
+        $output = $result->getResult();
         foreach ($bad_expected as $bad) {
-            $this->assertFalse(in_array($bad, array_keys($result)), 'Nonexistant symbol ' . $bad . ' was found in the result array: ' . print_r($result, true));
+            $this->assertFalse(in_array($bad, array_keys($output)), 'Nonexistant symbol ' . $bad . ' was found in the result array: ' . print_r($output, true));
         }
+        $missing = $result->getMissing();
         foreach ($bad_expected as $bad) {
-            $this->assertTrue(in_array($bad, $bad_actual), 'Invalid symbol ' . $bad . ' was not recorded by QuoteMediaStocks; Actual bad array dump :' . print_r($bad_actual, true));
+            $this->assertTrue(in_array($bad, $missing), 'Invalid symbol ' . $bad . ' was not recorded by QuoteMediaStocks; Actual bad array dump :' . print_r($missing, true));
         }
     }
 
@@ -124,7 +126,7 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
             $result = $this->api->$function_name($this->nonexistantSymbols, true);
-            $this->validateSymbolDoesNotExist($result->getResult(), $this->nonexistantSymbols, $result->getMissing());
+            $this->validateSymbolDoesNotExist($result, $this->nonexistantSymbols);
         }
     }
 

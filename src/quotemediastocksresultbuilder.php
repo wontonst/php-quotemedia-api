@@ -34,16 +34,24 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
         return $this->malformed;
     }
 
-    public function processXml($build_function, $use_assoc) {
+    /**
+     * Convert the raw XML into user specified result
+     * @param type $function_id id of the function, ie QuoteMediaConst::GET_QUOTES
+     * @param type $json_entry generally speaking, its quotes for getQuotes and company for all else
+     * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
+     * @return type
+     */
+    public function processXml($function_id, $json_entry, $use_assoc) {
         if (!$this->getXml()) {
             $this->setResult(NULL);
             return;
         }
-        $this->setResult($this->flattenResults(QuoteMediaBase::xml2json($this->getXml()), $build_function, $use_assoc));
+        $json = QuoteMediaBase::xml2json($this->getXml());
+        $this->setResult($this->flattenResults($json[$json_entry], $function_id, $use_assoc));
+        //var_dump($this);
     }
 
     public function build() {
-       // var_dump($this);
         return new QuoteMediaStocksResult($this);
     }
 
@@ -51,10 +59,10 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
      * Take a list of companies and flatten them.
      * @param array $json deserialized array built from XML->json
      * @param string $function_id function ID
-     * @param bool $use_assoc
+     * @param boolean $use_assoc return a map instead of an array mapping ticker to data.
      * @return array flattened array
      */
-    private function flattenResults(&$json, $function_id, $use_assoc) {
+    private function flattenResults($json, $function_id, $use_assoc) {
         switch ($function_id) {
             case QuoteMediaConst::GET_QUOTES:
                 $build_function_name = 'flattenQuote';
@@ -82,7 +90,8 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
             }//else
             $result[$line['symbol']] = $line;
         }
-        var_dump($result);
+        //print_r($json);
+        //print_r($result);
         return $result;
     }
 
