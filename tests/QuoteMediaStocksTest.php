@@ -127,8 +127,36 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $this->assertNotNull($result, 'Result is NULL!');
             $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($this->nonStringSymbol['input'], true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $result->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $result->getError());
+            //verify that malformed symbols are in the malformed array
             foreach ($this->nonStringSymbol['malformed'] as $m) {
                 $this->assertTrue(in_array($m, $result->getMalformed()), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
+            }
+            //verify that good symbols are not in malformed array
+            foreach ($this->nonStringSymbol['result'] as $m) {
+                $this->assertFalse(in_array($m, $result->getMalformed()), 'Valid symbol ' . $m . ' was found in the result\'s getMalformed() array.');
+            }
+            $getresult = $result->getResult();
+            //verify that malformed symbols are not in the result array
+            foreach ($this->nonStringSymbol['malformed'] as $m) {
+                $found = false;
+                foreach ($getresult as $v) {
+                    if ($v['symbol'] == $m) {
+                        $found = true;
+                        break;
+                    }
+                }
+                $this->assertFalse($found, 'Nonstring symbol ' . $m . ' was found in the result\'s getResult() array: ' . print_r($getresult, true));
+            }
+            //verify that good symbols are in the result array
+            foreach ($this->nonStringSymbol['result'] as $m) {
+                $found = false;
+                foreach ($getresult as $v) {
+                    if ($v['symbol'] == $m) {
+                        $found = true;
+                        break;
+                    }
+                }
+                $this->assertTrue($found, 'Valid symbol ' . $m . ' was not found in the result\'s getResult() array: ' . print_r($getresult, true));
             }
             $this->setUp();
         }
@@ -152,6 +180,51 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
     }
 
     public function testSymbolDoesNotExist() {
+        foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
+            if ($fnctid == QuoteMediaConst::GET_KEY_RATIOS) {
+                continue;
+            }
+            $function_name = QuoteMediaConst::functIdToStr($fnctid);
+            $result = $this->api->$function_name($this->nonexistantSymbols['input'], false);
+            $this->assertNotNull($result, 'Result is NULL!');
+            $this->assertEquals(QuoteMediaError::SYMBOL_DOES_NOT_EXIST, $result->getErrorID(), 'Did not find the expected Symbol Does Not Exist error, instead got ' . $result->getError());
+
+            //verify that result array has the correct values
+            $output = $result->getResult();
+            foreach ($this->nonexistantSymbols['result'] as $row) {
+                $found = false;
+                foreach ($output as $v) {
+                    if ($v['symbol'] == $row) {
+                        $found = true;
+                        break;
+                    }
+                }
+                $this->assertTrue($found, 'Valid symbol ' . $row . ' was not found in result array: ' . print_r($output, true));
+            }
+            //verify that result array does not have invalid values
+            foreach ($this->nonexistantSymbols['missing'] as $row) {
+                $found = false;
+                foreach ($output as $v) {
+                    if ($v['symbol'] == $row) {
+                        $found = true;
+                        break;
+                    }
+                }
+                $this->assertFalse($found, 'Nonexistant symbol ' . $row . ' was found in the result array: ' . print_r($output, true));
+            }
+            //verify that missing array has nonexistant symbols
+            $missing = $result->getMissing();
+            foreach ($this->nonexistantSymbols['missing'] as $row) {
+                $this->assertTrue(in_array($row, array_values($missing)), 'Nonexistant symbol ' . $row . ' was not found in missing array: ' . print_r($missing, true));
+            }
+            //veirfy that missing array does not have valid symbols
+            foreach ($this->nonexistantSymbols['result'] as $row) {
+                $this->assertFalse(in_array($row, array_values($missing)), 'Valid symbol ' . $row . ' was found in the missing array: ' . print_r($missing, true));
+            }
+        }
+    }
+
+    public function testSymbolDoesNotExistAssoc() {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             if ($fnctid == QuoteMediaConst::GET_KEY_RATIOS) {
                 continue;
