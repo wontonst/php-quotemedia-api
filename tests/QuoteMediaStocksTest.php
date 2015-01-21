@@ -109,27 +109,34 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
         }
     }
 
-    private function validateSymbolDoesNotExist($result, $bad_expected) {
-        $this->assertNotNull($result, 'Result is NULL!');
-        $this->assertEquals(QuoteMediaError::SYMBOL_DOES_NOT_EXIST, $result->getErrorID(), 'Did not find the expected Symbol Does Not Exist error, instead got ' . $result->getError());
-        $output = $result->getResult();
-        foreach ($bad_expected as $bad) {
-            $this->assertFalse(in_array($bad, array_keys($output)), 'Nonexistant symbol ' . $bad . ' was found in the result array: ' . print_r($output, true));
-        }
-        $missing = $result->getMissing();
-        foreach ($bad_expected as $bad) {
-            $this->assertTrue(in_array($bad, $missing), 'Invalid symbol ' . $bad . ' was not recorded by QuoteMediaStocks; Actual bad array dump :' . print_r($missing, true));
-        }
-    }
-
-    public function testGetQuotesSymbolDoesNotExist() {
+    public function testSymbolDoesNotExist() {
         foreach (QuoteMediaConst::$STOCKS_FUNCTIONS as $fnctid) {
             if ($fnctid == QuoteMediaConst::GET_KEY_RATIOS) {
                 continue;
             }
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
-            $result = $this->api->$function_name($this->nonexistantSymbols, true);
-            $this->validateSymbolDoesNotExist($result, $this->nonexistantSymbols);
+            $result = $this->api->$function_name($this->nonexistantSymbols['input'], true);
+            $this->assertNotNull($result, 'Result is NULL!');
+            $this->assertEquals(QuoteMediaError::SYMBOL_DOES_NOT_EXIST, $result->getErrorID(), 'Did not find the expected Symbol Does Not Exist error, instead got ' . $result->getError());
+
+            //verify that result array has the correct values
+            $output = $result->getResult();
+            foreach ($this->nonexistantSymbols['result'] as $row) {
+                $this->assertTrue(in_array($row, array_keys($output)), 'Valid symbol ' . $row . ' was not found in result array: ' . print_r($output, true));
+            }
+            //verify that result array does not have invalid values
+            foreach ($this->nonexistantSymbols['missing'] as $row) {
+                $this->assertFalse(in_array($row, array_keys($output)), 'Nonexistant symbol ' . $row . ' was found in the result array: ' . print_r($output, true));
+            }
+            //verify that missing array has nonexistant symbols
+            $missing = $result->getMissing();
+            foreach ($this->nonexistantSymbols['missing'] as $row) {
+                $this->assertTrue(in_array($row, array_values($missing)), 'Nonexistant symbol ' . $row . ' was not found in missing array: ' . print_r($missing, true));
+            }
+            //veirfy that missing array does not have valid symbols
+            foreach ($this->nonexistantSymbols['result'] as $row) {
+                $this->assertFalse(in_array($row, array_values($missing)), 'Valid symbol ' . $row . ' was found in the missing array: ' . print_r($missing, true));
+            }
         }
     }
 

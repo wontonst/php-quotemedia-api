@@ -36,14 +36,20 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             ),
             'malformed' => array(
                 '$$', 'GOOG!', '123', 'LUV@', 'antidisestablishmentarianismheyo', 'BRK A', 'AAPL:123', 'AAPL:LUV@', 'AAPL:AA!', 'AAPL:$$', 'AAPL:antidisestablishmentarianismismheyo', 'AAPL:A A',
-            )
+            ),
+            'result' => array(
+                'AAPL', 'GOOG', 'CVS', 'SWHC',
+            ),
         );
         $this->nonStringSymbol = array(
             'input' => array('AAPL', 'CVS', 123, 321, 2, 'SWHC', 3, array(), 'CVX', 'C'),
             'malformed' => array(123, 321, 2, 3, 'array'),
+            'result' => array('AAPL', 'CVS', 'SWHC', 'CVX', 'C'),
         );
         $this->nonexistantSymbols = array(
-            'GROL', 'GRLO'
+            'input' => array('AAPL', 'GROL', 'GOOG', 'GRLO', 'C'),
+            'missing' => array('GROL', 'GRLO'),
+            'result' => array('AAPL', 'GOOG', 'C'),
         );
     }
 
@@ -222,9 +228,9 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
      * @param type $function_name
      */
     private function validateOutput($input, $result, $function_name) {
-      $this->assertInternalType('array', $result->getResult(), 'Error is ' . $result->getError());
+        $this->assertInternalType('array', $result->getResult(), 'Error is ' . $result->getError());
         $this->assertEquals(QuoteMediaError::GOOD, $result->getErrorID(), 'No longer in GOOD state, current state is ' . $result->getError());
-	$getresult = $result->getResult();
+        $getresult = $result->getResult();
         $this->assertEquals(count($getresult), count($input), 'Array size returned by ' . $function_name . ' does not matched input array size.' . "\n" . print_r($getresult, true));
 
         foreach ($getresult as $row) {
@@ -245,7 +251,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
     protected function validateArray($input, $result, $function_name) {
         $this->validateOutput($input, $result, $function_name);
         //assert tickers
-	$getresult=$result->getResult();
+        $getresult = $result->getResult();
         for ($i = 0; $i != count($input); $i++) {
             $found = false;
             foreach ($getresult as $out) {
@@ -260,7 +266,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
 
     protected function validateAssoc($input, $result, $function_name) {
         $this->validateOutput($input, $result, $function_name);
-	$getresult = $result->getResult();
+        $getresult = $result->getResult();
         foreach ($input as $in) {
             $this->assertTrue(isset($getresult[$in]), $in . ' could not be found in the resulting associative array. Dump: ' . print_r($getresult, true));
             $this->assertEquals($in, $getresult[$in]['symbol'], 'Resulting associative array has incorrect symbol "' . $getresult[$in]['symbol'] . '", expecting ' . $in);
