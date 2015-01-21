@@ -118,25 +118,25 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
                 continue;
             }
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
-            $result = $this->api->$function_name($this->nonStringSymbol['input'], false);
+            $result = $this->api->$function_name($this->nonStringSymbols['input'], false);
             $this->assertNotNull($result, 'Result is NULL!');
-            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($this->nonStringSymbol['input'], true) . ' was not caught by ' . $function_name);
+            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($this->nonStringSymbols['input'], true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $result->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $result->getError());
             //verify that malformed symbols are in the malformed array
-            foreach ($this->nonStringSymbol['malformed'] as $m) {
+            foreach ($this->nonStringSymbols['malformed'] as $m) {
                 $this->assertTrue(in_array($m, $result->getMalformed()), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
             }
             //verify that good symbols are not in malformed array
-            foreach ($this->nonStringSymbol['result'] as $m) {
+            foreach ($this->nonStringSymbols['result'] as $m) {
                 $this->assertFalse(in_array($m, $result->getMalformed()), 'Valid symbol ' . $m . ' was found in the result\'s getMalformed() array.');
             }
             $getresult = $result->getResult();
             //verify that malformed symbols are not in the result array
-            foreach ($this->nonStringSymbol['malformed'] as $m) {
+            foreach ($this->nonStringSymbols['malformed'] as $m) {
                 $this->assertFalse($this->resultArrayContainsSymbol($getresult, $m), 'Nonstring symbol ' . $m . ' was found in the result\'s getResult() array: ' . print_r($getresult, true));
             }
             //verify that good symbols are in the result array
-            foreach ($this->nonStringSymbol['result'] as $m) {
+            foreach ($this->nonStringSymbols['result'] as $m) {
                 $found = false;
                 foreach ($getresult as $v) {
                     if ($v['symbol'] == $m) {
@@ -156,25 +156,25 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
                 continue;
             }
             $function_name = QuoteMediaConst::functIdToStr($fnctid);
-            $result = $this->api->$function_name($this->nonStringSymbol['input'], false);
+            $result = $this->api->$function_name($this->nonStringSymbols['input'], false);
             $this->assertNotNull($result, 'Result is NULL!');
-            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($this->nonStringSymbol['input'], true) . ' was not caught by ' . $function_name);
+            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($this->nonStringSymbols['input'], true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $result->getErrorID(), 'Giving ' . $function_name . ' a symbol that is not a string yields incorrect error ' . $result->getError());
             //verify that malformed symbols are in the malformed array
-            foreach ($this->nonStringSymbol['malformed'] as $m) {
+            foreach ($this->nonStringSymbols['malformed'] as $m) {
                 $this->assertTrue(in_array($m, $result->getMalformed()), 'Nonstring symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
             }
             //verify that good symbols are not in malformed array
-            foreach ($this->nonStringSymbol['result'] as $m) {
+            foreach ($this->nonStringSymbols['result'] as $m) {
                 $this->assertFalse(in_array($m, $result->getMalformed()), 'Valid symbol ' . $m . ' was found in the result\'s getMalformed() array.');
             }
             $getresult = $result->getResult();
             //verify that malformed symbols are not in the result array
-            foreach ($this->nonStringSymbol['malformed'] as $m) {
+            foreach ($this->nonStringSymbols['malformed'] as $m) {
                 $this->assertFalse($this->resultArrayContainsSymbol($getresult, $m), 'Nonstring symbol ' . $m . ' was found in the result\'s getResult() array: ' . print_r($getresult, true));
             }
             //verify that good symbols are in the result array
-            foreach ($this->nonStringSymbol['result'] as $m) {
+            foreach ($this->nonStringSymbols['result'] as $m) {
                 $found = false;
                 foreach ($getresult as $v) {
                     if ($v['symbol'] == $m) {

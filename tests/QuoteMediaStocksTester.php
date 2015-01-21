@@ -41,7 +41,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
                 'AAPL', 'GOOG', 'CVS', 'SWHC',
             ),
         );
-        $this->nonStringSymbol = array(
+        $this->nonStringSymbols = array(
             'input' => array('AAPL', 'CVS', 123, 321, 2, 'SWHC', 3, array(), 'CVX', 'C'),
             'malformed' => array(123, 321, 2, 3, 'array'),
             'result' => array('AAPL', 'CVS', 'SWHC', 'CVX', 'C'),

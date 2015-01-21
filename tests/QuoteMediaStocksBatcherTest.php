@@ -51,21 +51,17 @@ class QuoteMediaStocksBatcherTest extends QuoteMediaStocksTester {
     }
 
     public function testSymbolNotStringArr() {
-        foreach ($this->nonStringSymbol as $bad) {
-            $result = $this->api->getAll($bad, false);
-            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by get()');
-            $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $result->getErrorID(), 'Giving get() a symbol that is not a string yields incorrect error ' . $result->getError());
-            $this->setUp();
-        }
+        $result = $this->api->getAll($this->nonStringSymbols['input'], false);
+        $this->assertTrue($result->hasError(), 'Nonstring symbol error was not caught by get()');
+        $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $result->getErrorID(), 'Giving get() a symbol that is not a string yields incorrect error ' . $result->getError());
+        $this->setUp();
     }
 
     public function testSymbolNotStringAssoc() {
-        foreach ($this->nonStringSymbol as $bad) {
-            $result = $this->api->getAll($bad, true);
-            $this->assertTrue($result->hasError(), 'Nonstring symbol input ' . print_r($bad, true) . ' was not caught by get()');
-            $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $result->getErrorID(), 'Giving get() a symbol that is not a string yields incorrect error ' . $result->getError());
-            $this->setUp();
-        }
+        $result = $this->api->getAll($this->nonStringSymbols['input'], true);
+        $this->assertTrue($result->hasError(), 'Nonstring symbol error was not caught by get()');
+        $this->assertEquals(QuoteMediaError::SYMBOL_IS_NOT_STRING, $result->getErrorID(), 'Giving get() a symbol that is not a string yields incorrect error ' . $result->getError());
+        $this->setUp();
     }
 
     private function validate(&$output) {
