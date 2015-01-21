@@ -22,7 +22,7 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
                 'DLPH', 'DLTR', 'DNB', 'DNR', 'DO', 'DOV', 'DOW', 'DPS', 'DRI', 'DTE',
                 'DTV', 'DUK', 'DVA', 'DVN', 'EA', 'EBAY', 'ECL', 'ED', 'EFX', 'FRGI',
                 'FRM', 'FRME', 'CVX', 'FRO', 'FRP', 'FSP', 'FSS', 'MMM', 'FSTR', 'LEG',
-                'FSYS', 'FTD', 'FTK', 'FUEL', 'FUL', 'FUR', 'HIVE', 'FVE', 'FWRD', 'LLY',
+                'FSYS', 'FTD', 'FTK', 'FUEL', 'C', 'FUR', 'HIVE', 'FVE', 'FWRD', 'LLY',
                 'FXCB', 'FXCM', 'FXEN', 'GABC', 'GAIA', 'GALE', 'GALT', 'GB', 'GBCI', 'GBL',
                 'GBLI', 'GBNK', 'GBX', 'GCA', 'GCAP', 'GCO', 'GDOT', 'GDP', 'GEO',
             ),
