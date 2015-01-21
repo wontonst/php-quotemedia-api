@@ -50,8 +50,36 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $this->assertTrue($result->hasError(), 'Malformed symbol array ' . print_r($this->malformedSymbols, true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $result->getErrorID(), 'Giving ' . $function_name . ' a malformed symbol yields incorrect error ' . $result->getError());
             $malformed = $result->getMalformed();
+            //verify that malformed symbols are in the malformed array
             foreach ($this->malformedSymbols['malformed'] as $m) {
-                $this->assertTrue(in_array($m, $malformed), 'Malformed symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
+                $this->assertTrue(in_array($m, $malformed), 'Malformed symbol ' . $m . ' was not found in the result\'s getMalformed() array: ' . print_r($malformed, true));
+            }
+            //verify that good symbols are not in the malformed array
+            foreach ($this->malformedSymbols['result'] as $m) {
+                $this->assertFalse(in_array($m, $malformed), 'Valid symbol ' . $m . ' was found in the result\'s getMalformed() array: ' . print_r($malformed, true));
+            }
+            $getresult = $result->getResult();
+            //verify that malformed symbols are not in the result array
+            foreach ($this->malformedSymbols['malformed'] as $m) {
+                $found = false;
+                foreach ($getresult as $v) {
+                    if ($v['symbol'] == $m) {
+                        $found = true;
+                        break;
+                    }
+                }
+                $this->assertFalse($found, 'Malformed symbol ' . $m . ' was found in the result\'s getResult() array: ' . print_r($getresult, true));
+            }
+            //verify that good symbols are in the result array
+            foreach ($this->malformedSymbols['result'] as $m) {
+                $found = false;
+                foreach ($getresult as $v) {
+                    if ($v['symbol'] == $m) {
+                        $found = true;
+                        break;
+                    }
+                }
+                $this->assertTrue($found, 'Valid symbol ' . $m . ' was not found in the result\'s getResult() array: ' . print_r($getresult, true));
             }
             $this->setUp();
         }
@@ -68,8 +96,22 @@ class QuoteMediaStocksTest extends QuoteMediaStocksTester {
             $this->assertTrue($result->hasError(), 'Malformed symbol array ' . print_r($this->malformedSymbols, true) . ' was not caught by ' . $function_name);
             $this->assertEquals(QuoteMediaError::MALFORMED_SYMBOL, $result->getErrorID(), 'Giving ' . $function_name . ' a malformed symbol yields incorrect error ' . $result->getError());
             $malformed = $result->getMalformed();
+            //verify that malformed symbols are in the malformed array
             foreach ($this->malformedSymbols['malformed'] as $m) {
-                $this->assertTrue(in_array($m, $malformed), 'Malformed symbol ' . $m . ' was not found in the result\'s getMalformed() array.');
+                $this->assertTrue(in_array($m, $malformed), 'Malformed symbol ' . $m . ' was not found in the result\'s getMalformed() array: ' . print_r($malformed, true));
+            }
+            //verify that good symbols are not in the malformed array
+            foreach ($this->malformedSymbols['result'] as $m) {
+                $this->assertFalse(in_array($m, $malformed), 'Valid symbol ' . $m . ' was found in the result\'s getMalformed() array: ' . print_r($malformed, true));
+            }
+            $getresult = $result->getResult();
+            //verify that malformed symbols are not in the result array
+            foreach ($this->malformedSymbols['malformed'] as $m) {
+                $this->assertFalse(in_array($m, array_keys($getresult)), 'Malformed symbol ' . $m . ' was found in the result\'s getResult() array: ' . print_r($getresult, true));
+            }
+            //verify that good symbols are in the result array
+            foreach ($this->malformedSymbols['result'] as $m) {
+                $this->assertTrue(in_array($m, array_keys($getresult)), 'Valid symbol ' . $m . ' was not found in the result\'s getResult() array: ' . print_r($getresult, true));
             }
             $this->setUp();
         }
