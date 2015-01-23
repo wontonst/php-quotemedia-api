@@ -10,7 +10,7 @@ max-height:400px;
 
 # QuoteMedia API PHP Library
 
-This library is intended to make QuoteMedia API calls easier to manage.
+This library is inptended to make QuoteMedia API calls easier to manage.
 
 ## Getting Started
 Download/clone this repo from Github.
@@ -153,7 +153,7 @@ var_dump($result->getResult());
 
 The var dump would look something like this
 
-<pre class='codepre'>
+<pre style='overflow-y:scroll;max-height:400px;'>
     array(1) {
   [0]=>
   array(113) {
