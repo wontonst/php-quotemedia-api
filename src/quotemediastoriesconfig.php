@@ -24,7 +24,7 @@ class QuoteMediaStoriesConfig {
     }
 
     private function buildTopicsStr() {
-        if (is_array($this->topic)) {
+        if (is_array($this->topics)) {
             $this->topics = $this->csvify($this->topics);
         }
         return '&topics=' . $this->topics;
@@ -130,13 +130,11 @@ class QuoteMediaStoriesConfig {
         return '&newslang=' . QuoteMediaConst::langIdToStr($this->newslang);
     }
 
-    public function generateGet(&$builder) {
-
-        $getstr = QuoteMediaConst::URL_ROOT;
-
+    public function generateGetParam(&$builder) {
         $buildF = array('Topics', 'PerTopic', 'LastId', 'Start', 'End', 'Src', 'NewsLang');
-
+        $getstr = '';
         foreach ($buildF as $function) {
+            $function = 'build' . $function . 'Str';
             $getstr .= $this->$function($builder);
         }
         return $getstr;

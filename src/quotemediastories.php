@@ -22,13 +22,11 @@ class QuoteMediaStories extends QuoteMediaBase {
             $config = new QuoteMediaStoriesConfig();
         }
         $builder = new QuoteMediaStoriesResultBuilder();
-        echo 'fuck';
-        $url = $config->generateGet($builder);
+        $url = QuoteMediaConst::URL_ROOT.'getHeadlines.xml?webmasterId='.$this->getWebmasterId().$config->generateGetParam($builder);
         $this->callApi($url, $builder);
         $builder->processXml();
         $builder->build();
     }
-
 }
 
 ?>
