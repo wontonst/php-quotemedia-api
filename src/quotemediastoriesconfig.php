@@ -127,7 +127,7 @@ class QuoteMediaStoriesConfig {
             }
             return '&newslang=' . $out;
         }
-        return '&newslang=' . $QuoteMediaConst::langIdToStr($this->newslang);
+        return '&newslang=' . QuoteMediaConst::langIdToStr($this->newslang);
     }
 
     public function generateGet(&$builder) {

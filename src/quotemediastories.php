@@ -23,7 +23,7 @@ class QuoteMediaStories extends QuoteMediaBase {
         }
         $builder = new QuoteMediaStoriesResultsBuilder();
         $url = $config->generateGet($builder);
-        
+        $this->callApi($url, $builder);
     }
 
 }

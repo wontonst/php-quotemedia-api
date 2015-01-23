@@ -27,6 +27,21 @@ class QuoteMediaBase {
         return $this->webmaster_id;
     }
 
+    protected function callApi($url, &$builder) {
+        $response = file_get_contents($url);
+        if (!$response) {
+            //error can't reach the url
+            $builder->setError(QuoteMediaError::API_HTTP_REQUEST_ERROR);
+            return false;
+        }
+        $builder->setXml(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA));
+        if (!$builder->getXml()) {
+            //error parsing the XML
+            $builder->setError(QuoteMediaError::API_XML_PARSE_ERROR);
+            return false;
+        }
+    }
+
     /**
      * Check that the input array of symbols is well formed.
      * @param array $input array of tickers, presumably
@@ -41,7 +56,7 @@ class QuoteMediaBase {
                 $builder->setError(QuoteMediaError::SYMBOL_IS_NOT_STRING);
                 //we'll be putting "array" instead of actual array
                 //we'll be putting "object" instead of actual object
-                $malformed[] = is_array($v) ? 'array' : (is_object($v) ? 'object' : $v); 
+                $malformed[] = is_array($v) ? 'array' : (is_object($v) ? 'object' : $v);
                 continue;
             }
             $trimmed = trim($v);

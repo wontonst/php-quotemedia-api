@@ -19,22 +19,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
     private function callStock($type, $tickers, &$builder) {
         $url = QuoteMediaStocksHelper::buildStockURL($type, $tickers, $this->getWebmasterId());
         // echo $url;
-        $response = file_get_contents($url);
-        if (!$response) {
-            //error can't reach the url
-            $builder->setError(QuoteMediaError::API_HTTP_REQUEST_ERROR);
-            return false;
-        }
-        $builder->setXml(simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA));
-        if (!$builder->getXml()) {
-            //error parsing the XML
-            $builder->setError(QuoteMediaError::API_XML_PARSE_ERROR);
-            return false;
-        }
-        //if (QuoteMediaStocks::getXmlSymbolCount($type, $builder->getXml()) != count($tickers)) {
-        // TODO: determine which ticker didn't get included and report it or retry
-        //}
-        return true;
+        return $this->callApi($url, $builder);
     }
 
     /**
