@@ -39,7 +39,9 @@ class QuoteMediaBase {
         foreach ($input as $v) {
             if (!is_string($v)) {
                 $builder->setError(QuoteMediaError::SYMBOL_IS_NOT_STRING);
-                $malformed[] = is_array($v) ? 'array' : $v; //we'll be putting "array" instead of actual array
+                //we'll be putting "array" instead of actual array
+                //we'll be putting "object" instead of actual object
+                $malformed[] = is_array($v) ? 'array' : (is_object($v) ? 'object' : $v); 
                 continue;
             }
             $trimmed = trim($v);
