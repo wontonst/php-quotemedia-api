@@ -7,7 +7,7 @@ class QuoteMediaBase {
      * @param array $tickers array of ticker strings
      * @return string comma delimited ticker string
      */
-    public static function stringifyTickers(&$tickers) {
+    public static function csvify(&$tickers) {
         return implode(',', $tickers);
     }
 

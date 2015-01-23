@@ -5,6 +5,7 @@
  */
 class QuoteMediaStoriesResults extends QuoteMediaBase {
 
+
 }
 
 ?>

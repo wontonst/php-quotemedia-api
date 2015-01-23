@@ -22,13 +22,14 @@ class QuoteMediaStocksHelper {
                 $url_middle = 'getKeyRatiosBySymbol.xml';
                 break;
             default:
-//TODO: error, invalid type (programmer error)
+	throw exception('Invalid type '.$type.'. $type must be a valid QuoteMediaConst function identifier.');
+break;
         }
 
         return QuoteMediaConst::URL_ROOT . $url_middle .
                 '?webmasterId=' . $webmaster_id .
                 ($type == QuoteMediaConst::GET_KEY_RATIOS ? '&symbol=' : '&symbols=') .
-                QuoteMediaBase::stringifyTickers($tickers);
+                QuoteMediaBase::csvify($tickers);
     }
 
 }

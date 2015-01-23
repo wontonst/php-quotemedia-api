@@ -16,7 +16,7 @@ class QuoteMediaStocks extends QuoteMediaBase {
      * @returns true if no error, else false
      */
 
-    public function callStock($type, $tickers, &$builder) {
+    private function callStock($type, $tickers, &$builder) {
         $url = QuoteMediaStocksHelper::buildStockURL($type, $tickers, $this->getWebmasterId());
         // echo $url;
         $response = file_get_contents($url);

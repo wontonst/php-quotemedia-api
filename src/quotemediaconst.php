@@ -5,6 +5,7 @@ final class QuoteMediaConst {
     const URL_ROOT = 'http://app.quotemedia.com/data/';
 
     /* Function Identifiers */
+    //stocks
     const GET_QUOTES = 0; ///< function identifier for getQuotes
     const GET_PROFILES = 1; ///< function identifier for getProfiles
     const GET_FUNDAMENTALS = 2; ///< function identifier for getFundamentals
@@ -16,11 +17,22 @@ final class QuoteMediaConst {
         QuoteMediaConst::GET_FUNDAMENTALS,
         QuoteMediaConst::GET_KEY_RATIOS
     );
-    private static $ID_STR_MAP = array(
+
+    //stories
+    const GET_HEADLINES = 4; ///< function identifier for getHeadlines
+    const GET_STORIES = 5; ///< function identifier for getStories
+
+    public static $STORIES_FUNCTIONS = array(
+        QuoteMediaConst::GET_HEADLINES,
+        QuoteMediaConst::GET_STORIES,
+    );
+    private static $FUNCT_ID_STR_MAP = array(
         QuoteMediaConst::GET_QUOTES => 'getQuotes',
         QuoteMediaConst::GET_PROFILES => 'getProfiles',
         QuoteMediaConst::GET_FUNDAMENTALS => 'getFundamentals',
         QuoteMediaConst::GET_KEY_RATIOS => 'getKeyRatios',
+        QuoteMediaConst::GET_HEADLINES => 'getHeadlines',
+        QuoteMediaConst::GET_STORIES => 'getStories',
     );
 
     /**
@@ -30,10 +42,10 @@ final class QuoteMediaConst {
      * @return string function name
      */
     public static function functIdToStr($id) {
-        if (!isset(QuoteMediaConst::$ID_STR_MAP[$id])) {
+        if (!isset(QuoteMediaConst::$FUNCT_ID_STR_MAP[$id])) {
             die('QuoteMediaConst::functIdToStr passed invalid $id ' . $id);
         }
-        return QuoteMediaConst::$ID_STR_MAP[$id];
+        return QuoteMediaConst::$FUNCT_ID_STR_MAP[$id];
     }
 
     /* Constants */
@@ -55,6 +67,21 @@ final class QuoteMediaConst {
             die('QuoteMediaConst::getMaxSymbols passed invalid id ' . $id);
         }
         return QuoteMediaConst::$MAX_SYMBOLS_MAP[$id];
+    }
+
+    const LANG_ENGLISH = 0;
+    const LANG_FRENCH = 1;
+
+    private static $LANG_ID_STR_MAP = array(
+        QuoteMediaConst::LANG_ENGLISH => 'en',
+        QuoteMediaConst::LANG_FRENCH => 'fr',
+    );
+
+    public static function langIdToStr($id) {
+        if (!isset($QuoteMediaConst::$LANG_ID_STR_MAP[$id])) {
+            die('QuoteMediaConst::langIdToStr passed invalid $id ' . $id);
+        }
+        return QuoteMediaConst::$LANG_ID_STR_MAP[$id];
     }
 
 }
