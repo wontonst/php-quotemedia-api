@@ -11,12 +11,6 @@ class QuoteMediaBase {
         return implode(',', $tickers);
     }
 
-    public static function xml2json(&$xml) {
-        //may the programming Gods have mercy on my soul
-        $ihavenodignity = json_encode($xml);
-        return json_decode($ihavenodignity, TRUE);
-    }
-
     public function __construct($webmaster_id) {
         $this->error = QuoteMediaError::GOOD;
         $this->error_info = array();

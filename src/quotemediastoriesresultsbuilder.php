@@ -1,15 +1,13 @@
 <?php
 
 /**
- * TODO: Custom keys for result
+ * 
  */
-class QuoteMediaStoriesResultsBuilder extends QuoteMediaBase {
+class QuoteMediaStoriesResultsBuilder extends QuoteMediaResultsBuilder {
 
-    /**
-     * Returns whether or not a valid get request URL has been created.
-     */
-    public function validGet() {
-        
+    public function processXml() {
+        $json = QuoteMediaResultBuilder::xml2json($this->getXml());
+        var_dump($json);
     }
 
 }

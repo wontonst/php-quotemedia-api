@@ -46,7 +46,7 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
             $this->setResult(NULL);
             return;
         }
-        $json = QuoteMediaBase::xml2json($this->getXml());
+        $json = QuoteMediaResultBuilder::xml2json($this->getXml());
         if (isset($json['@attributes']['size']) && $json['@attributes']['size'] == 0) {
             $this->setResult(array());
         } else {

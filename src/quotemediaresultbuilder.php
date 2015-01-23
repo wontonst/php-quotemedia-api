@@ -16,6 +16,12 @@ abstract class QuoteMediaResultBuilder {
         $this->errorhistory = array();
     }
 
+    public static function xml2json(&$xml) {
+        //may the programming Gods have mercy on my soul
+        $ihavenodignity = json_encode($xml);
+        return json_decode($ihavenodignity, TRUE);
+    }
+
     public function hasError() {
         return $this->error != QuoteMediaError::GOOD;
     }
