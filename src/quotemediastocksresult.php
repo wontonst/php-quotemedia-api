@@ -42,6 +42,10 @@ class QuoteMediaStocksResult extends QuoteMediaResult {
         return $this->has_malformd;
     }
 
+    /**
+     * Get malformed symbols. These symbols can either fail the regex match, or can be non-string inputs. Objects and arrays are displayed literally as "object" and "array".
+     * @return array of malformed symbols
+     */
     public function getMalformed() {
         return $this->malformed;
     }
