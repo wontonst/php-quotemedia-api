@@ -35,7 +35,7 @@ The var dump will show something like this
     <?php
     $api = new QuoteMediaStocks(TEST_WEBMASTER_ID);
     $tickers = array('GOOG');
-    $res = $api->getQuotes($tickers)
+    $res = $api->getQuotes($tickers);
     var_dump($res->getResult());
     ?>
 </pre>
