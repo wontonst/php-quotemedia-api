@@ -53,7 +53,7 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
             $this->setResult($this->flattenResults($json[$json_entry], $function_id, $use_assoc));
         }
         $this->setMissing($use_assoc ? $this->calcMissingAssoc() : $this->calcMissingArray());
-        if (!empty($this->getMissing())) {
+        if (0 != count($this->getMissing())) {
             $this->setError(QuoteMediaError::SYMBOL_DOES_NOT_EXIST);
         }
 //            print_r($this);
