@@ -7,14 +7,14 @@ abstract class QuoteMediaStocksTester extends PHPUnit_Framework_TestCase {
             array('AAPL'),
             array('KO'),
             array('SWHC'),
-            array('MS'),
+            array('C'),
             array('GOOG'),
             array('CRD.B'),
             array('VNP:CA'),
         );
         $this->mArray = array(
             array('GOOG', 'AAPL'),
-            array('SWHC', 'MSFT', 'MS', 'C', 'XLNX', 'GOOG', 'AAPL', 'KO', 'PX', 'F')
+            array('SWHC', 'MSFT', 'WTS', 'C', 'XLNX', 'GOOG', 'AAPL', 'KO', 'PX', 'F')
         );
         $this->lArray = array(
             array(
