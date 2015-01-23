@@ -1,6 +1,13 @@
 
 <!-- DO NOT EDIT README.MD DIRECTLY, YOUR CHANGES WILL BE WIPED OUT. PLEASE EDIT generate_readme.php INSTEAD! -->
 
+<style>
+.codepre{
+overflow-y:scroll;
+max-height:400px;
+}
+</style>
+
 # QuoteMedia API PHP Library
 
 This library is intended to make QuoteMedia API calls easier to manage.
@@ -146,7 +153,7 @@ var_dump($result->getResult());
 
 The var dump would look something like this
 
-<pre>
+<pre class='codepre'>
     array(1) {
   [0]=>
   array(113) {
