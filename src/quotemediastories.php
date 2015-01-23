@@ -21,7 +21,8 @@ class QuoteMediaStories extends QuoteMediaBase {
         if ($config == NULL) {
             $config = new QuoteMediaStoriesConfig();
         }
-        $builder = new QuoteMediaStoriesResultsBuilder();
+        $builder = new QuoteMediaStoriesResultBuilder();
+        echo 'fuck';
         $url = $config->generateGet($builder);
         $this->callApi($url, $builder);
         $builder->processXml();

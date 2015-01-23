@@ -15,12 +15,12 @@ class QuoteMediaStoriesConfig {
     private $newslang; ///< language of articles to get
 
     public function __construct() {
-        $this->$topics = 'SHOWALLNEWS';
-        $this->$newslang = 'en';
+        $this->topics = 'SHOWALLNEWS';
+        $this->newslang = 'en';
     }
 
     public function setTopics($topic) {
-        $this->$topics = $topic;
+        $this->topics = $topic;
     }
 
     private function buildTopicsStr() {
