@@ -84,13 +84,14 @@ This is because the returned value from a get* function call is actually a Quote
 
 #### QuoteMediaBatcher Class
 
-Note that in the previous section you can only retrieve each section separately and you are limited to 50 tickers at a time in getProfiles. This is due to limitations on the API itself. To bypass these limitations you can use the QuoteMediaBatcher class.
+Note that in the previous section you can only retrieve each section separately and you are limited to 50 tickers at a time in getProfiles. This is due to limitations on the API itself. To bypass these limitations you can use the QuoteMediaBatcher class that is conveniently embedded in the QuoteMediaStocks class.
 
 <pre>
 $webmaster_id = 000000;//user inputs webmaster id 
 $input = array( 'GOOG');
-$api = new QuoteMediaBatcher($webmaster_id);
-$result = $api->getAll($input);
+$api = new QuoteMediaStocks($webmaster_id);
+$batcher = $api->getBatcher();
+$result = $batcher->getAll($input);
 var_dump($result->getResult());
 </pre>
 
@@ -98,10 +99,12 @@ The var dump would look something like this
 
 <pre>
     <?php
-    $api = new QuoteMediaBatcher(TEST_WEBMASTER_ID);
-    $input = array('GOOG');
-    $result = $api->getAll($input);
-    var_dump($result->getResult());
+$webmaster_id = TEST_WEBMASTER_ID;//user inputs webmaster id 
+$input = array( 'GOOG');
+$api = new QuoteMediaStocks($webmaster_id);
+$batcher = $api->getBatcher();
+$result = $batcher->getAll($input);
+var_dump($result->getResult());
     ?>
 </pre>
 
@@ -110,8 +113,9 @@ If you want to grab only a few sections instead of all, you can use the get() fu
 <pre>
 $webmaster_id = 000000;//user inputs webmaster id 
 $input = array( 'GOOG');
-$api = new QuoteMediaBatcher($webmaster_id);
-$result = $api->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES));
+$api = new QuoteMediaStocks($webmaster_id);
+$batcher = $api->getBatcher();
+$result = $batcher->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES));
 var_dump($result->getResult());
 </pre>
 
@@ -119,11 +123,12 @@ The var dump would look something like
 
 <pre>
     <?php
-    $webmaster_id = 000000; //user inputs webmaster id 
-    $input = array('GOOG');
-    $api = new QuoteMediaBatcher($webmaster_id);
-    $result = $api->get($input, array(QuoteMediaConst::GET_KEY_RATIOS, QuoteMediaConst::GET_QUOTES));
-    var_dump($result->getResult());
+$webmaster_id = TEST_WEBMASTER_ID;//user inputs webmaster id 
+$input = array( 'GOOG');
+$api = new QuoteMediaStocks($webmaster_id);
+$batcher = $api->getBatcher();
+$result = $batcher->get($input,array(QuoteMediaConst::GET_KEY_RATIOS,QuoteMediaConst::GET_QUOTES));
+var_dump($result->getResult());
     ?>
 </pre>
 
@@ -144,6 +149,8 @@ foreach ($array as $a) {
     echo '+ ' . $a . ' : ' . QuoteMediaError::IDtoError($a) . "\n";
 }
 ?>
+
+Remember you can always use the result object's getError() function to retrieve the error string instead of doing the conversion yourself.
 
 # Contributing
 Contributions can be submitted right here on Github through a pull request. 
