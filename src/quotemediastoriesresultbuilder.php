@@ -23,7 +23,7 @@ class QuoteMediaStoriesResultBuilder extends QuoteMediaResultBuilder {
 
     public function processXml() {
         $json = QuoteMediaResultBuilder::xml2json($this->getXml());
-        print_r($json);
+        //print_r($json);
         $this->topicSize = $json['topiccount'];
         $this->newsSize = $json['news']['newsitemcount'] + 0;
         $result = array();
@@ -34,11 +34,11 @@ class QuoteMediaStoriesResultBuilder extends QuoteMediaResultBuilder {
             $result[] = $row;
         }
         $this->setResult($result);
-        print_r($this);
+        //print_r($this);
     }
 
     public function build() {
-        
+      return new QuoteMediaStoriesResult($this);
     }
 
 }
