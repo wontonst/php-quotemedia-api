@@ -5,7 +5,7 @@
  */
 class QuoteMediaStoriesResultBuilder extends QuoteMediaResultBuilder {
 
-    private $topiocSize; ///< number of topics returned
+    private $topicSize; ///< number of topics returned
     private $newsSize; ///< number of articles returned
 
     public function __construct() {
