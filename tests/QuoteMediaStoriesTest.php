@@ -7,15 +7,22 @@ class QuoteMediaStoriesTest extends QuoteMediaStocksTester {
     }
 
     private function verifyHeadlines($result, $expected_error, $expected_tsize,$expected_nsize) {
-        $this->assertEqual($result->getErrorID(), $expected_error);
-        $this->assertEqual($result->getTopicSize(),$expected_tsize);
-        $this->assertEqual($result->getNewsSize(),$expected_nsize);
-        $this->assertEqual(count($result->getResult()),$expected_nsize);
+        $this->assertEquals($result->getErrorID(), $expected_error);
+        $this->assertEquals($result->getTopicSize(),$expected_tsize);
+        $this->assertEquals($result->getNewsSize(),$expected_nsize);
+        $this->assertEquals(count($result->getResult()),$expected_nsize);
+	foreach($result->getResult() as $r){
+	  $expected_keys = array('newsid','datetime','source','headline','storyurl');
+	  foreach($expected_keys as $k){
+	    $this->assertTrue(isset($r[$k]),'getHeadlines entry is missing the value for '.$k.'. Dump of result row: '.print_r($r,true));
+	    $this->assertTrue(strlen($r[$k]) > 0,'Value for a getHeadlines entry is empty: '.print_r($r,true));
+	  }
+	}
     }
 
     public function testHeadlinesDefault() {
         $result = $this->api->getHeadlines();
-        $this->verifyHeadlines($result,QuoteMediaErrors::GOOD,1,250);
+        $this->verifyHeadlines($result,QuoteMediaError::GOOD,1,250);
     }
 
 }
