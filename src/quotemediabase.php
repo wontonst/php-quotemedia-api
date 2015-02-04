@@ -34,6 +34,7 @@ class QuoteMediaBase {
             $builder->setError(QuoteMediaError::API_XML_PARSE_ERROR);
             return false;
         }
+        return true;
     }
 
     /**
