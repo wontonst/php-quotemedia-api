@@ -28,7 +28,7 @@ class QuoteMediaStoriesResultBuilder extends QuoteMediaResultBuilder {
         $this->newsSize = 0;
         $result = array();
         if ($this->topicSize == 1) {
-            $result[] = $this->processTopic($json['new']);
+            $result[] = $this->processTopic($json['news']);
         } else {
             foreach ($json['news'] as $news) {
                 $result[] = $this->processTopic($news);
