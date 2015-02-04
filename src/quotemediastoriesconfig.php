@@ -38,7 +38,8 @@ class QuoteMediaStoriesConfig {
         if ($this->perTopic == NULL) {
             return '';
         }
-        if (!ctype_digit($this->perTopic)) {
+        if (!is_int($this->perTopic+0)) {
+	  var_dump($this->perTopic);
             $builder->setError(QuoteMediaError::INVALID_PER_TOPIC);
             return '';
         }
