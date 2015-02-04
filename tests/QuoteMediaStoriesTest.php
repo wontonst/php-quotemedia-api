@@ -31,9 +31,25 @@ class QuoteMediaStoriesTest extends QuoteMediaStoriesTester {
 
     public function testStoriesDefault() {
         $result = $this->api->getStories();
-        var_dump($result);
+        $this->verifyStories($result, QuoteMediaError::GOOD, 1, QuoteMediaConst::MAX_STORIES_PER_TOPIC);
     }
 
+    public function testStoriesTopic() {
+        $config = new QuoteMediaStoriesConfig();
+        $config->setTopics($this->stdTopics);
+        $result = $this->api->getStories($config);
+        $this->verifyStories($result, QuoteMediaError::GOOD, count($this->stdTopics), QuoteMediaConst::MAX_STORIES_PER_TOPIC * count($this->stdTopics));
+    }
+
+    public function testStoriesTopicPerTopic() {
+        foreach ($this->perTopic as $pt) {
+            $config = new QuoteMediaStoriesConfig();
+            $config->setTopics($this->stdTopics);
+            $config->setPerTopic($pt);
+            $result = $this->api->getStories($config);
+            $this->verifyStories($result, QuoteMediaError::GOOD, count($this->stdTopics), count($this->stdTopics) * $pt);
+        }
+    }
 }
 
 ?>
