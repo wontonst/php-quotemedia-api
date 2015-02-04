@@ -9,14 +9,14 @@ class QuoteMediaStoriesTest extends QuoteMediaStoriesTester {
 
     public function testHeadlinesDefault() {
         $result = $this->api->getHeadlines();
-        $this->verifyHeadlines($result, QuoteMediaError::GOOD, 1, 250);
+        $this->verifyHeadlines($result, QuoteMediaError::GOOD, 1, QuoteMediaConst::MAX_STORIES_PER_TOPIC);
     }
 
     public function testHeadlinesTopic() {
         $config = new QuoteMediaStoriesConfig();
         $config->setTopics($this->stdTopics);
         $result = $this->api->getHeadlines($config);
-        $this->verifyHeadlines($result, QuoteMediaError::GOOD, count($this->stdTopics), 250 * count($this->stdTopics));
+        $this->verifyHeadlines($result, QuoteMediaError::GOOD, count($this->stdTopics), QuoteMediaConst::MAX_STORIES_PER_TOPIC * count($this->stdTopics));
     }
 
     public function testHeadlinesTopicPerTopic() {
@@ -25,7 +25,7 @@ class QuoteMediaStoriesTest extends QuoteMediaStoriesTester {
             $config->setTopics($this->stdTopics);
             $config->setPerTopic($pt);
             $result = $this->api->getHeadlines($config);
-            $this->verifyHeadlines($result, QuoteMediaError::GOOD, count($this->stdTopics), count($this->stdTopics) * pt);
+            $this->verifyHeadlines($result, QuoteMediaError::GOOD, count($this->stdTopics), count($this->stdTopics) * $pt);
         }
     }
 
