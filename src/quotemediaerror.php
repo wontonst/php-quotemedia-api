@@ -14,6 +14,7 @@ final class QuoteMediaError {
     const MALFORMED_SYMBOL = -9;
     const INVALID_FUNCTION_ID = -10;
     const SYMBOL_DOES_NOT_EXIST = -11;
+    const INVALID_PER_TOPIC = -12;
 
     private static $instance = null;
 
@@ -30,7 +31,8 @@ final class QuoteMediaError {
             QuoteMediaError::MALFORMED_SYMBOL => 'Symbol contains invalid characters',
             QuoteMediaError::SYMBOL_IS_NOT_STRING => 'Expected a symbols string but was not passed a string',
             QuoteMediaError::INVALID_FUNCTION_ID => 'Invalid function identifier',
-            QuoteMediaError::SYMBOL_DOES_NOT_EXIST => 'One or more symbols do not exist.'
+            QuoteMediaError::SYMBOL_DOES_NOT_EXIST => 'One or more symbols do not exist.',
+	    QuoteMediaError::INVALID_PER_TOPIC => 'Invalid perTopic value passed to config.',
         );
     }
 
