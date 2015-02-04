@@ -27,6 +27,10 @@ class QuoteMediaStories extends QuoteMediaBase {
         $builder->processXml();
         return $builder->build();
     }
+    public function getHeadlinesStory(){
+        
+        //http://app.quotemedia.com/data/getHeadlinesStory.xml?topic=msft&webmasterId=XXXX
+    }
 }
 
 ?>
