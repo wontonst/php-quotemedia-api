@@ -26,7 +26,7 @@ class QuoteMediaStories extends QuoteMediaBase {
         return $builder->build();
     }
 
-    public function getStories() {
+    public function getStories($config = null) {
         if ($config == NULL) {
             $config = new QuoteMediaStoriesConfig();
         }
