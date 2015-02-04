@@ -69,6 +69,7 @@ final class QuoteMediaConst {
         return QuoteMediaConst::$MAX_SYMBOLS_MAP[$id];
     }
 
+    const MAX_STORIES_PER_TOPIC = 250; ///< maximum stories to get per topic
     const LANG_ENGLISH = 0;
     const LANG_FRENCH = 1;
 

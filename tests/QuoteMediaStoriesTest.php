@@ -11,11 +11,22 @@ class QuoteMediaStoriesTest extends QuoteMediaStoriesTester {
         $result = $this->api->getHeadlines();
         $this->verifyHeadlines($result, QuoteMediaError::GOOD, 1, 250);
     }
-    public function testHeadlinesTopic(){
+
+    public function testHeadlinesTopic() {
         $config = new QuoteMediaStoriesConfig();
         $config->setTopics($this->stdTopics);
         $result = $this->api->getHeadlines($config);
-        $this->verifyHeadlines($result,QuoteMediaError::GOOD,count($this->stdTopics),500);
+        $this->verifyHeadlines($result, QuoteMediaError::GOOD, count($this->stdTopics), 250 * count($this->stdTopics));
+    }
+
+    public function testHeadlinesTopicPerTopic() {
+        foreach ($this->perTopic as $pt) {
+            $config = new QuoteMediaStoriesConfig();
+            $config->setTopics($this->stdTopics);
+            $config->setPerTopic($pt);
+            $result = $this->api->getHeadlines($config);
+            $this->verifyHeadlines($result, QuoteMediaError::GOOD, count($this->stdTopics), count($this->stdTopics) * pt);
+        }
     }
 
 }
