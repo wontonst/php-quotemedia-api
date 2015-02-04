@@ -17,7 +17,7 @@ class QuoteMediaStories extends QuoteMediaBase {
         if ($config == NULL) {
             $config = new QuoteMediaStoriesConfig();
         }
-        $builder = new QuoteMediaHeadlinesResultBuilder();
+        $builder = new QuoteMediaStoriesResultBuilder();
         $url = QuoteMediaConst::URL_ROOT . 'getHeadlines.xml?webmasterId=' . $this->getWebmasterId() . $config->generateGetParam($builder);
         //var_dump($url);
         //var_dump($config);
