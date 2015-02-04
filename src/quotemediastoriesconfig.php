@@ -25,7 +25,7 @@ class QuoteMediaStoriesConfig {
 
     private function buildTopicsStr() {
         if (is_array($this->topics)) {
-            $this->topics = $this->csvify($this->topics);
+	  $this->topics = QuoteMediaBase::csvify($this->topics);
         }
         return '&topics=' . $this->topics;
     }

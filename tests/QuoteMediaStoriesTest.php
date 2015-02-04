@@ -14,7 +14,7 @@ class QuoteMediaStoriesTest extends QuoteMediaStoriesTester {
     public function testHeadlinesTopic(){
         $config = new QuoteMediaStoriesConfig();
         $config->setTopics($this->stdTopics);
-        $result = $this->api->getHeadlines();
+        $result = $this->api->getHeadlines($config);
         $this->verifyHeadlines($result,QuoteMediaError::GOOD,count($this->stdTopics),250);
     }
 

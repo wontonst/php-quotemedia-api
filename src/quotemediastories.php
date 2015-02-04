@@ -23,6 +23,8 @@ class QuoteMediaStories extends QuoteMediaBase {
         }
         $builder = new QuoteMediaStoriesResultBuilder();
         $url = QuoteMediaConst::URL_ROOT.'getHeadlines.xml?webmasterId='.$this->getWebmasterId().$config->generateGetParam($builder);
+	//var_dump($url);
+	//var_dump($config);
         $this->callApi($url, $builder);
         $builder->processXml();
         return $builder->build();

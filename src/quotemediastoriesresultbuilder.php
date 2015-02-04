@@ -25,7 +25,15 @@ class QuoteMediaStoriesResultBuilder extends QuoteMediaResultBuilder {
         $json = QuoteMediaResultBuilder::xml2json($this->getXml());
         //print_r($json);
         $this->topicSize = $json['topiccount'];
+	if($this->topicSize == 1){
         $this->newsSize = $json['news']['newsitemcount'] + 0;
+	}
+	else{
+	  $this->newsSize = 0;	  
+foreach($json['news'] as $news){
+  $this->newsSize += $news['newsitemcount'];
+	  }
+	}
         $result = array();
         foreach ($json['news']['newsitem'] as $item) {
             $row = $item['@attributes'];
