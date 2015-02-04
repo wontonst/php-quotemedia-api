@@ -29,6 +29,11 @@ class QuoteMediaStoriesTest extends QuoteMediaStoriesTester {
         }
     }
 
+    public function testStoriesDefault() {
+        $result = $this->api->getStories();
+        var_dump($result);
+    }
+
 }
 
 ?>

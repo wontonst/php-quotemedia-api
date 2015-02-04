@@ -10,7 +10,7 @@ abstract class QuoteMediaStoriesTester extends PHPUnit_Framework_TestCase {
     }
 
     protected function verifyHeadlines($result, $expected_error, $expected_tsize, $expected_nsize) {
-        $this->assertEquals($expected_error, $result->getErrorID());
+        $this->assertEquals($expected_error, $result->getErrorID(), 'Expected error ' . QuoteMediaError::IDtoError($expected_error) . ' but instead got ' . $result->getError());
         $this->assertEquals($expected_tsize, $result->getTopicSize());
         $this->assertEquals($expected_nsize, $result->getNewsSize());
         $res = $result->getResult();
