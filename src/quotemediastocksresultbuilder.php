@@ -151,6 +151,17 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
         return $result;
     }
 
+    private function flattenArray($main_array, $company, $flatten_component){
+        $curr = $company;
+        foreach ($flatten_component as $k){
+	    if(!isset($curr[$k])){
+                return $main_array;
+            }
+            $curr = $curr[$k];
+        }
+	return array_merge($main_array, $curr);
+    }
+
     /**
      * Flatten the resulting array from a getQuotes call for a single company.
      * @param array $company all relevant data for a single company taken straight from raw response->json->array
@@ -162,7 +173,8 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
         }
         //var_dump($company);
         $add = $company['key'];
-        $add = array_merge($add, $company['equityinfo'], $company['pricedata']);
+	$add = $this->flattenArray($add, $company, array('equityinfo'));
+        $add = $this->flattenArray($add, $company, array('pricedata'));
         if (isset($company['fundamental']['dividend'])) {
             $rekey = array(
                 'date' => 'dividenddate',
@@ -178,7 +190,6 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
             $add = array_merge($add, $dividend);
         }
         $add = array_merge($add, $company['fundamental']);
-        //var_dump($add);
         return $add;
     }
 
@@ -188,16 +199,17 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
      * @return array flattened array
      */
     private function flattenProfile($company) {
-        //var_dump($company);
         $add = $company['symbolinfo']['key'];
-        $add = array_merge($add, $company['symbolinfo']['equityinfo'], $company['profile']['info']['address']);
+	$add = $this->flattenArray($add, $company, array('symbolinfo', 'equityinfo'));
+	$add = $this->flattenArray($add, $company, array('profile', 'info', 'address'));
         unset($company['profile']['info']['address']);
-        $add = array_merge($add, $company['profile']['info']);
+	$add = $this->flattenArray($add, $company, array('profile', 'info'));
         unset($company['profile']['info']);
-        $add = array_merge($add, $company['profile']['details'], $company['profile']['classification']);
+	$add = $this->flattenArray($add, $company, array('profile', 'details'));
+	$add = $this->flattenArray($add, $company, array('profile', 'classification'));
         unset($company['profile']['details']);
         unset($company['profile']['classification']);
-        $add = array_merge($add, $company['profile']);
+	$add = $this->flattenArray($add, $company, array('profile'));
         return $add;
     }
 
@@ -208,7 +220,10 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
      */
     private function flattenFundamental($company) {
         $add = $company['symbolinfo']['key'];
-        $add = array_merge($add, $company['symbolinfo']['equityinfo'], $company['statistical'], $company['fundamental']['shortinterest']);
+        $add = $this->flattenArray($add, $company, array('symbolinfo', 'equityinfo'));
+        $add = $this->flattenArray($add, $company, array('statistical'));
+        $add = $this->flattenArray($add, $company, array('fundamental', 'shortinterest'));
+        #$add = array_merge($add, $company['symbolinfo']['equityinfo'], $company['statistical'], $company['fundamental']['shortinterest']);
         if (isset($company['fundamental']['dividend'])) {
             $rekey = array(
                 'date' => 'dividenddate',
@@ -228,7 +243,14 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
 
     private function flattenKeyRatio($company) {
         $add = $company['symbolinfo']['key'];
-        $add = array_merge($add, $company['symbolinfo']['equityinfo'], $company['keyratios']['incomestatements'], $company['keyratios']['financialstrength'], $company['keyratios']['managementeffectiveness'], $company['keyratios']['valuationmeasures'], $company['keyratios']['dividendssplits'], $company['keyratios']['profitability'], $company['keyratios']['assets']);
+	$add = $this->flattenArray($add, $company, array('symbolinfo', 'equityinfo'));
+	$add = $this->flattenArray($add, $company, array('keyratios', 'incomestatements'));
+	$add = $this->flattenArray($add, $company, array('keyratios', 'financialstrength'));
+	$add = $this->flattenArray($add, $company, array('keyratios', 'managementeffectiveness'));
+	$add = $this->flattenArray($add, $company, array('keyratios', 'valuationmeasures'));
+	$add = $this->flattenArray($add, $company, array('keyratios', 'dividendssplits'));
+	$add = $this->flattenArray($add, $company, array('keyratios', 'profitability'));
+	$add = $this->flattenArray($add, $company, array('keyratios', 'assets'));
         return $add;
     }
 
