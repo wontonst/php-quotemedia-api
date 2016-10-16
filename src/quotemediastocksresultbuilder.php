@@ -56,7 +56,6 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
         if (0 != count($this->getMissing())) {
             $this->setError(QuoteMediaError::SYMBOL_DOES_NOT_EXIST);
         }
-//            print_r($this);
     }
 
     /**
@@ -112,7 +111,6 @@ class QuoteMediaStocksResultBuilder extends QuoteMediaResultBuilder {
      * @return array flattened array
      */
     private function flattenResults($json, $function_id, $use_assoc) {
-//        print_r($json);
         switch ($function_id) {
             case QuoteMediaConst::GET_QUOTES:
                 $build_function_name = 'flattenQuote';
